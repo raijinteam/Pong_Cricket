@@ -5,10 +5,11 @@ TagManager:
   serializedVersion: 2
   tags:
   - PlayerAi
-  - UpDownWall
   - Runner
   - Wicket
   - MaxRunner
+  - SideWall
+  - Ball
   layers:
   - Default
   - TransparentFX

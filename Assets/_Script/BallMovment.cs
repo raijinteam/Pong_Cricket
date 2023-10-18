@@ -12,7 +12,7 @@ public class BallMovment : MonoBehaviour {
     [SerializeField] private Rigidbody2D rb;
 
 
-    private bool isBatTouch = false;
+    private bool isBatTouch = false;   // if Batsman Hit Bat So Run Calculation OtherWise No RunCalculation 
 
     [SerializeField] private float flt_BallForce = 15;     // if Ball Force When Any Player Collide get This Force;
     [SerializeField] private float swingDir = 2;     // Swind Direction Value  - Our case We Need only X Direction
@@ -21,6 +21,7 @@ public class BallMovment : MonoBehaviour {
     [SerializeField] private bool isSwinging = false;  // Swing Status
     [SerializeField] private Vector2 _velocity;  // Ball Velocity
     private float flt_MinYVelocity = 2;
+    private bool isHitRuuner = true;
     
 
 
@@ -28,6 +29,7 @@ public class BallMovment : MonoBehaviour {
    // Get RandomVelocity Ofball
 
    public void SetRandomVelocityOfBall() {
+        this.gameObject.SetActive(true);
         StartCoroutine(DelayOfspawn());
        
     }
@@ -75,8 +77,10 @@ public class BallMovment : MonoBehaviour {
     private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag(TagName.tag_Runner)) {
 
-            if (isBatTouch) {
+            if (isBatTouch && isHitRuuner) {
                 GameManager.Instance.IncreasedRun(collision.GetComponent<Collder_Runner>().MyRunValue);
+                isHitRuuner = false;
+                StartCoroutine(DelayofTwoRunner());
             }
            
         }
@@ -84,25 +88,25 @@ public class BallMovment : MonoBehaviour {
 
           
             GameManager.Instance.IncreasedWicket();
-            GetComponent<Collider2D>().enabled = false;
-           
-
+       
         }
         else if (collision.CompareTag(TagName.tag_MaxRun)) {
 
 
             Debug.Log("MaxRunEnterd");
             GameManager.Instance.IncreasedRun(collision.GetComponent<Collder_Runner>().MyRunValue);
-            GetComponent<Collider2D>().enabled = false;
-
+         
         }
+    }
+
+    private IEnumerator DelayofTwoRunner() {
+        yield return new WaitForSeconds(0.2f);
+        isHitRuuner = true;
     }
 
 
     // Collsion Deatection
     // Regid Body All Velocity Zero
-
-
 
     private void OnCollisionEnter2D(Collision2D collision) {
         rb.velocity = Vector3.zero;
@@ -110,118 +114,108 @@ public class BallMovment : MonoBehaviour {
 
         if (collision.gameObject.CompareTag(TagName.tag_Player)) {
 
-            if (collision.gameObject.TryGetComponent<Player>(out Player player)) {
-
-                if (player.MyState == PlayerState.BatsMan) {
-                    isBatTouch = true;
-                    BatsManBallTouchEffect(collision);
-                }
-                else {
-                    isBatTouch = false;
-                     BallwerBallTouchEffcet(collision);
-                }
-            }
-            // If Touch Bawler Calculate    Bawller OpsiteDirection And Get Swing Force
-           
+            BallCollidedWithPlayerPaddle(collision);
+                   
         }
         else if (collision.gameObject.CompareTag(TagName.tag_PlayerAi)) {
 
-            // If Touch BatsMan Calculate  Bat OpsiteDirection AndGetForce
-            if (collision.gameObject.TryGetComponent<PlayerAI>(out PlayerAI player)) {
-
-                if (player.MyState == PlayerState.BatsMan) {
-                    isBatTouch = true;
-                    BatsManBallTouchEffect(collision);
-                }
-                else {
-                    isBatTouch = false;
-                    BallwerBallTouchEffcet(collision);
-                }
-            }
-
-        }
-        else if (collision.gameObject.CompareTag(TagName.tag_UpDownWall)) {
-            
-
-            _velocity = Vector3.Reflect(_velocity.normalized, collision.contacts[0].normal);
-            if (_velocity.magnitude < 0.5f) {
-                _velocity = new Vector2(1, 0);
-            }
-
-            isSwinging = false;
-            
-            rb.AddForce(_velocity * flt_BallForce, ForceMode2D.Impulse);
-        }
-        else {
-
+            BallCollidedWithAIPaddle(collision);
            
+
+        }
+        else if (collision.gameObject.CompareTag(TagName.tag_SideWall)) {
+
+
             // If Touch Wall so Get Reflect Direction Of Touch when Swing is False
             // if Touch Wall So Calucte Swing Direction;
             WallTouchEffect(collision);
 
         }
+        //else if (collision.gameObject.CompareTag(TagName.tag_UpDownWall)) {
+
+
+        //    _velocity = Vector3.Reflect(_velocity.normalized, collision.contacts[0].normal);
+        //    if (_velocity.magnitude < 0.5f) {
+        //        _velocity = new Vector2(1, 0);
+        //    }
+
+        //    isSwinging = false;
+
+        //    rb.AddForce(_velocity * flt_BallForce, ForceMode2D.Impulse);
+        //}
+
 
     }
 
-    private void BallwerBallTouchEffcet(Collision2D collision) {
+    private void BallCollidedWithPlayerPaddle(Collision2D _collider) {
+
+        if (_collider.gameObject.TryGetComponent<Player>(out Player player)) {
+
+            Vector2 playerPoint = _collider.collider.transform.InverseTransformPoint(_collider.contacts[0].point);
+            float playerForce = player.flt_GetBallForceAsPerCollsionForce(playerPoint);
+
+            if (player.MyState == PlayerState.BatsMan) {
+                isBatTouch = true;
+
+                BatsManBallTouchEffect(_collider, playerForce);
+                GameManager.Instance.CurrentGamePlayerAI.PLayerHitBall();
+            }
+            else {
+                isBatTouch = false;
+
+                flt_SwingForce = player.flt_GetSwingForceAsPerCollsionForce(playerPoint);
+                BallwerBallTouchEffcet(_collider, playerForce);
+                GameManager.Instance.CurrentGamePlayerAI.PLayerHitBall();
+            }
+        }
+        // If Touch Bawler Calculate    Bawller OpsiteDirection And Get Swing Force
+    }
+
+    private void BallCollidedWithAIPaddle(Collision2D _collider) {
+        // If Touch BatsMan Calculate  Bat OpsiteDirection AndGetForce
+        if (_collider.gameObject.TryGetComponent<PlayerAI>(out PlayerAI player)) {
+
+            Vector2 playerPoint = _collider.collider.transform.InverseTransformPoint(_collider.contacts[0].point);
+            float playerForce = player.flt_GetBallForceAsPerCollsionForce(playerPoint);
+
+            if (player.MyState == PlayerState.BatsMan) {
+                isBatTouch = true;
+
+
+                BatsManBallTouchEffect(_collider, playerForce);
+            }
+            else {
+                isBatTouch = false;
+                flt_SwingForce = player.flt_GetSwingForceAsPerCollsionForce(playerPoint);
+                BallwerBallTouchEffcet(_collider, playerForce);
+            }
+
+            player.BallHitWithPaddle();
+        }
+    }
+
+    private void BallwerBallTouchEffcet(Collision2D collision, float _Force) {
         Vector2 direction = new Vector2(transform.position.x, transform.position.y) - collision.contacts[0].point;
         direction = direction.normalized;
 
-        Vector2 playerPoint = collision.collider.transform.InverseTransformPoint(collision.contacts[0].point);
-
-        float playerForce = 0;
-
-
-        if (collision.gameObject.TryGetComponent<Player>(out Player Player)) {
-            playerForce = Player.flt_GetBallForceAsPerCollsionForce(playerPoint);
-            flt_SwingForce = Player.flt_GetSwingForceAsPerCollsionForce(playerPoint);
-        }
-        else if (collision.gameObject.TryGetComponent<PlayerAI>(out PlayerAI PlayerAI)) {
-            playerForce = PlayerAI.flt_GetBallForceAsPerCollsionForce(playerPoint);
-            flt_SwingForce = PlayerAI.flt_GetSwingForceAsPerCollsionForce(playerPoint);
-           
-        }
-
-      
-
-      
-      
-
-        rb.AddForce(direction * playerForce, ForceMode2D.Impulse);
+        rb.AddForce(direction * _Force, ForceMode2D.Impulse);
         isSwinging = true;
         if (collision.transform.position.y - transform.position.y > 0) {
             isSwinging = false;
         }
     }
 
-    private void BatsManBallTouchEffect(Collision2D collision) {
+    private void BatsManBallTouchEffect(Collision2D collision, float _force) {
         Vector2 direction = new Vector2(transform.position.x, transform.position.y) - collision.contacts[0].point;
         direction = direction.normalized;
         _velocity = direction.normalized;
         rb.velocity = Vector2.zero;
 
-        Vector2 playerPoint = collision.collider.transform.InverseTransformPoint(collision.contacts[0].point);
-        float playerForce = 0;  
-
-
-        if (collision.gameObject.TryGetComponent<Player>(out Player Player)) {
-             playerForce = Player.flt_GetBallForceAsPerCollsionForce(playerPoint);
-        }
-        else if (collision.gameObject.TryGetComponent<PlayerAI>(out PlayerAI PlayerAI)) {
-             playerForce = PlayerAI.flt_GetBallForceAsPerCollsionForce(playerPoint);
-            PlayerAI.BallHitWithPaddle();
-        }
-
         isSwinging = false;
         if (collision.transform.position.y - transform.position.y < 0) {
             direction = Vector2.right;
         }
-
-
-        rb.AddForce(direction * playerForce, ForceMode2D.Impulse);
-       
-
-       
+        rb.AddForce(direction * _force, ForceMode2D.Impulse);      
     }
 
     private void WallTouchEffect(Collision2D collision) {
@@ -248,5 +242,16 @@ public class BallMovment : MonoBehaviour {
 
 
         rb.AddForce(forceDirection * flt_BallForce, ForceMode2D.Impulse);
+    }
+
+    public void Resetball() {
+
+        rb.velocity = Vector2.zero;
+        rb.angularVelocity = 0;
+        transform.position = Vector3.zero;
+        StopAllCoroutines();
+        isHitRuuner = true;
+        isBatTouch = false;
+
     }
 }

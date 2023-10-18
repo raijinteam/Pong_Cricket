@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 1672136208362570690}
   m_Layer: 0
   m_Name: 'Ball '
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -172,7 +172,7 @@ MonoBehaviour:
   rb: {fileID: 1672136208362570688}
   flt_BallForce: 15
   swingDir: 2
-  xMultiplier: 1
+  xMultiplier: 1.5
   flt_SwingForce: 20
   isSwinging: 0
   _velocity: {x: 0, y: 0}

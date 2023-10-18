@@ -17,7 +17,7 @@ public class WallHandler : MonoBehaviour {
     [SerializeField] private BoxCollider2D runnerCollider_Top;
     [SerializeField] private BoxCollider2D runnerCollider_Bottam;
 
-
+    [SerializeField] private SpriteRenderer bg;
 
 
 
@@ -53,6 +53,22 @@ public class WallHandler : MonoBehaviour {
 
     }
 
+    public void SetBg() {
+
+        float worldScreenHeight = Camera.main.orthographicSize * 2;
+
+        // world width is calculated by diving world height with screen heigh
+        // then multiplying it with screen width
+        float worldScreenWidth = worldScreenHeight / Screen.height * Screen.width;
+
+        // to scale the game object we divide the world screen width with the
+        // size x of the sprite, and we divide the world screen height with the
+        // size y of the sprite
+        bg.transform.localScale = new Vector3(
+            worldScreenWidth / bg.sprite.bounds.size.x,
+            worldScreenHeight / bg.sprite.bounds.size.y, 1);
+    }
+
     private void SetBottamRunnerCollider(float cameraHeight, float cameraWidth) {
         runnerCollider_Bottam.transform.position = new Vector3(0, (-cameraHeight / 2) + 0.5f);
         runnerCollider_Bottam.transform.localScale = new Vector3(cameraWidth, 1, 1);
@@ -66,16 +82,16 @@ public class WallHandler : MonoBehaviour {
 
     private void SetRightRunnerCollider(float cameraWidth) {
         for (int i = 0; i < all_RunnerCollider_Right.Length; i++) {
-            all_RunnerCollider_Right[i].transform.position = new Vector3((cameraWidth / 2) - 0.5f, 
-                            all_RunnerCollider_Right[i].transform.position.y);
+            all_RunnerCollider_Right[i].transform.localPosition = new Vector3((cameraWidth / 2) - 0.5f, 
+                            all_RunnerCollider_Right[i].transform.localPosition.y);
         }
     }
 
     private void SetLeftRunnerCollider(float _cameraWidth) {
 
         for (int i = 0; i < all_RunnerCollider_Left.Length; i++) {
-            all_RunnerCollider_Left[i].transform.position = new Vector3((-_cameraWidth / 2) + 0.5f,
-                                all_RunnerCollider_Left[i].transform.position.y);
+            all_RunnerCollider_Left[i].transform.localPosition = new Vector3((-_cameraWidth / 2) + 0.5f,
+                                all_RunnerCollider_Left[i].transform.localPosition.y);
         }
     }
 }
