@@ -1,5 +1,81 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1769464507804398755
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1874765963775114704}
+  m_Layer: 0
+  m_Name: PowerupObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1874765963775114704
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1769464507804398755}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 4, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2675588423728615543}
+  m_Father: {fileID: 7308962016761446388}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &6926501693665751707
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2675588423728615543}
+  - component: {fileID: 5114269035727775929}
+  m_Layer: 0
+  m_Name: Powerup2X
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2675588423728615543
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6926501693665751707}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1874765963775114704}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5114269035727775929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6926501693665751707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbed6be770a23554ea1fe812b8616436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7308962015876501745
 GameObject:
   m_ObjectHideFlags: 0
@@ -42,7 +118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7308962016507708492}
   m_Layer: 0
-  m_Name: Target
+  m_Name: TargetRotation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90,11 +166,12 @@ Transform:
   m_GameObject: {fileID: 7308962016761446391}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 8.88, z: 0}
-  m_LocalScale: {x: 2.5, y: 0.4, z: 1}
+  m_LocalScale: {x: 10, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7308962015876501744}
   - {fileID: 7308962016507708492}
+  - {fileID: 1874765963775114704}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -139,12 +216,17 @@ MonoBehaviour:
   target: {fileID: 7308962016507708492}
   MyState: 0
   flt_MaxSwingForce: 40
-  flt_MinSwingForce: 35
+  flt_MinSwingForce: 0
   flt_BallMaxForce: 10
   flt_BallMinForce: 15
   flt_PaddleRoationSpeed: 150
   flt_PaddleMovementSpeed: 10
-  rotationSpeed: 100
+  playerHitBall: 0
+  shouldChasing: 1
+  isFreezPowerUpActive: 0
+  isFreezPostion: 0
+  isSpeedShotPowerUpActive: 0
+  isSlowMotionPowerUpActive: 0
 --- !u!1 &7308962017405248129
 GameObject:
   m_ObjectHideFlags: 0
