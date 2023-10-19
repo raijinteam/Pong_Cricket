@@ -12,5 +12,6 @@ public class TagName : MonoBehaviour {
     public static string tag_MaxRun = "MaxRunner";
     public static string tag_Ball = "Ball";
     public static string tag_Fielder = "Fielder";
+    public static string tag_WallPower = "WallPower";
 }
 

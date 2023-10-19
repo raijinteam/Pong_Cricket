@@ -13,13 +13,22 @@ public class PowerUpManager : MonoBehaviour {
     [SerializeField] private PowerUpFreeze powerUpFreeze;
     [SerializeField] private PowerUpFielder powerUpFielder;
     [SerializeField] private PowerUpInvincible powerUpInvincible;
+    public PowerUpInvincible PowerUpInvincible { get { return powerUpInvincible; } }
     [SerializeField] private PowerUpSpeedShot powerUpSpeedShot;
     public PowerUpSpeedShot PowerUpSpeedShot { get { return powerUpSpeedShot; } }
 
     [SerializeField] private PowerUpSlowMotion powerupSlowMotion;
+    [SerializeField] private PowerUpTheWall powerUpTheWall;
+    public PowerUpTheWall PowerUpTheWall { get { return powerUpTheWall; } }
     [SerializeField] private PowerUpPaddleExtenSion powerUpPaddleExtenSion;
     [SerializeField] private PowerupGambler powerupGambler;
     [SerializeField] private PowerupRandomizer powerupRandomizer;
+    [SerializeField] private PowerUpPinBall powerUpPinBall;
+   
+
+    [SerializeField] private PowerupBallSplit powerupBallSplit;
+    public PowerupBallSplit PowerupBallSplit { get { return powerupBallSplit; } }
+
     public PowerupRandomizer PowerupRandomizer { get { return powerupRandomizer; } }
     [SerializeField] private PowerUpBlock powerUpBlock;
 
@@ -53,11 +62,13 @@ public class PowerUpManager : MonoBehaviour {
                 ActivatedPowerUpSlowMotion(isplayer);
                 break;
             case PowerUpType.TheWall:
+                ActivatedPowerUpTheWall(isplayer);
                 break;
             case PowerUpType.PaddleExtension:
                 ActivatedPowerUpPaddleExtension(isplayer);
                 break;
             case PowerUpType.BallSplit:
+                ActivatedPowerUpBallSplit(isplayer);
                 break;
             case PowerUpType.PinBallPaddle:
                 break;
@@ -75,7 +86,20 @@ public class PowerUpManager : MonoBehaviour {
         }
     }
 
-  
+    private void ActivatedPowerUpBallSplit(bool isplayer) {
+        Debug.Log("BallSplit  Powerup Active");
+        powerupBallSplit.ActivatedBallSplitPowerUp(isplayer);
+    }
+
+    private void ActivatedPowerUpTheWall(bool isplayer) {
+        Debug.Log("TheWall  Powerup Active");
+        powerUpTheWall.ActivatedTheWallPowerUp(isplayer);
+    }
+
+    private void ActivatedPowerUpInvicible(bool isplayer) {
+        Debug.Log("Invisible  Powerup Active");
+        powerUpInvincible.ActivatedInvicliblePowerUp(isplayer);
+    }
 
     private void ActivatedPowerUpBlock(bool isplayer) {
         Debug.Log("PowerUpBlock Powerup Active");

@@ -61,7 +61,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 8734febd26806d34dae238e680b6815d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -94,9 +94,9 @@ GameObject:
   - component: {fileID: 1672136208362570559}
   - component: {fileID: 1672136208362570688}
   - component: {fileID: 1672136208362570689}
-  - component: {fileID: 1672136208362570690}
+  - component: {fileID: 774807782052098261}
   m_Layer: 6
-  m_Name: 'Ball '
+  m_Name: SmallBall
   m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156,7 +156,7 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &1672136208362570690
+--- !u!114 &774807782052098261
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -165,20 +165,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1672136208362570557}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e812d1491403ba446822b38936281261, type: 3}
+  m_Script: {fileID: 11500000, guid: 7443bb19728fd904b8787d5aa491d123, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   child: {fileID: 1672136208614792671}
   rb: {fileID: 1672136208362570688}
   flt_BallForce: 15
-  swingDir: 2
-  xMultiplier: 1.5
-  flt_SwingForce: 20
-  isSwinging: 0
-  _velocity: {x: 0, y: 0}
-  body: {fileID: 1672136208829005073}
-  isPLayerTakeInVicilble: 0
-  isTakeInvicible: 0
 --- !u!1 &1672136208614792670
 GameObject:
   m_ObjectHideFlags: 0

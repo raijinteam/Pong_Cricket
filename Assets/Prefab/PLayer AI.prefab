@@ -229,6 +229,11 @@ MonoBehaviour:
   isSlowMotionPowerUpActive: 0
   prefab_Fielder: {fileID: 5501298689059250139, guid: 62cd16a08b084574f80547ece4de4928, type: 3}
   list_ActivatedFielder: []
+  isInvisblePowerUp: 0
+  isSplitPowerupStart: 0
+  prefab_SmallBall: {fileID: 774807782052098261, guid: 15a52db412248154aac9f943f66954cb, type: 3}
+  NoOfBall: 0
+  NoOfShot: 0
 --- !u!1 &7308962017405248129
 GameObject:
   m_ObjectHideFlags: 0
