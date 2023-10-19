@@ -15,6 +15,9 @@ public class PlayerAI : MonoBehaviour {
     [SerializeField] private float flt_MinSwingForce;  // Max Swing Force
     [SerializeField] private float flt_BallMaxForce;        // Min force Apply at ball
     [SerializeField] private float flt_BallMinForce;        // Min force Apply at ball
+
+   
+
     [SerializeField] private float flt_PaddleRoationSpeed;   // Rotation Speed
 
   
@@ -22,6 +25,7 @@ public class PlayerAI : MonoBehaviour {
 
     private float flt_CurrentPaddleRoationSpeed;
     private float flt_CurrentPaddleMovementSpeed;
+
     private float centerOfBatOffset = 0.1f;
     private float maxDistanceToCenterOffset = 0.25f;
     private float currentRandomedOffset;
@@ -313,6 +317,14 @@ public class PlayerAI : MonoBehaviour {
             flt_BallForce = PowerUpManager.Instance.PowerUpSpeedShot.GetShotSpeedIncreaseValue(flt_BallForce);
         }
 
+        if (isInvisblePowerUp) {
+            GameManager.Instance.CurrentGameBall.GetComponent<BallMovment>().DisableBall(false);
+            PowerUpManager.Instance.PowerUpInvincible.IncreaseNumberOfShots();
+        }
+        if (isSplitPowerupStart) {
+            spawnBall();
+        }
+
         Debug.Log("after Ai Force" + flt_BallForce);
         return flt_BallForce;
     }
@@ -446,7 +458,8 @@ public class PlayerAI : MonoBehaviour {
         for (int i = 0; i < noof_Spawn; i++) {
 
             Fielder Current = Instantiate(prefab_Fielder, GetRandomPosition(), Quaternion.identity);
-            Current.SetFielderData(flt_Force, MyState);
+            Current.SetFielderData(flt_Force, MyState,false);
+            list_ActivatedFielder.Add(Current);
 
         }
     }
@@ -486,6 +499,68 @@ public class PlayerAI : MonoBehaviour {
 
 
 
+    }
+
+    //inviclble
+    [SerializeField] private bool isInvisblePowerUp;
+    public void ActivetedInvicliblePowerUp() {
+        isInvisblePowerUp = true;
+        if (list_ActivatedFielder.Count != 0) {
+
+            for (int i = 0; i < list_ActivatedFielder.Count; i++) {
+                list_ActivatedFielder[i].SetInviclble();
+            }
+        }
+    }
+
+    public void DeActivetedInvicliblePowerUp() {
+        isInvisblePowerUp = false;
+        if (list_ActivatedFielder.Count != 0) {
+
+            for (int i = 0; i < list_ActivatedFielder.Count; i++) {
+                list_ActivatedFielder[i].SetDeisbleInviclble();
+            }
+        }
+    }
+
+
+    // Ball Split
+    [SerializeField] private bool isSplitPowerupStart;
+    [SerializeField] private SmallBallMotion prefab_SmallBall;
+    [SerializeField] private int NoOfBall;
+    [SerializeField] private int NoOfShot;
+    private int currentShot = 0;
+
+
+    private void spawnBall() {
+        currentShot++;
+        if (currentShot >= NoOfShot) {
+            PowerUpManager.Instance.PowerupBallSplit.DeActivePower();
+            return;
+        }
+        for (int i = 0; i < NoOfBall; i++) {
+          
+            if (MyState == PlayerState.BatsMan) {
+                SmallBallMotion current = Instantiate(prefab_SmallBall, transform.position + new Vector3(Random.Range(-5, 5), -1, 0), transform.rotation);
+                current.SetRandomVelocityOfBall(new Vector3(Random.Range(-3,3),-3,0));
+            }
+            else {
+                SmallBallMotion current = Instantiate(prefab_SmallBall, transform.position + new Vector3(Random.Range(-5, 5), 1, 0), transform.rotation);
+                current.SetRandomVelocityOfBall(new Vector3(Random.Range(-3, 3), 3, 0));
+            }
+
+        }
+    }
+
+    public void ActivetedBallSplit(int _NoOfBall, int _NoOfShot) {
+        isSplitPowerupStart = true;
+        this.NoOfShot = _NoOfShot;
+        this.NoOfBall = _NoOfBall;
+        currentShot = 0;
+
+    }
+    public void DeActivetedBallSplit() {
+        isSplitPowerupStart = false;
     }
 
 }

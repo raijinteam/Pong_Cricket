@@ -22,6 +22,8 @@ public class BallMovment : MonoBehaviour {
     [SerializeField] private Vector2 _velocity;  // Ball Velocity
     private float flt_MinYVelocity = 2;
     private bool isHitRuuner = true;
+
+    [SerializeField] private GameObject body;
     
 
 
@@ -108,9 +110,15 @@ public class BallMovment : MonoBehaviour {
         if (collision.TryGetComponent<Fielder>(out Fielder fielder)) {
 
             if (fielder.fielderState  == PlayerState.BatsMan && isBatTouch) {
+
+                if (isTakeInvicible && !isPLayerTakeInVicilble) {
+                    EnableBall();
+                }
                 return;
             }
             else if (fielder.fielderState == PlayerState.BatsMan && !isBatTouch) {
+
+               
 
                 ContactPoint2D[] contacts = new ContactPoint2D[1];
                 int numContacts = collision.GetContacts(contacts);
@@ -142,6 +150,10 @@ public class BallMovment : MonoBehaviour {
                 rb.AddForce(direction * fielder.GetFielderForce(), ForceMode2D.Impulse);
             }
             else if (fielder.fielderState == PlayerState.Bowler && !isBatTouch) {
+
+                if (isTakeInvicible && isPLayerTakeInVicilble) {
+                    EnableBall();
+                }
                 return;
             }
 
@@ -162,11 +174,18 @@ public class BallMovment : MonoBehaviour {
         rb.angularVelocity = 0;
 
         if (collision.gameObject.CompareTag(TagName.tag_Player)) {
+            if (isTakeInvicible && !isPLayerTakeInVicilble) {
+                EnableBall();
+            }
 
             BallCollidedWithPlayerPaddle(collision);
                    
         }
         else if (collision.gameObject.CompareTag(TagName.tag_PlayerAi)) {
+
+            if (isTakeInvicible && isPLayerTakeInVicilble) {
+                EnableBall();
+            }
 
             BallCollidedWithAIPaddle(collision);
            
@@ -180,18 +199,11 @@ public class BallMovment : MonoBehaviour {
             WallTouchEffect(collision);
 
         }
-        //else if (collision.gameObject.CompareTag(TagName.tag_UpDownWall)) {
-
-
-        //    _velocity = Vector3.Reflect(_velocity.normalized, collision.contacts[0].normal);
-        //    if (_velocity.magnitude < 0.5f) {
-        //        _velocity = new Vector2(1, 0);
-        //    }
-
-        //    isSwinging = false;
-
-        //    rb.AddForce(_velocity * flt_BallForce, ForceMode2D.Impulse);
-        //}
+        else if (collision.gameObject.CompareTag(TagName.tag_WallPower)) {
+            PowerUpManager.Instance.PowerUpTheWall.IncreaseNumberOfShots();
+            WallTouchEffect(collision);
+        }
+        
 
 
     }
@@ -301,6 +313,23 @@ public class BallMovment : MonoBehaviour {
         StopAllCoroutines();
         isHitRuuner = true;
         isBatTouch = false;
+        body.gameObject.SetActive(true);
+        isTakeInvicible = false;
+        isPLayerTakeInVicilble = false;
 
+    }
+
+    [SerializeField] private bool isPLayerTakeInVicilble;
+    [SerializeField] private bool isTakeInvicible;
+
+    public void DisableBall(bool Value) {
+        isTakeInvicible = true;
+        isPLayerTakeInVicilble = Value;
+        body.gameObject.SetActive(false);
+    }
+    public void EnableBall() {
+        isTakeInvicible = true  ;
+        isPLayerTakeInVicilble = false;
+        body.gameObject.SetActive(true);
     }
 }

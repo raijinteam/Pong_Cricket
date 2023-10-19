@@ -5,7 +5,7 @@ using UnityEngine;
 public class PowerUpInvincible : MonoBehaviour {
 
     [SerializeField] private int NoOfShot;   // Max Shot When PowerUp Active
-    [SerializeField] private float flt_PersantageOfShotAmmount;
+  
     private int CurrentShot;
     private bool hasPlayerActivatedPowerup;
 
@@ -15,26 +15,21 @@ public class PowerUpInvincible : MonoBehaviour {
 
         if (hasPlayerActivatedPowerup) {
 
-            GameManager.Instance.CurrentGamePlayer.DeActivetedSpeedShotPowerUp();
+            GameManager.Instance.CurrentGamePlayer.DeActivetedInvicliblePowerUp();
         }
         else {
 
-            GameManager.Instance.CurrentGamePlayerAI.DeActivetedSpeedShotPowerUp();
+            GameManager.Instance.CurrentGamePlayerAI.DeActivetedInvicliblePowerUp();
         }
         this.gameObject.SetActive(false);
     }
 
-    public float GetShotSpeedIncreaseValue(float _baseSpeed) {
-        float currentSpeed = _baseSpeed;
-
-        currentSpeed += currentSpeed * 0.01f * flt_PersantageOfShotAmmount;
-        IncreaseNumberOfShots();
-        return currentSpeed;
-    }
+    
 
     public void IncreaseNumberOfShots() {
-
+        Debug.Log("BeforeCurrentShot" + CurrentShot);
         CurrentShot++;
+        Debug.Log("CurrentShot" + CurrentShot);
         if (CurrentShot >= NoOfShot) {
             DeActivePower();
         }
@@ -42,17 +37,17 @@ public class PowerUpInvincible : MonoBehaviour {
 
 
     // This Powerup Work Both
-    public void ActivateSpeedShotPowerUp(bool isplayer) {
+    public void ActivatedInvicliblePowerUp(bool isplayer) {
 
-        //Player Shot Increased Ammount
+        //PlayerInvicible Increased Ammount
         if (isplayer) {
 
-            GameManager.Instance.CurrentGamePlayer.ActivetedSpeedShotPowerUp();
+            GameManager.Instance.CurrentGamePlayer.ActivetedInvicliblePowerUp();
 
         }
         else {
 
-            GameManager.Instance.CurrentGamePlayerAI.ActivetedSpeedShotPowerUp();
+            GameManager.Instance.CurrentGamePlayerAI.ActivetedInvicliblePowerUp();
 
         }
 
