@@ -11,6 +11,8 @@ public class PowerUpManager : MonoBehaviour {
     [SerializeField] private Powerup2X powerup2X;
    
     [SerializeField] private PowerUpFreeze powerUpFreeze;
+    [SerializeField] private PowerUpFielder powerUpFielder;
+    [SerializeField] private PowerUpInvincible powerUpInvincible;
     [SerializeField] private PowerUpSpeedShot powerUpSpeedShot;
     public PowerUpSpeedShot PowerUpSpeedShot { get { return powerUpSpeedShot; } }
 
@@ -18,8 +20,8 @@ public class PowerUpManager : MonoBehaviour {
     [SerializeField] private PowerUpPaddleExtenSion powerUpPaddleExtenSion;
     [SerializeField] private PowerupGambler powerupGambler;
     [SerializeField] private PowerupRandomizer powerupRandomizer;
-
     public PowerupRandomizer PowerupRandomizer { get { return powerupRandomizer; } }
+    [SerializeField] private PowerUpBlock powerUpBlock;
 
 
     private void Awake() {
@@ -37,8 +39,10 @@ public class PowerUpManager : MonoBehaviour {
                 ActivatedPowerUpFreez(isplayer);
                 break;
             case PowerUpType.Fielder:
+                ActivatedPowerUpFielder(isplayer);
                 break;
             case PowerUpType.Invicible:
+                ActivatedPowerUpInvicible(isplayer);
                 break;
             case PowerUpType.FireBall:
                 break;
@@ -64,14 +68,22 @@ public class PowerUpManager : MonoBehaviour {
                 ActivatedPowerUpRandomizer(isplayer);
                 break;
             case PowerUpType.Block:
+                ActivatedPowerUpBlock(isplayer);
                 break;
             default:
                 break;
         }
     }
 
+  
+
+    private void ActivatedPowerUpBlock(bool isplayer) {
+        Debug.Log("PowerUpBlock Powerup Active");
+        powerUpBlock.ActivateBlockPowerUp(isplayer);
+    }
+
     private void ActivatedPowerUpRandomizer(bool isplayer) {
-        Debug.Log("PowerUpGambler Powerup Active");
+        Debug.Log("PowerUpRandomizer Powerup Active");
         powerupRandomizer.ActivateRandomizerPowerUp(isplayer);
     }
 
@@ -95,13 +107,17 @@ public class PowerUpManager : MonoBehaviour {
         powerUpSpeedShot.ActivateSpeedShotPowerUp(isplayer);
     }
 
+    private void ActivatedPowerUpFielder(bool isplayer) {
+        powerUpFielder.ActivateFielderPowerUp(isplayer);
+    }
+
     private void ActivatedPowerUpFreez(bool isplayer) {
         Debug.Log("Freez Powerup Active");
         powerUpFreeze.ActivateFreezePowerUp(isplayer);
     }
 
     private void ActivatedPowerUp2X() {
-        Debug.Log(" Powerup 2x Active");
+        Debug.Log("Powerup 2x Active");
         powerup2X.Activate2XPowerUp();
     }
 
@@ -112,6 +128,9 @@ public class PowerUpManager : MonoBehaviour {
             powerup2X.DeActivePower();
         }
         // Freez PowerUp CaryForword
+        if (powerUpFielder.gameObject.activeSelf) {
+            powerUpFielder.DeActivePower();
+        }
         // SpeedShot Powerup CaryForword
         //Powerup SlowMotion CarryForword
         // Powerup PaddleExtenSion CarryForword
@@ -120,6 +139,9 @@ public class PowerUpManager : MonoBehaviour {
         }
         if (powerupRandomizer.gameObject.activeSelf) {
             powerupRandomizer.DeActivePower();
+        }
+        if (powerUpBlock.gameObject.activeSelf) {
+            powerUpBlock.DeActivePower();
         }
     }
 

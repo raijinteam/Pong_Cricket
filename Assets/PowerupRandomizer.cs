@@ -6,9 +6,6 @@ using Random = UnityEngine.Random;
 
 public class PowerupRandomizer : MonoBehaviour {
 
-
-    
-
     [SerializeField] private float flt_ActiveTime = 5;  // Max Time To Run PowerUp
     [SerializeField] private int scoreSpotCount;  // No Of Spawn Score Count
     private float flt_CurrentTime;  //Current Runing Time

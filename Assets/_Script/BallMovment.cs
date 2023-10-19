@@ -95,7 +95,56 @@ public class BallMovment : MonoBehaviour {
 
             Debug.Log("MaxRunEnterd");
             GameManager.Instance.IncreasedRun(collision.GetComponent<Collder_Runner>().MyRunValue);
-         
+
+        }
+        else if (collision.CompareTag(TagName.tag_Fielder)) {
+
+            FielderHandler(collision);
+
+        }
+    }
+
+    private void FielderHandler(Collider2D collision) {
+        if (collision.TryGetComponent<Fielder>(out Fielder fielder)) {
+
+            if (fielder.fielderState  == PlayerState.BatsMan && isBatTouch) {
+                return;
+            }
+            else if (fielder.fielderState == PlayerState.BatsMan && !isBatTouch) {
+
+                ContactPoint2D[] contacts = new ContactPoint2D[1];
+                int numContacts = collision.GetContacts(contacts);
+
+                Vector2 direction = -new Vector2(transform.position.x, transform.position.y) + contacts[0].point;
+                direction = direction.normalized;
+                _velocity = direction.normalized;
+                rb.velocity = Vector2.zero;
+
+                isSwinging = false;
+                //if (collision.transform.position.y - transform.position.y < 0) {
+                //    direction = Vector2.right;
+                //}
+                rb.AddForce(direction * fielder.GetFielderForce(), ForceMode2D.Impulse);
+            }
+            else if (fielder.fielderState == PlayerState.Bowler && isBatTouch) {
+                ContactPoint2D[] contacts = new ContactPoint2D[1];
+                int numContacts = collision.GetContacts(contacts);
+
+                Vector2 direction = -new Vector2(transform.position.x, transform.position.y) + contacts[0].point;
+                direction = direction.normalized;
+                _velocity = direction.normalized;
+                rb.velocity = Vector2.zero;
+
+                isSwinging = false;
+                //if (collision.transform.position.y - transform.position.y < 0) {
+                //    direction = Vector2.right;
+                //}
+                rb.AddForce(direction * fielder.GetFielderForce(), ForceMode2D.Impulse);
+            }
+            else if (fielder.fielderState == PlayerState.Bowler && !isBatTouch) {
+                return;
+            }
+
         }
     }
 

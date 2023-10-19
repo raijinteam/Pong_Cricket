@@ -227,6 +227,8 @@ MonoBehaviour:
   isFreezPostion: 0
   isSpeedShotPowerUpActive: 0
   isSlowMotionPowerUpActive: 0
+  prefab_Fielder: {fileID: 5501298689059250139, guid: 62cd16a08b084574f80547ece4de4928, type: 3}
+  list_ActivatedFielder: []
 --- !u!1 &7308962017405248129
 GameObject:
   m_ObjectHideFlags: 0

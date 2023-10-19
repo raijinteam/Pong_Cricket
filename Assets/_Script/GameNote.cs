@@ -41,6 +41,17 @@
 /// Woking :  if BatsMan Get Powerup so Run is MultyPlayer && if Ball So All Out game
 /// Handling : Player & PlayerAI
 /// 
+/// Powerup Randomizer
+/// status :  Both
+/// Woking :  if Batsman Get Powerup +Run Spwn & Bowlwer Get Powerup -Run Spawn
+/// Handling : Self Handler
+/// 
+/// 
+/// Powerup Block
+/// status :  BatsMan
+/// Woking :  Block Run Object
+/// Handling :  GameManager
+/// 
 /// 
 /// 
 /// 

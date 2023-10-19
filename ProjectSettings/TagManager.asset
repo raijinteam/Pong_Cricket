@@ -10,6 +10,7 @@ TagManager:
   - MaxRunner
   - SideWall
   - Ball
+  - Fielder
   layers:
   - Default
   - TransparentFX
