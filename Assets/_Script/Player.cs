@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Player : MonoBehaviour
 {
@@ -48,7 +49,7 @@ public class Player : MonoBehaviour
         
     }
 
-
+   
 
     private void Update() {
 
@@ -59,6 +60,8 @@ public class Player : MonoBehaviour
         HandlingFreezePowerUp();
         PlayerMotion(); 
     }
+
+    
 
     private void PlayerMotion() {
         if (isFreezPostion) {
@@ -228,6 +231,64 @@ public class Player : MonoBehaviour
         isSlowMotionPowerUpActive = false;
     }
 
+
+    // Fielder 
+    [Header("FirderPowerup")]
+    [SerializeField] private Fielder prefab_Fielder;
+    [SerializeField] private List<Fielder> list_ActivatedFielder;
+
+    private float minX_Postion;
+    private float minY_Postion;
+    private float maxX_Postion;
+    private float maxY_Postion;
+
+
+    public void SpawnFielder(float flt_Force, int noof_Spawn) {
+        SetFielderBoundry();
+        for (int i = 0; i < noof_Spawn; i++) {
+
+            Fielder Current = Instantiate(prefab_Fielder, GetRandomPosition(), Quaternion.identity);
+            Current.SetFielderData(flt_Force, MyState);
+
+        }
+    }
+    public void DestroyFielder() {
+        for (int i = 0; i < list_ActivatedFielder.Count; i++) {
+            Destroy(list_ActivatedFielder[i].gameObject);
+        }
+        list_ActivatedFielder.Clear();
+    }
+
+
+    private Vector3 GetRandomPosition() {
+
+        float x = Random.Range(minX_Postion, maxX_Postion);
+        float y = Random.Range(minY_Postion, maxY_Postion);
+
+        return new Vector3(x, y, 0);
+    }
+
+    private void SetFielderBoundry() {
+
+        float AspectRatio = (float)Screen.width / Screen.height;
+        float  CameraHeight = Camera.main.orthographicSize * 2;
+        float CamerWidth = AspectRatio * CameraHeight;
+
+        minX_Postion = (-CamerWidth / 2) + 1;
+        maxX_Postion = CamerWidth / 2 - 1;
+
+        if (MyState == PlayerState.BatsMan) {
+            minY_Postion = 0;
+            maxY_Postion = (CameraHeight / 2) - 3;
+        }
+        else {
+            minY_Postion = (-CameraHeight / 2) + 3;
+            maxY_Postion = 0;
+        }
+       
+
+
+    }
 }
 
 public enum PlayerState {

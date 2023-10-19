@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class WallHandler : MonoBehaviour {
 
@@ -18,6 +19,10 @@ public class WallHandler : MonoBehaviour {
     [SerializeField] private BoxCollider2D runnerCollider_Bottam;
 
     [SerializeField] private SpriteRenderer bg;
+
+    [Header("Collder_Runner")]
+    [SerializeField] private Collder_Runner[] all_RunnerCollider;
+    private List<Collder_Runner> list_ActivatedRunner;
 
 
 
@@ -92,6 +97,31 @@ public class WallHandler : MonoBehaviour {
         for (int i = 0; i < all_RunnerCollider_Left.Length; i++) {
             all_RunnerCollider_Left[i].transform.localPosition = new Vector3((-_cameraWidth / 2) + 0.5f,
                                 all_RunnerCollider_Left[i].transform.localPosition.y);
+        }
+    }
+
+    public void ActivetedBlock(int no_OfBlock) {
+        for (int i = 0; i < no_OfBlock; i++) {
+
+            bool isSpawn = false;
+            while (!isSpawn) {
+                int index = Random.Range(0, all_RunnerCollider.Length);
+                if (list_ActivatedRunner.Contains(all_RunnerCollider[index])) {
+                    isSpawn = false;
+                }
+                else {
+                    isSpawn = true;
+                    all_RunnerCollider[index].ActivetedBlock();
+                    list_ActivatedRunner.Add(all_RunnerCollider[index]);
+                }
+            }
+           
+        }
+    }
+
+    public void DeActivetedBlock() {
+        for (int i = 0; i < list_ActivatedRunner.Count; i++) {
+            list_ActivatedRunner[i].DeActivetedBlock();
         }
     }
 }

@@ -44,6 +44,9 @@ public class GameManager : MonoBehaviour
 
     // Property For Current above Object
     public Transform CurrentGameBall { get {return ball.transform; } }
+
+   
+
     public Player CurrentGamePlayer { get { return currentPlayer; } }
     public PlayerAI CurrentGamePlayerAI { get { return currentPlayerAI; } }
     public bool IsGameStart { get { return isGameStart; } }
@@ -340,6 +343,14 @@ public class GameManager : MonoBehaviour
 
     public void PowerupGameblerAlloutDeActive() {
         isAllOutPowerup = false;
+    }
+
+    public void WallBlockActivated(int no_OfBlock) {
+        wallHandler.ActivetedBlock(no_OfBlock);
+    }
+
+    public void WallBlockDeActivated() {
+        wallHandler.DeActivetedBlock();
     }
 }
 

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PowerUpFreeze : MonoBehaviour {
 
-
-
     [SerializeField]private float flt_ActiveTime = 5;  // Max Time To Run PowerUp
     [SerializeField] private float flt_FreezTime = 1;  //Its FreezTime When Player Stop Moveing
     [SerializeField] private float flt_IntervalTime = 0.5f;   // Its InterVal Time When PLayer Move ;
