@@ -12,6 +12,8 @@ TagManager:
   - Ball
   - Fielder
   - WallPower
+  - PinBallPaddle
+  - PowerUp
   layers:
   - Default
   - TransparentFX

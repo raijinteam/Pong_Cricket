@@ -65,7 +65,7 @@ public class PlayerAI : MonoBehaviour {
     private bool isPaddleRotate = false;  // Status Of Paddle Rotating Or not
  
     private void Start() {
-        SetValueOfClampPosition();
+      
         flt_CurrentPaddleMovementSpeed = flt_PaddleMovementSpeed;
         flt_CurrentPaddleRoationSpeed = flt_PaddleRoationSpeed;
         shouldChasing = true;
@@ -73,36 +73,33 @@ public class PlayerAI : MonoBehaviour {
         SetCurrentTargetOffset();
     }
 
-    private void SetValueOfClampPosition() {
-        float screenAspect = (float)Screen.width / Screen.height;
-        float cameraHeight = Camera.main.orthographicSize * 2;
-        float cameraWidth = cameraHeight * screenAspect;
-        flt_MinCalmpValue = (-cameraWidth / 2) + transform.localScale.x / 2;
-        flt_MaxClampValue = (cameraWidth / 2) - transform.localScale.x / 2;
+    public void SetValueOfClampPosition() {
+        WallHandler Current = GameManager.Instance.wallHandler;
+        if (MyState == PlayerState.BatsMan) {
+            flt_MinCalmpValue = Current.batsmanleft.position.x + transform.localScale.x / 2;
+            flt_MaxClampValue = Current.batsmanright.position.x - transform.localScale.x / 2;
+        }
+        else {
+            flt_MinCalmpValue = Current.bowlerleft.position.x + transform.localScale.x / 2;
+            flt_MaxClampValue = Current.bowlerright.position.x - transform.localScale.x / 2;
+        }
     }
 
 
     private void Update() {
 
-        if (!GameManager.Instance.IsGameStart) {
+        if (!GameManager.Instance.IsGameRunning) {
             return;
         }
 
         HandlingFreezePowerUp();
 
         PlayerAiMotion();
-
-
-
-
     }
 
     private void PlayerAiMotion() {
 
-        if (isFreezPostion) {
-            // freeez PowwerUp Active And Freez Postion
-            return;
-        }
+
 
         if (MyState == PlayerState.BatsMan && GameManager.Instance.CurrentGameBall.position.y > transform.position.y) {
 
@@ -114,6 +111,9 @@ public class PlayerAI : MonoBehaviour {
             // My Player bowller And Ball Is Down Side so Not working Motion
             return;
         }
+        else if (isFreezPostion) {
+            return;   // freeez PowwerUp Active And Freez Postion
+        }
 
         if (MyState == PlayerState.BatsMan) {
 
@@ -122,27 +122,64 @@ public class PlayerAI : MonoBehaviour {
 
         //Motion As Per Input
 
-        PaddleMotion();
+        if (shouldChasing) {
+            MoveTowardsMainBall();
+        }
+        else {
+
+            MoveTowardsTargetBall();
+        }
+        
         HandlingChasing();
     }
 
-    private void PaddleMotion() {
-        if (!shouldChasing) {
-            return;
-        }
+    private void MoveTowardsMainBall() {  
 
         targetPosition.x = GameManager.Instance.CurrentGameBall.position.x + currentRandomedOffset;
-        targetPosition.y = transform.position.y;
-       
+        targetPosition.y = transform.position.y;   
         transform.position = Vector3.Lerp(transform.position, targetPosition, flt_CurrentPaddleMovementSpeed * Time.deltaTime);
-
         float x_Postion = transform.position.x;
-
         x_Postion = Mathf.Clamp(x_Postion, flt_MinCalmpValue, flt_MaxClampValue);
-
         transform.position = new Vector3(x_Postion, transform.position.y, transform.position.z);
+    }
 
+    private Transform targetBall;
+    bool isReachedTargetPostion = false;
 
+    private void MoveTowardsTargetBall() {
+
+        if (targetBall == null) {
+
+            if (PowerUpManager.Instance.PowerupBallSplit.gameObject.activeSelf && PowerUpManager.Instance.PowerupBallSplit.list_ActivaterBall.Count != 0) {
+
+                targetBall = PowerUpManager.Instance.PowerupBallSplit.list_ActivaterBall[0].transform;
+               
+            }
+        }
+
+        if (targetBall == null ) {
+
+            if (!isReachedTargetPostion) {
+                targetPosition.x = Random.Range(6, -6);
+                isReachedTargetPostion = true;
+            }
+
+            if (Mathf.Abs(targetPosition.x - transform.position.x) < 0.5f) {
+                isReachedTargetPostion = false;
+            }
+           
+        }
+        else {
+            targetPosition.x = targetBall.position.x + currentRandomedOffset;
+            isReachedTargetPostion = false;
+        }
+
+       
+        targetPosition.y = transform.position.y;
+        transform.position = Vector3.Lerp(transform.position, targetPosition, flt_CurrentPaddleMovementSpeed * Time.deltaTime*0.5f);
+        float x_Postion = transform.position.x;
+        x_Postion = Mathf.Clamp(x_Postion, flt_MinCalmpValue, flt_MaxClampValue);
+        transform.position = new Vector3(x_Postion, transform.position.y, transform.position.z);
     }
 
     private void HandlingChasing() {
@@ -154,17 +191,12 @@ public class PlayerAI : MonoBehaviour {
                     shouldChasing = true;
                     playerHitBall = false;
                 }
-
-
-
             }
             else {
                 if (GameManager.Instance.CurrentGameBall.transform.position.y > flt_CahsingRange) {
                     shouldChasing = true;
                     playerHitBall = false;
                 }
-
-
             }
         }
         else {
@@ -193,9 +225,9 @@ public class PlayerAI : MonoBehaviour {
 
     private void BatManRotationProcedure() {
 
-        if (!shouldChasing) {
-            return;
-        }
+        //if (!shouldChasing) {
+        //    return;
+        //}
 
         // Range Caluculation
 
@@ -317,11 +349,8 @@ public class PlayerAI : MonoBehaviour {
             flt_BallForce = PowerUpManager.Instance.PowerUpSpeedShot.GetShotSpeedIncreaseValue(flt_BallForce);
         }
 
-        if (isInvisblePowerUp) {
-            GameManager.Instance.CurrentGameBall.GetComponent<BallMovment>().DisableBall(false);
-            PowerUpManager.Instance.PowerUpInvincible.IncreaseNumberOfShots();
-        }
-        if (isSplitPowerupStart) {
+      
+        if (IsBallSplitPowerupActive) {
             spawnBall();
         }
 
@@ -348,6 +377,7 @@ public class PlayerAI : MonoBehaviour {
 
     public void SetPlayerState(PlayerState _myState) {
         this.MyState = _myState;
+        SetValueOfClampPosition();
     }
 
 
@@ -423,121 +453,28 @@ public class PlayerAI : MonoBehaviour {
 
 
 
-    [Header("SlowMotion PowerUp")]
-    [SerializeField] private bool isSlowMotionPowerUpActive;  // Status Of Player SpeedShot PowerUp
-    private float flt_PersantageOfSlowMotion;
    
-
     public void ActivateSlowMotionPowerup(float _flt_PersantageOfSlowMotion) {
 
-        this.flt_PersantageOfSlowMotion = _flt_PersantageOfSlowMotion;
-        flt_CurrentPaddleRoationSpeed -= flt_CurrentPaddleRoationSpeed * flt_PersantageOfSlowMotion * 0.01f;
-        flt_CurrentPaddleMovementSpeed -= flt_CurrentPaddleMovementSpeed * flt_PersantageOfSlowMotion * 0.01f;
-        isSlowMotionPowerUpActive = true;
-
+      
+        flt_CurrentPaddleRoationSpeed -= flt_CurrentPaddleRoationSpeed * _flt_PersantageOfSlowMotion * 0.01f;
+        flt_CurrentPaddleMovementSpeed -= flt_CurrentPaddleMovementSpeed * _flt_PersantageOfSlowMotion * 0.01f;
     }
+
     public void DeActivateSlowMotionPowerup() {
 
         flt_CurrentPaddleMovementSpeed = flt_PaddleMovementSpeed;
-        flt_CurrentPaddleRoationSpeed = flt_PaddleRoationSpeed;
-        isSlowMotionPowerUpActive = false;
-    }
-
-
-    // Fielder 
-    [Header("FirderPowerup")]
-    [SerializeField] private Fielder prefab_Fielder;
-    [SerializeField] private List<Fielder> list_ActivatedFielder;
-
-    private float minX_Postion;
-    private float minY_Postion;
-    private float maxX_Postion;
-    private float maxY_Postion;
-    public void SpawnFielder(float flt_Force, int noof_Spawn) {
-        SetFielderBoundry();
-        for (int i = 0; i < noof_Spawn; i++) {
-
-            Fielder Current = Instantiate(prefab_Fielder, GetRandomPosition(), Quaternion.identity);
-            Current.SetFielderData(flt_Force, MyState,false);
-            list_ActivatedFielder.Add(Current);
-
-        }
-    }
-
-    public void DestroyFielder() {
-        for (int i = 0; i < list_ActivatedFielder.Count; i++) {
-            Destroy(list_ActivatedFielder[i].gameObject);
-        }
-        list_ActivatedFielder.Clear();
-    }
-
-    private Vector3 GetRandomPosition() {
-
-        float x = Random.Range(minX_Postion, maxX_Postion);
-        float y = Random.Range(minY_Postion, maxY_Postion);
-
-        return new Vector3(x, y, 0);
-    }
-
-    private void SetFielderBoundry() {
-
-        float AspectRatio = (float)Screen.width / Screen.height;
-        float CameraHeight = Camera.main.orthographicSize * 2;
-        float CamerWidth = AspectRatio * CameraHeight;
-
-        minX_Postion = (-CamerWidth / 2) + 1;
-        maxX_Postion = CamerWidth / 2 - 1;
-
-        if (MyState == PlayerState.BatsMan) {
-            minY_Postion = 0;
-            maxY_Postion = (CameraHeight / 2) - 3;
-        }
-        else {
-            minY_Postion = (-CameraHeight / 2) + 3;
-            maxY_Postion = 0;
-        }
-
-
-
-    }
-
-    //inviclble
-    [SerializeField] private bool isInvisblePowerUp;
-    public void ActivetedInvicliblePowerUp() {
-        isInvisblePowerUp = true;
-        if (list_ActivatedFielder.Count != 0) {
-
-            for (int i = 0; i < list_ActivatedFielder.Count; i++) {
-                list_ActivatedFielder[i].SetInviclble();
-            }
-        }
-    }
-
-    public void DeActivetedInvicliblePowerUp() {
-        isInvisblePowerUp = false;
-        if (list_ActivatedFielder.Count != 0) {
-
-            for (int i = 0; i < list_ActivatedFielder.Count; i++) {
-                list_ActivatedFielder[i].SetDeisbleInviclble();
-            }
-        }
+        flt_CurrentPaddleRoationSpeed = flt_PaddleRoationSpeed;      
     }
 
 
     // Ball Split
-    [SerializeField] private bool isSplitPowerupStart;
+    [SerializeField] private bool IsBallSplitPowerupActive;
     [SerializeField] private SmallBallMotion prefab_SmallBall;
     [SerializeField] private int NoOfBall;
-    [SerializeField] private int NoOfShot;
-    private int currentShot = 0;
-
 
     private void spawnBall() {
-        currentShot++;
-        if (currentShot >= NoOfShot) {
-            PowerUpManager.Instance.PowerupBallSplit.DeActivePower();
-            return;
-        }
+      
         for (int i = 0; i < NoOfBall; i++) {
           
             if (MyState == PlayerState.BatsMan) {
@@ -548,20 +485,31 @@ public class PlayerAI : MonoBehaviour {
                 SmallBallMotion current = Instantiate(prefab_SmallBall, transform.position + new Vector3(Random.Range(-5, 5), 1, 0), transform.rotation);
                 current.SetRandomVelocityOfBall(new Vector3(Random.Range(-3, 3), 3, 0));
             }
-
         }
     }
 
-    public void ActivetedBallSplit(int _NoOfBall, int _NoOfShot) {
-        isSplitPowerupStart = true;
-        this.NoOfShot = _NoOfShot;
+    public void ActivetedBallSplit(int _NoOfBall) {
+        IsBallSplitPowerupActive = true;     
         this.NoOfBall = _NoOfBall;
-        currentShot = 0;
-
     }
+
     public void DeActivetedBallSplit() {
-        isSplitPowerupStart = false;
+        IsBallSplitPowerupActive = false;
     }
 
+    #region Paddle Extension
+
+    public void ExtendPadle(float _ScaleIncrease) {
+
+        transform.localScale += Vector3.one * _ScaleIncrease;
+        SetValueOfClampPosition();
+    }
+
+    public void ResetScale(float _ScaleIncrease) {
+        transform.localScale -= Vector3.one * _ScaleIncrease;
+        SetValueOfClampPosition();
+    }
+
+    #endregion
 }
 

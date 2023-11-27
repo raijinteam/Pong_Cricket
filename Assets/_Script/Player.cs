@@ -15,50 +15,39 @@ public class Player : MonoBehaviour
     [SerializeField] private float flt_MinSwingForce;  // max Swing force
     [SerializeField] private float flt_BallMaxForce;   // Min force Apply at ball
     [SerializeField] private float flt_BallMinForce;     // Min force Apply at ball
-
-   
-
+    private float flt_CurrentBallMaxForce;   // Min force Apply at ball
+    private float flt_CurrentBallMinForce;     // Min force Apply at ball
     [SerializeField] private float flt_PaddleRoationSpeed; // paddle Movement Speed
     [SerializeField] private float flt_PaddleMovementSpeed; // Roatation Speed
-
 
     private float flt_CurrentPaddleMovementSpeed;
     private float flt_CurrentPaddleRoationSpeed;
 
-   
-
-
-
-
     // InputData
     private float flt_HorizontalInput;   //Input Value
-
-   
 
     // Clamp data
     private float flt_MinCalmpValue = -3;  //Left Clamp Value
     private float flt_MaxClampValue = 3;  // Right Clamp Value
 
-
     // force CalculationData
     private float flt_DistanceBetweenCenterToEdgeOfPaddle = 0.5f;   // Distance between centre of the paddle to edge of the paddle
 
-  
-
-
-
+   
     private void Start() {
-        SetValueOfClampPosition();
+      
         flt_CurrentPaddleMovementSpeed = flt_PaddleMovementSpeed;
         flt_CurrentPaddleRoationSpeed = flt_PaddleRoationSpeed;
-        
+
+        flt_CurrentBallMaxForce = flt_BallMaxForce;
+        flt_CurrentBallMinForce = flt_BallMinForce;
     }
 
   
 
     private void Update() {
 
-        if (!GameManager.Instance.IsGameStart) {
+        if (!GameManager.Instance.IsGameRunning) {
             return;
         }
 
@@ -77,12 +66,18 @@ public class Player : MonoBehaviour
     }
 
    
-    private void SetValueOfClampPosition() {
-        float screenAspect = (float)Screen.width / Screen.height;
-        float cameraHeight = Camera.main.orthographicSize * 2;
-        float cameraWidth = cameraHeight * screenAspect;
-        flt_MinCalmpValue = (-cameraWidth / 2) + transform.localScale.x / 2;
-        flt_MaxClampValue = (cameraWidth / 2) - transform.localScale.x / 2;
+    public void SetValueOfClampPosition() {
+
+        WallHandler Current = GameManager.Instance.wallHandler;
+        if (MyState == PlayerState.BatsMan) {
+            flt_MinCalmpValue = Current.batsmanleft.position.x + transform.localScale.x / 2;
+            flt_MaxClampValue = Current.batsmanright.position.x  - transform.localScale.x / 2;
+        }
+        else {
+            flt_MinCalmpValue = Current.bowlerleft.position.x  + transform.localScale.x / 2;
+            flt_MaxClampValue = Current.bowlerright.position.x  - transform.localScale.x / 2;
+        }
+        
     }
 
 
@@ -109,7 +104,23 @@ public class Player : MonoBehaviour
             }
         }
 
-      
+        //if (Input.GetMouseButton(0)) {
+
+        //    if (Input.mousePosition.x < Screen.width / 2f) {
+        //        // => left half
+
+        //        flt_HorizontalInput = -1;
+        //    }
+        //    else {
+        //        // => right half
+        //        flt_HorizontalInput = 1;
+        //    }
+        //}
+        //else {
+        //    flt_HorizontalInput = 0;
+        //}
+        
+
     }
 
    
@@ -125,24 +136,19 @@ public class Player : MonoBehaviour
         float CurrntXPoint = Mathf.Abs(point.x);
         float flt_BallForce = 0;
         if (CurrntXPoint > flt_DistanceBetweenCenterToEdgeOfPaddle) {
-            flt_BallForce = flt_BallMinForce;
+            flt_BallForce = flt_CurrentBallMinForce;
         }
         else {
-            flt_BallForce = (CurrntXPoint / flt_DistanceBetweenCenterToEdgeOfPaddle) * (flt_BallMinForce - flt_BallMaxForce) + flt_BallMaxForce;
+            flt_BallForce = (CurrntXPoint / flt_DistanceBetweenCenterToEdgeOfPaddle) * (flt_CurrentBallMinForce - flt_CurrentBallMaxForce) + flt_CurrentBallMaxForce;
         }
-        Debug.Log("Before" + flt_BallForce);
+        Debug.Log("Before" + flt_BallForce);   
+        
+        if (IsBallSplitPowerupActive) {
+            spawnBall();
+        }
+        
 
 
-        if (isSpeedShotPowerUpActive) {
-            flt_BallForce = PowerUpManager.Instance.PowerUpSpeedShot.GetShotSpeedIncreaseValue(flt_BallForce);
-            
-        }
-        if (isInvisblePowerUp) {
-            GameManager.Instance.CurrentGameBall.GetComponent<BallMovment>().DisableBall(true);
-            PowerUpManager.Instance.PowerUpInvincible.IncreaseNumberOfShots();
-        }
-       
-       
         Debug.Log("After" + flt_BallForce);
         return flt_BallForce;
     }
@@ -167,6 +173,7 @@ public class Player : MonoBehaviour
     }
     public void SetPlayerState(PlayerState _myState) {
         this.MyState = _myState;
+        SetValueOfClampPosition();
     }
 
 
@@ -209,14 +216,17 @@ public class Player : MonoBehaviour
     }
 
 
-    [Header("SpeedShot PowerUp")]
-    [SerializeField] private bool isSpeedShotPowerUpActive;  // Status Of Player SpeedShot PowerUp
+ 
     public void ActivetedSpeedShotPowerUp() {
-        isSpeedShotPowerUpActive = true;
+
+        flt_CurrentBallMinForce = PowerUpManager.Instance.PowerUpSpeedShot.GetShotSpeedIncreaseValue(flt_CurrentBallMinForce);
+        flt_CurrentBallMaxForce = PowerUpManager.Instance.PowerUpSpeedShot.GetShotSpeedIncreaseValue(flt_CurrentBallMaxForce);
     }
 
     public void DeActivetedSpeedShotPowerUp() {
-        isSpeedShotPowerUpActive = false;
+
+        flt_CurrentBallMaxForce = flt_BallMaxForce;
+        flt_CurrentBallMinForce = flt_BallMinForce;
     }
 
 
@@ -241,92 +251,51 @@ public class Player : MonoBehaviour
     }
 
 
-    // Fielder 
-    [Header("FirderPowerup")]
-    [SerializeField] private Fielder prefab_Fielder;
-    [SerializeField] private List<Fielder> list_ActivatedFielder;
-
-    private float minX_Postion;
-    private float minY_Postion;
-    private float maxX_Postion;
-    private float maxY_Postion;
+    // Ball Split
+    [SerializeField] private bool IsBallSplitPowerupActive;
+    [SerializeField] private SmallBallMotion prefab_SmallBall;
+    [SerializeField] private int NoOfBall;
+   
 
 
-    public void SpawnFielder(float flt_Force, int noof_Spawn) {
-        SetFielderBoundry();
-        for (int i = 0; i < noof_Spawn; i++) {
+    private void spawnBall() {
+        
+        for (int i = 0; i < NoOfBall; i++) {
 
-            Fielder Current = Instantiate(prefab_Fielder, GetRandomPosition(), Quaternion.identity);
-            Current.SetFielderData(flt_Force, MyState, true);
-            list_ActivatedFielder.Add(Current);
-
-        }
-    }
-    public void DestroyFielder() {
-        for (int i = 0; i < list_ActivatedFielder.Count; i++) {
-            Destroy(list_ActivatedFielder[i].gameObject);
-        }
-        list_ActivatedFielder.Clear();
-    }
-
-
-    private Vector3 GetRandomPosition() {
-
-        float x = Random.Range(minX_Postion, maxX_Postion);
-        float y = Random.Range(minY_Postion, maxY_Postion);
-
-        return new Vector3(x, y, 0);
-    }
-
-    private void SetFielderBoundry() {
-
-        float AspectRatio = (float)Screen.width / Screen.height;
-        float  CameraHeight = Camera.main.orthographicSize * 2;
-        float CamerWidth = AspectRatio * CameraHeight;
-
-        minX_Postion = (-CamerWidth / 2) + 1;
-        maxX_Postion = CamerWidth / 2 - 1;
-
-        if (MyState == PlayerState.BatsMan) {
-            minY_Postion = 0;
-            maxY_Postion = (CameraHeight / 2) - 3;
-        }
-        else {
-            minY_Postion = (-CameraHeight / 2) + 3;
-            maxY_Postion = 0;
-        }
-      
-    }
-
-    // Inviclible
-
-    [SerializeField] private bool isInvisblePowerUp;
-    public void ActivetedInvicliblePowerUp() {
-        isInvisblePowerUp = true;
-        if (list_ActivatedFielder.Count != 0) {
-
-            for (int i = 0; i < list_ActivatedFielder.Count; i++) {
-                list_ActivatedFielder[i].SetInviclble();
+            if (MyState == PlayerState.BatsMan) {
+                SmallBallMotion current = Instantiate(prefab_SmallBall, transform.position + new Vector3(Random.Range(-5, 5), -1, 0), transform.rotation);
+                current.SetRandomVelocityOfBall(new Vector3(Random.Range(-3, 3), -3, 0));
             }
-        }
-    }
-
-    public void DeActivetedInvicliblePowerUp() {
-        isInvisblePowerUp = false;
-        if (list_ActivatedFielder.Count != 0) {
-
-            for (int i = 0; i < list_ActivatedFielder.Count; i++) {
-                list_ActivatedFielder[i].SetDeisbleInviclble();
+            else {
+                SmallBallMotion current = Instantiate(prefab_SmallBall, transform.position + new Vector3(Random.Range(-5, 5), 1, 0), transform.rotation);
+                current.SetRandomVelocityOfBall(new Vector3(Random.Range(-3, 3), 3, 0));
             }
+
         }
     }
 
+    public void ActivetedBallSplit(int _NoOfBall) {
+        IsBallSplitPowerupActive = true;
+        this.NoOfBall = _NoOfBall;
+    }
     public void DeActivetedBallSplit() {
-        throw new NotImplementedException();
+        IsBallSplitPowerupActive = false;
     }
-    public void ActivetedBallSplit(int _NoOfBall, int _NoOfShot) {
-        throw new NotImplementedException();
+
+    #region Paddle Extension
+
+    public void ExtendPadle(float _ScaleIncrease) {
+
+        transform.localScale +=  Vector3.one * _ScaleIncrease;
+        SetValueOfClampPosition();
     }
+
+    public void ResetScale(float _ScaleIncrease) {
+        transform.localScale -= Vector3.one * _ScaleIncrease;
+        SetValueOfClampPosition();
+    }
+
+    #endregion
 }
 
 public enum PlayerState {
