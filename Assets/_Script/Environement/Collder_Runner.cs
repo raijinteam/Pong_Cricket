@@ -33,20 +33,7 @@ public class Collder_Runner : MonoBehaviour
     }
 
 
-    private void Update() {
-        if (isMaxRun) {
-            return;
-        }
-
-        myBoxCollider = GetComponent<BoxCollider2D>();
-        flt_Height = Camera.main.orthographicSize * 2;
-
-        //myBoxCollider.size = new Vector2(1, flt_Height * 0.01f * flt_PersantageScaleValue);
-        //myBoxCollider.offset = new Vector2(0, flt_Height * 0.01f * flt_PersantageOffest);
-
-        transform.localScale = new Vector3(0.5f, flt_Height * 0.01f * flt_PersantageScaleValue,1);
-        transform.localPosition = new Vector3(transform.localPosition.x, flt_Height * 0.01f * flt_PersantageOffest,transform.localPosition.z);
-    }
+   
 
     public void ActivetedBlock() {
         body.gameObject.SetActive(true);

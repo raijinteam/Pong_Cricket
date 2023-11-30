@@ -15,5 +15,9 @@ public class TagName : MonoBehaviour {
     public static string tag_WallPower = "WallPower";
     public static string tag_PinBallPaddle = "PinBallPaddle";
     public static string tag_PowerUP = "PowerUp";
+    public static string tag_TutorialPlayer = "Tutorial_Player";
+    public static string tag_TutorialPlayerAI = "Tutorial_PlayerAI";
+    public static string tag_Pickup = "Pickup";
+
 }
 

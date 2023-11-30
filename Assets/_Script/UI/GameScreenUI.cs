@@ -10,7 +10,7 @@ public class GameScreenUI : MonoBehaviour {
     [SerializeField] private TextMeshProUGUI txt_Score;
     [SerializeField] private TextMeshProUGUI txt_Name;
     [SerializeField] private TextMeshProUGUI txt_GameStatus;
-    [SerializeField] private GameObject obj_ShowSummryPanel;
+    public GameObject obj_ShowSummryPanel;
     [SerializeField] private TextMeshProUGUI txt_SummeryText;
 
     public void SetScore(int Run,int Wicket) {

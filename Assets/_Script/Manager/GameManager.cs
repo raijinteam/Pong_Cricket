@@ -12,17 +12,21 @@ public class GameManager : MonoBehaviour
     [SerializeField] private BallMovment prefab_Ball;    // Ball Prefab To Spawn Ball
     [SerializeField] private Player prefab_Player;   //Player Prefab to Spawn Player
     [SerializeField] private PlayerAI prefab_PlayerAI;  // PlayerAI Prefab to Spawn Player
+    [SerializeField] private Mini_GameManager mini_GameManager;
    
-    [Header("Game Data")]
-    [SerializeField] private bool isGameRunning;   // State  Game Is Runnig Or Not
+    //[Header("Game Data")]
+    //[SerializeField] private bool isGameRunning;   // State  Game Is Runnig Or Not
     [SerializeField] private int CurrentRun;        // GameBats Man Run
     [SerializeField] private int ChasingRun;        // Game Cahhinsg Run
     [SerializeField] private int MaxWicket = 5;   // Total No of Wicket
 
   
-
+        
     [SerializeField] private int CurrentWicket;             // Current Wicket
     [SerializeField] private int maxRun = 10;               // Max Run Value
+
+   
+
     [SerializeField] private float flt_CurrnetGameTime;     // Gameing Time
     [SerializeField] private float flt_MaxGameTime = 120;    // Max Time Game Start
     [SerializeField] private bool isCompltedFirstInning;   // Status of First Paddle Complte Inning
@@ -30,23 +34,18 @@ public class GameManager : MonoBehaviour
 
     [Header("Script Refrence")]
     public WallHandler wallHandler;               // Set Boundry
-    [SerializeField] private GameScreenUI gameScreenUI;             // Ui Handler
-    [SerializeField] private GameOverUI gameOverUI;                 // GameOver Screen
+    
 
 
-    private BallMovment ball;
-    private Player currentPlayer;
-    private PlayerAI currentPlayerAI;
+   
+    [field: SerializeField] public Transform CurrentGameBallTransform { get; private set; }
+    [field: SerializeField] public BallMovment ballMovement { get; private set; }
+    [field : SerializeField]public Player CurrentGamePlayer { get; private set; }
+    [field : SerializeField] public PlayerAI CurrentGamePlayerAI { get; private set; }
+    [field : SerializeField]public bool IsGameRunning { get; private set; }
+    [field: SerializeField] public bool HasPlayerWon { get; private set; }
 
-    // Property For Current above Object
-    public Transform CurrentGameBall { get {return ball.transform; } }
-    public BallMovment ballMovement { get {return ball; } }
-
-
-
-    public Player CurrentGamePlayer { get { return currentPlayer; } }
-    public PlayerAI CurrentGamePlayerAI { get { return currentPlayerAI; } }
-    public bool IsGameRunning { get { return isGameRunning; } }
+   
 
      //BatsManPostion
     private Vector3 batsmanPostion;
@@ -82,9 +81,9 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    private void Start() {
-        StartGame();
-    }
+    //private void Start() {
+    //    StartGame();
+    //}
 
     private void Update() {
         TimeHandler();
@@ -103,7 +102,7 @@ public class GameManager : MonoBehaviour
         SetPlayerStateAndPostion();
         // Start Innings;
         StartInnings();
-        ball.SetRandomVelocityOfBall();
+        ballMovement.SetRandomVelocityOfBall();
     }
 
    
@@ -111,11 +110,14 @@ public class GameManager : MonoBehaviour
     private void SpawnGameElements() {
 
         // Spawn Ball
-        ball = Instantiate(prefab_Ball, prefab_Ball.transform.position, prefab_Ball.transform.rotation);
+        ballMovement = Instantiate(prefab_Ball, prefab_Ball.transform.position, prefab_Ball.transform.rotation);
+        CurrentGameBallTransform = ballMovement.transform;
         // Spawn Player
-        currentPlayer = Instantiate(prefab_Player, prefab_Player.transform.position, prefab_Player.transform.rotation);
+       CurrentGamePlayer = Instantiate(prefab_Player, prefab_Player.transform.position, prefab_Player.transform.rotation);
+        CurrentGamePlayer.transform.name = "Player";
         //Spawn PlayerAI
-        currentPlayerAI = Instantiate(prefab_PlayerAI, prefab_PlayerAI.transform.position, prefab_PlayerAI.transform.rotation);
+        CurrentGamePlayerAI = Instantiate(prefab_PlayerAI, prefab_PlayerAI.transform.position, prefab_PlayerAI.transform.rotation);
+        CurrentGamePlayerAI.transform.name = "PlayerAI";
     }
 
     
@@ -130,18 +132,18 @@ public class GameManager : MonoBehaviour
         int Index = Random.Range(0, 2);
         if (Index ==0) {
 
-            currentPlayer.SetPlayerState(PlayerState.BatsMan);
-            currentPlayer.transform.position = batsmanPostion;
-            currentPlayerAI.SetPlayerState(PlayerState.Bowler);
-            currentPlayerAI.transform.position = bowlerPostion;
-            gameScreenUI.SetPlayerName("Player");
+            CurrentGamePlayer.SetPlayerState(PlayerState.BatsMan);
+            CurrentGamePlayer.transform.position = batsmanPostion;
+            CurrentGamePlayerAI.SetPlayerState(PlayerState.Bowler);
+            CurrentGamePlayerAI.transform.position = bowlerPostion;
+            UIManager.Instance.ui_GameScreen.SetPlayerName("Player");
         }
         else {
-            currentPlayer.SetPlayerState(PlayerState.Bowler);
-            currentPlayer.transform.position = bowlerPostion;
-            currentPlayerAI.SetPlayerState(PlayerState.BatsMan);
-            currentPlayerAI.transform.position = batsmanPostion;
-            gameScreenUI.SetPlayerName("PlayerAI");
+            CurrentGamePlayer.SetPlayerState(PlayerState.Bowler);
+            CurrentGamePlayer.transform.position = bowlerPostion;
+            CurrentGamePlayerAI.SetPlayerState(PlayerState.BatsMan);
+            CurrentGamePlayerAI.transform.position = batsmanPostion;
+            UIManager.Instance.ui_GameScreen.SetPlayerName("PlayerAI");
         }
 
     }
@@ -155,20 +157,20 @@ public class GameManager : MonoBehaviour
     }
 
     private void StartInnings() {
-        isGameRunning = true;
+        IsGameRunning = true;
        
         
         flt_CurrnetGameTime = 0;
         CurrentWicket = 0;
         CurrentRun = 0;
-        gameScreenUI.SetScore(CurrentRun, CurrentWicket);
+        UIManager.Instance.ui_GameScreen.SetScore(CurrentRun, CurrentWicket);
     }
 
 
     // Time Calculation For Game Time
     private void TimeHandler() {
        
-        if (!isGameRunning) {
+        if (!IsGameRunning) {
             return;
         }
         flt_CurrnetGameTime += Time.deltaTime;
@@ -180,8 +182,8 @@ public class GameManager : MonoBehaviour
 
     // New Ball Spawning
     private void SetnewBall() {
-        isGameRunning = true;
-        ball.SetRandomVelocityOfBall();
+        IsGameRunning = true;
+        ballMovement.SetRandomVelocityOfBall();
 
     }
 
@@ -189,12 +191,12 @@ public class GameManager : MonoBehaviour
 
 
     private void StopGame() {
-        
-        isGameRunning = false;
-        ball.Resetball();
-        currentPlayerAI.shouldChasing = true;
-        currentPlayerAI.playerHitBall = false;
-        ball.gameObject.SetActive(false);
+        ballMovement.gameObject.SetActive(false);
+        IsGameRunning = false;
+        ballMovement.Resetball();
+        CurrentGamePlayerAI.shouldChasing = true;
+        CurrentGamePlayerAI.playerHitBall = false;
+       
     }
 
   
@@ -203,7 +205,10 @@ public class GameManager : MonoBehaviour
 
     // Complete Innnig
     private void CompletedInnings() {
-       
+        if (!IsGameRunning) {
+            return;
+        }
+        IsGameRunning = false;
 
         if (!isCompltedFirstInning) {
 
@@ -215,34 +220,33 @@ public class GameManager : MonoBehaviour
         else {
 
             // If Both Player And Ai Complete Innning Get Game Result
-            StartCoroutine(ChekingGameComplted());
-           
+                StopGame();
+             CheckingGameResult();
+
         }
 
     }
 
-    private IEnumerator ChekingGameComplted() {
-        StopGame();
-        yield return new WaitForSeconds(flt_InningCompltedDelay);
-        CheckingGameResult();
-    }
+    
 
     private IEnumerator First_InningComplted() {
         StopGame();
         yield return new WaitForSeconds(flt_InningCompltedDelay);
 
         Debug.Log("InningCompltedDelay" + flt_InningCompltedDelay);
-        if (currentPlayer.MyState == PlayerState.BatsMan) {
-            gameScreenUI.ShowSummeryScreen(flt_SummeryShowTime, currentPlayer.name,currentPlayerAI.name, CurrentRun);
+       
+        if (CurrentGamePlayer.MyState == PlayerState.BatsMan) {
+            UIManager.Instance.ui_GameScreen.ShowSummeryScreen(flt_SummeryShowTime, CurrentGamePlayer.name,CurrentGamePlayerAI.name, CurrentRun);
         }
         else {
-            gameScreenUI.ShowSummeryScreen(flt_SummeryShowTime, currentPlayerAI.name, currentPlayer.name, CurrentRun);
+            UIManager.Instance.ui_GameScreen.ShowSummeryScreen(flt_SummeryShowTime, CurrentGamePlayerAI.name, CurrentGamePlayer.name, CurrentRun);
         }
        
         yield return new WaitForSeconds(flt_SummeryShowTime);
         Debug.Log("SummeryShowTime" + flt_SummeryShowTime);
         CompletedFirstInnings();
-        yield return new WaitForSeconds(flt_PlayerChangeDelay);
+
+        UIManager.Instance.ui_GameScreen.obj_ShowSummryPanel.SetActive(false);
         Debug.Log("flt_PlayerChangeDelay" + flt_PlayerChangeDelay);
         SetnewBall();
         StartInnings();
@@ -252,55 +256,58 @@ public class GameManager : MonoBehaviour
     }
 
     private void CheckingGameResult() {
-      
+
 
         // Stop Game
-        gameScreenUI.gameObject.SetActive(false);
-        gameOverUI.gameObject.SetActive(true);
-       
-
+        UIManager.Instance.ui_GameScreen.gameObject.SetActive(false);
+        UIManager.Instance.ui_GameOver.gameObject.SetActive(true);
 
 
         if (CurrentRun > ChasingRun) {
             // We chase Target Batman is Player So Win
-            if (currentPlayer.MyState == PlayerState.BatsMan) {
-                gameOverUI.SetResult("You Win Inning");
+            if (CurrentGamePlayer.MyState == PlayerState.BatsMan) {
+                UIManager.Instance.ui_GameOver.SetResult("You Win Inning");
+                HasPlayerWon = true;
             }
             else {
-                gameOverUI.SetResult("You Lose Inning");
+                UIManager.Instance.ui_GameOver.SetResult("You Lose Inning");
+                HasPlayerWon = false;
             }
 
         }
         else {
             // if Target Not Chase And Player Bowller So Player Win
-            if (currentPlayer.MyState == PlayerState.Bowler) {
-                gameOverUI.SetResult("You Win Inning");
+            if (CurrentGamePlayer.MyState == PlayerState.Bowler) {
+                UIManager.Instance.ui_GameOver.SetResult("You Win Inning");
+                HasPlayerWon = true;
+
             }
             else {
-                gameOverUI.SetResult("You Lose Inning");
+                UIManager.Instance.ui_GameOver.SetResult("You Lose Inning");
+                HasPlayerWon = false;
             }
         }
-        
+
     }
 
     private void CompletedFirstInnings() {
 
         
        // first Inning Complte        
-        if (currentPlayer.MyState == PlayerState.BatsMan) {
+        if (CurrentGamePlayer.MyState == PlayerState.BatsMan) {
 
             // Player As BatsMan So Do Bowlling
-            currentPlayer.SetPlayerState(PlayerState.Bowler);
-            currentPlayer.transform.position = bowlerPostion;
-            currentPlayer.transform.rotation = Quaternion.identity;
+            CurrentGamePlayer.SetPlayerState(PlayerState.Bowler);
+            CurrentGamePlayer.transform.position = bowlerPostion;
+            CurrentGamePlayer.transform.rotation = Quaternion.identity;
         }
         else {
 
             // PLayer as Bowlling So Batting
-            currentPlayer.SetPlayerState(PlayerState.BatsMan);
-            currentPlayer.transform.position = batsmanPostion;
-            currentPlayer.transform.rotation = Quaternion.identity;
-            gameScreenUI.SetPlayerName("Player");
+            CurrentGamePlayer.SetPlayerState(PlayerState.BatsMan);
+            CurrentGamePlayer.transform.position = batsmanPostion;
+            CurrentGamePlayer.transform.rotation = Quaternion.identity;
+            UIManager.Instance.ui_GameScreen.SetPlayerName("Player");
         }
 
         if (CurrentGamePlayerAI.MyState == PlayerState.BatsMan) {
@@ -315,7 +322,7 @@ public class GameManager : MonoBehaviour
             CurrentGamePlayerAI.SetPlayerState(PlayerState.BatsMan);
             CurrentGamePlayerAI.transform.position = batsmanPostion;
             CurrentGamePlayerAI.transform.rotation = Quaternion.identity;
-            gameScreenUI.SetPlayerName("PlayerAI");
+            UIManager.Instance.ui_GameScreen.SetPlayerName("PlayerAI");
         }
 
         // Get RunTarget
@@ -328,7 +335,7 @@ public class GameManager : MonoBehaviour
     public void IncreasedWicket() {
 
         CurrentWicket++;
-        gameScreenUI.SetScore(CurrentRun, CurrentWicket);
+        UIManager.Instance.ui_GameScreen.SetScore(CurrentRun, CurrentWicket);
        
         if (CurrentWicket >= MaxWicket) {
             CompletedInnings();
@@ -364,9 +371,9 @@ public class GameManager : MonoBehaviour
         else {
             CurrentRun += _myRunValue ;
         }
-        gameScreenUI.SetScore(CurrentRun, CurrentWicket);
+        UIManager.Instance.ui_GameScreen.SetScore(CurrentRun, CurrentWicket);
 
-        if (_myRunValue == maxRun && isGameRunning) {
+        if (_myRunValue == maxRun && IsGameRunning) {
 
             if (isCompltedFirstInning && CurrentRun > ChasingRun) {
                 CompletedInnings();
@@ -403,7 +410,7 @@ public class GameManager : MonoBehaviour
         if (CurrentRun <0) {
             CurrentRun = 0;
         }
-        gameScreenUI.SetScore(CurrentRun, CurrentWicket);
+        UIManager.Instance.ui_GameScreen.SetScore(CurrentRun, CurrentWicket);
     }
 
 
@@ -435,6 +442,12 @@ public class GameManager : MonoBehaviour
 
     public void WallBlockDeActivated() {
         wallHandler.DeActivetedBlock();
+    }
+
+
+    public void StartMinigame() {
+        UIManager.Instance.panel_MainMenu.SetActive(false);
+        Instantiate(mini_GameManager, transform.position, transform.rotation);
     }
 }
 
