@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31b01ae46ffa9794c842ec2c14fa58de, type: 3}
+  m_Name: Player Data - 3
+  m_EditorClassIdentifier: 
+  all_BattingPower:
+  - 8
+  - 9
+  - 9
+  - 31
+  - 0
+  - 83
+  - 8
+  - 91
+  - 18
+  - 6
+  all_BowlingPower:
+  - 1
+  - 1
+  - 1
+  - 31
+  - 8
+  - 9
+  - 0
+  - 7
+  - 19
+  - 10
+  all_SpinForce:
+  - 47
+  - 912
+  - 12
+  - 84
+  - 94
+  - 12
+  - 49
+  - 14
+  - 912
+  - 91
+  str_PlayerName: Player - 3
+  playerRarity: 0
+  sprite_PlayerIcon: {fileID: 21300000, guid: 79c0e4db334ba4ad6a952ea45b262c3c, type: 3}
+  isUnlocked: 0
+  unlockPrice: 39
+  cardsRequiredToUnlock: 32
+  all_UpgradePrice: cb000000310000001700000088010000540000005c0000005f000000300000005200000026000000
+  all_RequiredCardsToUpgrade: 050000003200000064000000900100003002000058020000200300005203000084030000e8030000

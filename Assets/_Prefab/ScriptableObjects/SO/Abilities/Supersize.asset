@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e25dee21a82e4e84789f377f7a48e9b2, type: 3}
+  m_Name: Supersize
+  m_EditorClassIdentifier: 
+  str_AbilityName: Supersize
+  sprite_AbilityIcon: {fileID: 21300000, guid: 8fd521d3fc1eb46fd92b0f29508e5f76, type: 3}
+  str_Description: Reduce your opponents movement and rotation speed
+  isUnlocked: 0
+  numberOfProperties: 2
+  all_PropertiesNames:
+  - Active Time
+  - Size Increase
+  all_PropertyOneValues:
+  - 3
+  - 3.8
+  - 4.3
+  - 5.4
+  - 6.5
+  - 7.1
+  - 8.6
+  - 8.8
+  - 10
+  - 12
+  all_PropertyTwoValues:
+  - 5
+  - 5
+  - 7
+  - 7
+  - 7
+  - 10
+  - 10
+  - 10
+  - 12
+  - 12
