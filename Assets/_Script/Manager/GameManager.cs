@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     [Header("Script Refrence")]
     public WallHandler wallHandler;               // Set Boundry
     
+    
 
 
    
@@ -44,6 +45,7 @@ public class GameManager : MonoBehaviour
     [field : SerializeField] public PlayerAI CurrentGamePlayerAI { get; private set; }
     [field : SerializeField]public bool IsGameRunning { get; private set; }
     [field: SerializeField] public bool HasPlayerWon { get; private set; }
+    [field : SerializeField] public GameObject obj_GameEnvironement { get;  set; }
 
    
 
@@ -81,9 +83,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
     }
 
-    //private void Start() {
-    //    StartGame();
-    //}
+    
 
     private void Update() {
         TimeHandler();
@@ -91,7 +91,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame() {
         // Collected All Data
-       
+        obj_GameEnvironement.gameObject.SetActive(true);
         isCompltedFirstInning = false;
         //Spawn Ball , Player , Player AI
         SpawnGameElements();
@@ -288,7 +288,11 @@ public class GameManager : MonoBehaviour
             }
         }
 
+
+       
     }
+
+   
 
     private void CompletedFirstInnings() {
 
@@ -447,13 +451,36 @@ public class GameManager : MonoBehaviour
 
     public void StartMinigame() {
         UIManager.Instance.panel_MainMenu.SetActive(false);
+
+
+
+        // Mini Game Start Direct
         Instantiate(mini_GameManager, transform.position, transform.rotation);
+    }
+
+    public void HandlingTimeTweek(bool isplayer, float flt_TimeReduce) {
+        if (isplayer) {
+            if (CurrentGamePlayer.MyState == PlayerState.BatsMan) {
+                flt_MaxGameTime += flt_TimeReduce;
+            }
+            else {
+                flt_MaxGameTime -= flt_TimeReduce;
+            }
+        }
+        else {
+            if (CurrentGamePlayerAI.MyState == PlayerState.BatsMan) {
+                flt_MaxGameTime += flt_TimeReduce;
+            }
+            else {
+                flt_MaxGameTime -= flt_TimeReduce;
+            }
+        }
     }
 }
 
 
 [System.Serializable]
-public enum PowerUpType {
+public enum AbilityType {
 
     Powerup2X,
     Freez,
@@ -468,6 +495,10 @@ public enum PowerUpType {
     GamblerRunner,
     Randomizer,
     Block,
-    StickyShot,
+    TimeTweak,
+    RunMaster,
+    BoundryBonus,
+    spinDocter
+
 
 }

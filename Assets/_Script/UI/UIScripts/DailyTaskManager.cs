@@ -32,13 +32,17 @@ public class DailyTaskManager : MonoBehaviour
     public delegate void AddRuns(int value);
     public static event AddRuns AddRunsHandler;
 
+    [SerializeField] private List<taskShowData> list_TaskShowndata;
+
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.S))
 		{
             Debug.Log("Score RUns Event");
-            AddRunsHandler?.Invoke(Random.Range(5,30));
+            AddRunsHandler?.Invoke(Random.Range(200,250));
+            UIManager.Instance.ui_taskProgress.ActivetedTaskProgersPanel(list_TaskShowndata);
         }
+        
 
         if (GetCurrentTimeLeft() <= TimeSpan.Zero)
 		{
@@ -280,4 +284,21 @@ public class DailyTaskManager : MonoBehaviour
 	{
         PlayerPrefs.SetInt(DailyTaskPlayerPrefKeys.key_TaskRewardClaimedStatus + "" + _index, 1);
     }
+
+    public void AddShownList(taskShowData task) {
+        list_TaskShowndata.Add(task);
+    }
+
+    public void ResetListData() {
+        list_TaskShowndata.Clear();
+    }
+}
+
+[System.Serializable]
+public struct taskShowData {
+
+    public string taskName;
+    public int prevousValue;
+    public int UpdateValue;
+    public int targetValue;
 }

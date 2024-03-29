@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,25 +7,35 @@ using UnityEngine.UI;
 
 public class DailyRunsChallengeUI : MonoBehaviour
 {
+	[SerializeField] private ChestShopScriptableObject chest;
     [SerializeField] private TextMeshProUGUI txt_Progress;
     [SerializeField] private Slider slider_Progress;
 	[SerializeField] private GameObject panel_ChallengeRunning;
 	[SerializeField] private GameObject panel_ChallengeCompleted;
 	[SerializeField] private GameObject panel_WaitTime;
 	[SerializeField] private TextMeshProUGUI txt_WaitTimeForNextReward;
+	[SerializeField] private Image img_Icon;
 
 	private void OnEnable()
 	{
-		//SetChallengeUI();
-		DailyRunsRewardHandler.dailyChallengeRunsUpdated += SetChallengeUI;
+        //SetChallengeUI();
+        DataManager.Instance.Changesprite += ChangeIconSprite;
+        DailyRunsRewardHandler.dailyChallengeRunsUpdated += SetChallengeUI;
+
 	}
 
 	private void OnDisable()
 	{
-		DailyRunsRewardHandler.dailyChallengeRunsUpdated -= SetChallengeUI;
+
+        DataManager.Instance.Changesprite -= ChangeIconSprite;
+        DailyRunsRewardHandler.dailyChallengeRunsUpdated -= SetChallengeUI;
 	}
 
-	private void Start()
+    private void ChangeIconSprite(Sprite sprite) {
+		img_Icon.sprite = sprite;
+    }
+
+    private void Start()
 	{
 		SetChallengeUI();
 	}
@@ -70,12 +81,23 @@ public class DailyRunsChallengeUI : MonoBehaviour
 			panel_ChallengeRunning.SetActive(true);
 			panel_ChallengeCompleted.SetActive(false);
 			panel_WaitTime.SetActive(false);
-		}		
+		}
+
+		img_Icon.sprite = DataManager.Instance.GetSprite();
 	}
 
 	public void OnClick_ClaimReward()
 	{
 		RewardsManager.Instance.dailyRunsRewardData.RewardClaimedByUser();
+
+		UIManager.Instance.ui_ChestOpping.ActavetedShopBaseChest(chest);
 		SetChallengeUI();
 	}
+
+	public void OnClick_SkipButton() {
+
+        DataManager.Instance.RemoveSkipIts();
+        RewardsManager.Instance.dailyRunsRewardData.SkipTimeByUser();
+        SetChallengeUI();
+    }
 }

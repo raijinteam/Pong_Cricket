@@ -113,8 +113,9 @@ public class ChestSlotsUI : MonoBehaviour
 		}
 		else if (panel_ChestSlotCompleted.activeSelf)
 		{
-			// Give Reward, and empty this slot
-			EmptyThisSlot();
+            // Give Reward, and empty this slot
+            UIManager.Instance.ui_ChestOpping.ActivetedLevelChestOpnened(ChestManager.Instance.GetSlot(slotIndex));
+            EmptyThisSlot();
 			ChestManager.Instance.UserCollectedTheChestSlot(slotIndex);
 		}
 	}

@@ -41,6 +41,9 @@ public class PowerupRandomizer : Powerup {
         if (!GameManager.Instance.IsGameRunning) {
             return;
         }
+        if (!isPowerupActive) {
+            return;
+        }
         PowerUpTimeCalculation();
     }
 
@@ -49,7 +52,7 @@ public class PowerupRandomizer : Powerup {
         flt_CurrentTime += Time.deltaTime;
         if (flt_CurrentTime > flt_ActiveTime) {
 
-            DeActivePower();
+            DeActivtedMyPowerup();
         }
     }
 
@@ -94,15 +97,6 @@ public class PowerupRandomizer : Powerup {
 
 
 
-    // End Of PowerUp Precedure
-    public void DeActivePower() {
-        Debug.Log("RandomizerDeactvated");
-        for (int i = 0; i < list_ScorePoinInScreen.Count; i++) {
-            Destroy(list_ScorePoinInScreen[i].gameObject);
-        }
-        list_ScorePoinInScreen.Clear();
-        this.gameObject.SetActive(false);
-    }
 
     // When ball Trigger At That Time Destry Game Score Point
     // remove In list
@@ -119,9 +113,20 @@ public class PowerupRandomizer : Powerup {
 
        
         this.gameObject.SetActive(true);
+       
+    }
+
+    public override void ActivtedMyPowerup(AbilityType type, bool Isplayer) {
+        if (myType != type) {
+            return;
+        }
+        int index = AbilityManager.Instance.GetAbilityCurrentLevelWithType(myType);
+        flt_ActiveTime = AbilityManager.Instance.GetAbliltyData(myType).all_PropertyOneValues[index];
+        scoreSpotCount = ((int)AbilityManager.Instance.GetAbliltyData(myType).all_PropertyTwoValues[index]);
+        isPowerupActive = true;
         SetPostion();
         list_ScorePoinInScreen.Clear();
-        if (isplayer) {
+        if (Isplayer) {
 
             if (GameManager.Instance.CurrentGamePlayer.MyState == PlayerState.BatsMan) {
                 // if  batsman Spawn + Point
@@ -146,6 +151,15 @@ public class PowerupRandomizer : Powerup {
 
         }
 
-        flt_CurrentTime = 0;      
-    } 
+        flt_CurrentTime = 0;
+    }
+
+    public override void DeActivtedMyPowerup() {
+        isPowerupActive = false;
+        Debug.Log("RandomizerDeactvated");
+        for (int i = 0; i < list_ScorePoinInScreen.Count; i++) {
+            Destroy(list_ScorePoinInScreen[i].gameObject);
+        }
+        list_ScorePoinInScreen.Clear();
+    }
 }

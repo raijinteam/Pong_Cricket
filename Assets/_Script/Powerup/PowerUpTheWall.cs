@@ -6,7 +6,6 @@ using UnityEngine;
 public class PowerUpTheWall : Powerup {
 
    
-    [SerializeField] private int NoOfShot;   // Max Shot When PowerUp Active
     [SerializeField] private float flt_ActiveTime; // max Time to Active Time
     private float flt_CurrrentTime;   // Curren Time for this Powerup
 
@@ -24,12 +23,15 @@ public class PowerUpTheWall : Powerup {
         if (!GameManager.Instance.IsGameRunning) {
             return;
         }
+        if (!isPowerupActive) {
+            return;
+        }
         TimeCalculation();
     }
     private void TimeCalculation() {
         flt_CurrrentTime += Time.deltaTime;
         if (flt_CurrrentTime > flt_ActiveTime) {
-            DeActivePower();
+            DeActivtedMyPowerup();
         }
     }
 
@@ -54,20 +56,20 @@ public class PowerUpTheWall : Powerup {
     }
 
 
-    // End Of PowerUp Precedure
-    public void DeActivePower() {
-
-        Destroy(currenWall.gameObject);
-        this.gameObject.SetActive(false);
-    }
+  
 
 
-    // This Powerup Work Both
-    public void ActivatedTheWallPowerUp(bool isplayer) {
-        hasPlayerActivatedPowerup = isplayer;
-
+   
+    public override void ActivtedMyPowerup(AbilityType type, bool Isplayer) {
+        if (myType != type) {
+            return;
+        }
+        isPowerupActive = true;
+        int index = AbilityManager.Instance.GetAbilityCurrentLevelWithType(myType);
+        flt_ActiveTime = AbilityManager.Instance.GetAbliltyData(myType).all_PropertyOneValues[index];
+     
         //Player Shot Increased Ammount
-        if (isplayer) {
+        if (Isplayer) {
 
             spawnWall(GameManager.Instance.CurrentGamePlayer.MyState);
 
@@ -78,9 +80,16 @@ public class PowerUpTheWall : Powerup {
 
         }
 
-        hasPlayerActivatedPowerup = isplayer;
+        hasPlayerActivatedPowerup = Isplayer;
         flt_CurrrentTime = 0;
-        this.gameObject.SetActive(true);
     }
 
+    public override void DeActivtedMyPowerup() {
+        isPowerupActive = false;
+        if (currenWall != null) {
+            Destroy(currenWall.gameObject);
+        }
+       
+
+    }
 }

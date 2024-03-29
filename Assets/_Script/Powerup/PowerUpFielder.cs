@@ -13,44 +13,19 @@ public class PowerUpFielder : Powerup {
 
     [Header("ACTIVE FIELDER DATA")]
     public PlayerState fielderState;  // identyfy For Which Fielder State 
-  
 
-
-    private void Update() {
-        if (!GameManager.Instance.IsGameRunning) {
+    public override void ActivtedMyPowerup(AbilityType type, bool Isplayer) {
+        if (myType != type) {
             return;
         }
-        PowerUpTimeCalculation();
-    }
-    private void PowerUpTimeCalculation() {
 
-        flt_CurrentTime += Time.deltaTime;
-        if (flt_CurrentTime > flt_ActiveTime) {
-
-            DeActivePower();
-        }
-    }
-
-
-
-    // End Of PowerUp Precedure
-    public void DeActivePower() {
-
-        foreach (Transform child in transform) {
-            Destroy(child.gameObject);
-        }
-        this.gameObject.SetActive(false);
-    }
-
-
-   
-
-
-    // This Powerup Work Both
-    public void ActivateFielderPowerUp(bool isplayer) {
+        int index = AbilityManager.Instance.GetAbilityCurrentLevelWithType(myType);
+        flt_ActiveTime = AbilityManager.Instance.GetAbliltyData(myType).all_PropertyOneValues[index];
+        noof_Spawn = ((int)AbilityManager.Instance.GetAbliltyData(myType).all_PropertyTwoValues[index]);
+        isPowerupActive = true;
 
         //My Side Spawn Fielder     
-        if (isplayer) {
+        if (Isplayer) {
 
             // GameManager.Instance.CurrentGamePlayer.SpawnFielder(flt_Force, noof_Spawn);        
             fielderState = GameManager.Instance.CurrentGamePlayer.MyState;
@@ -61,11 +36,45 @@ public class PowerUpFielder : Powerup {
         }
         SpawnFielder();
 
-        hasPlayerActivatedPowerup = isplayer;
+        hasPlayerActivatedPowerup = Isplayer;
         flt_CurrentTime = 0;
-        this.gameObject.SetActive(true);
-
     }
+
+    public override void DeActivtedMyPowerup() {
+        isPowerupActive = false;
+
+        foreach (Transform child in transform) {
+            Destroy(child.gameObject);
+        }
+    }
+
+    private void Update() {
+        if (!GameManager.Instance.IsGameRunning) {
+            return;
+        }
+        if (!isPowerupActive) {
+            return;
+        }
+        PowerUpTimeCalculation();
+    }
+    private void PowerUpTimeCalculation() {
+
+        flt_CurrentTime += Time.deltaTime;
+        if (flt_CurrentTime > flt_ActiveTime) {
+
+            DeActivtedMyPowerup();
+        }
+    }
+
+
+
+   
+
+
+   
+
+
+   
 
     private void SpawnFielder() {
        
@@ -171,4 +180,6 @@ public class PowerUpFielder : Powerup {
         Debug.Log(SetEuler + "AngleFielder");
         return SetEuler;
     }
+
+  
 }

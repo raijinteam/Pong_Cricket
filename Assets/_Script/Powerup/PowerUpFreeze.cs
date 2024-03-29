@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using UnityEngine;
 
 public class PowerUpFreeze : Powerup {
@@ -15,6 +16,9 @@ public class PowerUpFreeze : Powerup {
         if (!GameManager.Instance.IsGameRunning) {
             return;
         }
+        if (!isPowerupActive) {
+            return;
+        }
         PowerUpTimeCalculation();
     }
 
@@ -23,44 +27,47 @@ public class PowerUpFreeze : Powerup {
         flt_CurrentTime += Time.deltaTime;
         if (flt_CurrentTime > flt_ActiveTime) {
 
-            DeActivePower();
+            DeActivtedMyPowerup();
         }
     }
 
 
 
-    // End Of PowerUp Precedure
-    public void DeActivePower() {
-     
+   
+
+    
+
+    public override void ActivtedMyPowerup(AbilityType type, bool Isplayer) {
+        if (myType != type) {
+            return;
+        }
+        int index = AbilityManager.Instance.GetAbilityCurrentLevelWithType(myType);
+        flt_ActiveTime = AbilityManager.Instance.GetAbliltyData(myType).all_PropertyOneValues[index];
+        flt_FreezTime = AbilityManager.Instance.GetAbliltyData(myType).all_PropertyTwoValues[index];
+        //Oppsotite Player Freeez
+        if (Isplayer) {
+
+            GameManager.Instance.CurrentGamePlayerAI.ActivateFreezePowerup(flt_FreezTime, flt_IntervalTime);
+
+        }
+        else {
+
+            GameManager.Instance.CurrentGamePlayer.ActivateFreezePowerup(flt_FreezTime, flt_IntervalTime);
+
+        }
+
+        hasPlayerActivatedPowerup = Isplayer;
+        flt_CurrentTime = 0;
+    }
+
+    public override void DeActivtedMyPowerup() {
         if (hasPlayerActivatedPowerup) {
-          
+
             GameManager.Instance.CurrentGamePlayerAI.DeActivateFreezePowerup();
         }
         else {
-            
+
             GameManager.Instance.CurrentGamePlayer.DeActivateFreezePowerup();
         }
-        this.gameObject.SetActive(false);
-    }
-
-    // This Powerup Work Both
-    public void ActivateFreezePowerUp(bool isplayer) {
-
-        //Oppsotite Player Freeez
-        if (isplayer) {
-
-            GameManager.Instance.CurrentGamePlayerAI.ActivateFreezePowerup(flt_FreezTime, flt_IntervalTime);
-           
-        }
-        else {
-
-             GameManager.Instance.CurrentGamePlayer.ActivateFreezePowerup(flt_FreezTime, flt_IntervalTime);
-            
-        }
-
-        hasPlayerActivatedPowerup = isplayer;
-        flt_CurrentTime = 0;
-        this.gameObject.SetActive(true);
-        
     }
 }

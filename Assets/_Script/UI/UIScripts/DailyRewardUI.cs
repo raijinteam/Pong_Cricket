@@ -7,8 +7,10 @@ using UnityEngine.UI;
 
 public class DailyRewardUI : MonoBehaviour
 {
-	[SerializeField] private GameObject[] panel_All_RewardActive;
-	[SerializeField] private GameObject[] panel_All_RewardClaimed;
+	[SerializeField] private GameObject[] panel_All_RewardActivebg;
+	[SerializeField] private GameObject[] panel_All_RewardClaimedbg;
+	[SerializeField] private GameObject[] panel_AllRewardActve;
+	[SerializeField] private GameObject[] panel_AllClaimed;
 	[SerializeField] private GameObject panel_Timer;
     [SerializeField] private TextMeshProUGUI[] txt_All_RewardAmounts;
 	[SerializeField] private Image[] img_All_RewardImages;
@@ -38,16 +40,18 @@ public class DailyRewardUI : MonoBehaviour
 	public void SetAllPanels()
 	{
 		// Turn off all the reward active panels
-		for(int i = 0; i < panel_All_RewardActive.Length; i++)
+		for(int i = 0; i < panel_All_RewardActivebg.Length; i++)
 		{
-			panel_All_RewardActive[i].SetActive(false);
+            panel_All_RewardActivebg[i].SetActive(false);
+			panel_AllRewardActve[i].SetActive(false);
 		}
 
 		if (RewardsManager.Instance.dailyRewardData.GetIsDailyRewardActive())
 		{
-			// if daily reward is active, show reward active panel on current day.
-			panel_All_RewardActive[RewardsManager.Instance.dailyRewardData.GetCurrentDayIndex()].SetActive(true);
-			panel_Timer.SetActive(false);
+            // if daily reward is active, show reward active panel on current day.
+            panel_AllRewardActve[RewardsManager.Instance.dailyRewardData.GetCurrentDayIndex()].SetActive(true);
+            panel_All_RewardActivebg[RewardsManager.Instance.dailyRewardData.GetCurrentDayIndex()].SetActive(true);
+            panel_Timer.SetActive(false);
 		}
 		else
 		{
@@ -55,16 +59,18 @@ public class DailyRewardUI : MonoBehaviour
 		}
 
 		// Turn of all reward claimed panels
-		for(int i = 0; i < panel_All_RewardClaimed.Length; i++)
+		for(int i = 0; i < panel_All_RewardClaimedbg.Length; i++)
 		{
-			panel_All_RewardClaimed[i].SetActive(false);
+			panel_All_RewardClaimedbg[i].SetActive(false);
+            panel_AllClaimed[i].SetActive(false);
 		}
 
 		// Turn on reward claimed panels till the current day index
 		for(int i = 0; i < RewardsManager.Instance.dailyRewardData.GetCurrentDayIndex(); i++)
 		{
-			panel_All_RewardClaimed[i].SetActive(true);
-		}
+            panel_All_RewardClaimedbg[i].SetActive(true);
+            panel_AllClaimed[i].SetActive(true);
+        }
 	}
 
 	private void SetAllRewardAmounts()
@@ -100,5 +106,9 @@ public class DailyRewardUI : MonoBehaviour
 		RewardsManager.Instance.dailyRewardData.ClaimedCurrentDailyReward();
 		UIManager.Instance.ui_HomeScreen.DailyRewardClaimed();
 		SetAllPanels();
+	}
+
+	public void OnClick_OnClosed() {
+		this.gameObject.SetActive(false);
 	}
 }

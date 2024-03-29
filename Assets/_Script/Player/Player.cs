@@ -9,6 +9,8 @@ public class Player : MonoBehaviour
 
     public PlayerState MyState;
 
+    [SerializeField] private SpriteRenderer spriteRenderer;
+
 
     [Header("Player Data")]
     [SerializeField] private float flt_MaxSwingForce;   // min Swing force
@@ -32,6 +34,14 @@ public class Player : MonoBehaviour
 
     // force CalculationData
     private float flt_DistanceBetweenCenterToEdgeOfPaddle = 0.5f;   // Distance between centre of the paddle to edge of the paddle
+
+    // Run Increased
+    private bool isRunIncreased;
+    private int RunIncreased;
+
+    // spin Docter
+    private int per_Swingforce;
+    private bool isSpinDocterActiveted;
 
    
     private void Start() {
@@ -69,13 +79,19 @@ public class Player : MonoBehaviour
     public void SetValueOfClampPosition() {
 
         WallHandler Current = GameManager.Instance.wallHandler;
+        int index = CharacterManager.Instance.currentSelectedCharacter;
+        spriteRenderer.sprite = CharacterManager.Instance.GetCharacterIcon(index);
         if (MyState == PlayerState.BatsMan) {
             flt_MinCalmpValue = Current.batsmanleft.position.x + transform.localScale.x / 2;
             flt_MaxClampValue = Current.batsmanright.position.x  - transform.localScale.x / 2;
+            flt_BallMinForce = CharacterManager.Instance.GetCharacterBattingPowerForCurrentLevel(index);
         }
         else {
+
             flt_MinCalmpValue = Current.bowlerleft.position.x  + transform.localScale.x / 2;
             flt_MaxClampValue = Current.bowlerright.position.x  - transform.localScale.x / 2;
+            flt_BallMinForce = CharacterManager.Instance.GetCharacterBowlingPowerForCurrentLevel(index);
+            flt_MinSwingForce = CharacterManager.Instance.GetCharacterSpinForceForCurrentLevel(index);
         }
         
     }
@@ -146,8 +162,10 @@ public class Player : MonoBehaviour
         if (IsBallSplitPowerupActive) {
             spawnBall();
         }
-        
 
+        if (isRunIncreased) {
+            GameManager.Instance.IncreasedRun(RunIncreased);
+        }
 
         Debug.Log("After" + flt_BallForce);
         return flt_BallForce;
@@ -168,6 +186,9 @@ public class Player : MonoBehaviour
             flt_BallForce = -flt_BallForce;
         }
 
+        if (isSpinDocterActiveted) {
+            flt_BallForce += flt_BallForce * per_Swingforce * 0.01f;
+        }
 
         return flt_BallForce;
     }
@@ -293,6 +314,25 @@ public class Player : MonoBehaviour
     public void ResetScale(float _ScaleIncrease) {
         transform.localScale -= Vector3.one * _ScaleIncrease;
         SetValueOfClampPosition();
+    }
+
+    public void ActivetedRunIncreased(int runIncreased) {
+
+        isRunIncreased = true;
+        this.RunIncreased = runIncreased;
+    }
+
+    public void DeActivetedRunIncreased() {
+        isRunIncreased = false;
+    }
+
+    public void ActivetedSpinDocter(int per_SwingForce) {
+        isSpinDocterActiveted = true;
+        this.per_Swingforce = per_SwingForce;
+    }
+
+    public void DeActivetedSpinDocter() {
+        isSpinDocterActiveted = false;
     }
 
     #endregion

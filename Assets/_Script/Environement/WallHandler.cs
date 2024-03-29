@@ -33,6 +33,8 @@ public class WallHandler : MonoBehaviour {
 
     public void SetBg() {
 
+        bg.sprite = LevelManager.Instance.GetLevelIcon(LevelManager.Instance.currentLevelIndex);
+
         float worldScreenHeight = Camera.main.orthographicSize * 2;
 
         // world width is calculated by diving world height with screen heigh

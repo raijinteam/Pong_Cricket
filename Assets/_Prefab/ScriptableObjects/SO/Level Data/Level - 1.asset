@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9797945203da59f44807fb8e493c8997, type: 3}
   m_Name: Level - 1
   m_EditorClassIdentifier: 
-  str_LevelName: Mumbai
-  sprite_LevelIcon: {fileID: 21300000, guid: 011797a5ac14e4f01a918fd5023148ef, type: 3}
+  str_LevelName: India
+  sprite_LevelIcon: {fileID: 21300000, guid: b944c1a7b09aa0740891c402915b7273, type: 3}
+  requiredTrophyToPlay: 0
   entryFee: 250
   prize: 500
   winTrophy: 5

@@ -51,11 +51,11 @@ public class LevelDataUI : MonoBehaviour
 
 		if (DataManager.Instance.coins >= LevelManager.Instance.GetLevelEntryFee(myLevelIndex)) {
 
-			DataManager.Instance.coins -= LevelManager.Instance.GetLevelEntryFee(myLevelIndex);
-			UIManager.Instance.panel_MainMenu.SetActive(false);
-			UIManager.Instance.ui_GameScreen.gameObject.SetActive(true);
+			LevelManager.Instance.currentLevelIndex = myLevelIndex;
+			DataManager.Instance.DecresedCoin(LevelManager.Instance.GetLevelEntryFee(myLevelIndex));
+			UIManager.Instance.ui_PanelSerachingPlayer.gameObject.SetActive(true);
 			
-			GameManager.Instance.StartGame();
+			
 
 		}
 

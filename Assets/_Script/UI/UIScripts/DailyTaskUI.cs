@@ -99,4 +99,8 @@ public class DailyTaskUI : MonoBehaviour
         DailyTaskManager.Instance.ClaimRewardFromTheTask(_index);
         SetTaskData();
 	}
+
+    public void OnClick_Closed() {
+        this.gameObject.SetActive(false);
+    }
 }

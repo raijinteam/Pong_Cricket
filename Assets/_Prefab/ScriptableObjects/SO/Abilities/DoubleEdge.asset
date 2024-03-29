@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: DoubleEdge
   m_EditorClassIdentifier: 
   str_AbilityName: DoubleEdge
-  sprite_AbilityIcon: {fileID: 21300000, guid: 7cbede6f08fe542ed806b434f7fff342, type: 3}
+  myAbiltyType: 10
+  sprite_AbilityIcon: {fileID: 21300000, guid: 9337447b3d0d4664183915feb5607c09, type: 3}
   isAbilityUnlocked: 1
   str_Description: All runs scored are multiplied by a multiplier, but any wicket
     taken results in an immediate all-out for the batsman

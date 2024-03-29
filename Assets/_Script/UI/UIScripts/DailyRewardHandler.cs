@@ -85,6 +85,7 @@ public class DailyRewardHandler : MonoBehaviour
 	{
 		isDailyRewardActive = false;	
 		currentDayIndexForDailyReward += 1;
+	
 		SaveNextRewardTime();
 	}
 

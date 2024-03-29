@@ -170,7 +170,7 @@ public class PlayerSelectionUI : MonoBehaviour
 			all_PlayersWhichGotInstantiated[currentSelectedPlayer].DeSelectThisCharacter();
 			currentSelectedPlayer = _index;
 			all_PlayersWhichGotInstantiated[currentSelectedPlayer].SelectThisCharacter();
-			CharacterManager.Instance.currentSelectedCharacter = currentSelectedPlayer;
+			CharacterManager.Instance.SetSelctedPlayer(currentSelectedPlayer);
 		}
 
 		currentSelectedPlayer = _index;
@@ -196,7 +196,7 @@ public class PlayerSelectionUI : MonoBehaviour
 			return;
 		}
 
-		DataManager.Instance.coins -= CharacterManager.Instance.GetUpgradePriceForSelectedCharacter(currentSelectedPlayer);
+		DataManager.Instance.DecresedCoin(CharacterManager.Instance.GetUpgradePriceForSelectedCharacter(currentSelectedPlayer));
 		CharacterManager.Instance.CharacterUpgradeComplete(currentSelectedPlayer);
 
 		UpdateUpgradedPlayerData();

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9797945203da59f44807fb8e493c8997, type: 3}
   m_Name: Level - 3
   m_EditorClassIdentifier: 
-  str_LevelName: Chennai
-  sprite_LevelIcon: {fileID: 21300000, guid: d4a91f9c0dbc94105b9e31d0fd0adf4b, type: 3}
+  str_LevelName: Dubai
+  sprite_LevelIcon: {fileID: 21300000, guid: f6bee36224393fe4fa024edddf9fa480, type: 3}
   requiredTrophyToPlay: 40
   entryFee: 1500
   prize: 3000

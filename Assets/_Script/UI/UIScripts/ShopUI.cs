@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -12,6 +13,7 @@ public class ShopUI : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI[] all_txt_ChestNames;
 	[SerializeField] private TextMeshProUGUI[] all_txt_ChestPrices;
 	[SerializeField] private Image[] all_img_ChestIcons;
+	
 
     [Header("Gems")]
     [SerializeField] private float[] all_GemPackPrices;
@@ -20,30 +22,42 @@ public class ShopUI : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI[] all_txt_GemPackPrices;
 	[SerializeField] private GameObject[] all_panel_BestValueGem;
 	[SerializeField] private int bestValueIndexGem;
+    public float flt_GemsPostion;
 
-	[Header("Skip-It")]
+    [Header("Skip-It")]
 	[SerializeField] private float[] all_SkipItPrices;
 	[SerializeField] private int[] all_SkipItRewards;
 	[SerializeField] private TextMeshProUGUI[] all_txt_SkipItRewards;
 	[SerializeField] private TextMeshProUGUI[] all_txt_SkipItPrices;
 	[SerializeField] private GameObject[] all_panel_BestValueSkipIt;
 	[SerializeField] private int bestValueIndexSkipIt;
+    public float flt_SkipItsPostion;
 
-	[Header("Coins")]
+
+    [Header("Coins")]
 	[SerializeField] private int[] all_CoinsPrices;
 	[SerializeField] private int[] all_CoinsRewards;
 	[SerializeField] private TextMeshProUGUI[] all_txt_CoinsRewards;
 	[SerializeField] private TextMeshProUGUI[] all_txt_CoinsPrices;
 	[SerializeField] private GameObject[] all_panel_BestValueCoins;
 	[SerializeField] private int bestValueIndexCoins;
+	public float flt_GoldPostion;
 
-	private void Start()
+
+	[SerializeField] private RectTransform rect_Scroll;
+
+
+    
+
+    private void Start()
 	{
 		SetChestPanel();
 		SetGemsPanel();
 		SetSkipItPanel();
 		SetCoinsPanel();
-	}
+		
+
+    }
 
 	private void SetChestPanel()
 	{
@@ -101,4 +115,9 @@ public class ShopUI : MonoBehaviour
 	{
 		ui_ShopChestInfo.SetChestPanel(all_Chests[_index]);	
 	}
+
+    public void SetPostion(float postion) {
+
+		rect_Scroll.anchoredPosition = new Vector2(rect_Scroll.anchoredPosition.x, postion);
+    }
 }

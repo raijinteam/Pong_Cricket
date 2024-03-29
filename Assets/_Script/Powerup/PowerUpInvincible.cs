@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 public class PowerUpInvincible : Powerup {
 
@@ -11,30 +12,37 @@ public class PowerUpInvincible : Powerup {
         if (!GameManager.Instance.IsGameRunning) {
             return;
         }
+        if (!isPowerupActive) {
+            return;
+        }
         TimeHandlerInviciblePowerUp();
     }
 
     private void TimeHandlerInviciblePowerUp() {
         flt_CurrentTime += Time.deltaTime;
         if (flt_CurrentTime > flt_ActiveTime) {
-            DeActivePower();
+            DeActivtedMyPowerup();
         }
     }
 
 
-    public void DeActivePower() {
 
-        GameManager.Instance.ballMovement.DisableInvisiblePowerup();
-        this.gameObject.SetActive(false);
-    }
+    
 
-    // This Powerup Work Both
-    public void ActivatedInvicliblePowerUp(bool _hasTakenByPlayer) {
-
+    public override void ActivtedMyPowerup(AbilityType type, bool Isplayer) {
+        if (myType != type) {
+            return;
+        }
+        int index = AbilityManager.Instance.GetAbilityCurrentLevelWithType(myType);
+        flt_ActiveTime = AbilityManager.Instance.GetAbliltyData(myType).all_PropertyOneValues[index];
+        
+        isPowerupActive = true;
         flt_CurrentTime = 0;
-        this.gameObject.SetActive(true);
-
-        GameManager.Instance.ballMovement.ActivateInvisiblePowerup(_hasTakenByPlayer);
+        GameManager.Instance.ballMovement.ActivateInvisiblePowerup(Isplayer);
     }
 
+    public override void DeActivtedMyPowerup() {
+        isPowerupActive = false;
+        GameManager.Instance.ballMovement.DisableInvisiblePowerup();
+    }
 }

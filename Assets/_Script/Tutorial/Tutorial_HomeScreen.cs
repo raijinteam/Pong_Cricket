@@ -14,7 +14,10 @@ public class Tutorial_HomeScreen : MonoBehaviour {
 
     [SerializeField]private ChestState CurrentChestState;
 
-   
+
+    
+
+
 
     public void OnClick_OnChestfilledTimeBtn() {
 

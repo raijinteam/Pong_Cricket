@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: RunRumble
   m_EditorClassIdentifier: 
   str_AbilityName: RunRumble
-  sprite_AbilityIcon: {fileID: 21300000, guid: 60eac28d23b0e44849f1fff517c8a689, type: 3}
+  myAbiltyType: 11
+  sprite_AbilityIcon: {fileID: 21300000, guid: 24f1e09f1d72981459400e5590696974, type: 3}
+  isAbilityUnlocked: 0
   str_Description: Batsman triggers bonus scoring points in play, while the Bowler
     introduces negative runs
-  isUnlocked: 0
   numberOfProperties: 2
   all_PropertiesNames:
   - Active Time

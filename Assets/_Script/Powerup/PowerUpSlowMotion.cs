@@ -22,7 +22,7 @@ public class PowerUpSlowMotion : Powerup {
         flt_CurrentTime += Time.deltaTime;
         if (flt_CurrentTime > flt_ActiveTime) {
 
-            DeActivePower();
+            DeActivtedMyPowerup();
         }
     }
 
@@ -30,8 +30,20 @@ public class PowerUpSlowMotion : Powerup {
     // This Powerup Work Both
     public void ActivateSlowMotionPowerUp(bool isplayer) {
 
+       
+        this.gameObject.SetActive(true);
+
+    }
+
+    
+
+    public override void ActivtedMyPowerup(AbilityType type, bool Isplayer) {
+        if (myType != type) {
+            return;
+        }
+
         //Oppsotite Player Get Slow Persantage
-        if (isplayer) {
+        if (Isplayer) {
 
             GameManager.Instance.CurrentGamePlayerAI.ActivateSlowMotionPowerup(flt_PersantageOfSlowMotion);
 
@@ -42,15 +54,18 @@ public class PowerUpSlowMotion : Powerup {
 
         }
 
-        hasPlayerActivatedPowerup = isplayer;
+        int index = AbilityManager.Instance.GetAbilityCurrentLevelWithType(myType);
+        flt_ActiveTime = AbilityManager.Instance.GetAbliltyData(myType).all_PropertyOneValues[index];
+        flt_PersantageOfSlowMotion = AbilityManager.Instance.GetAbliltyData(myType).all_PropertyTwoValues[index];
+
+        hasPlayerActivatedPowerup = Isplayer;
         flt_CurrentTime = 0;
-        this.gameObject.SetActive(true);
+        isPowerupActive = true;
 
     }
 
-    // End Of PowerUp Precedure
-    public void DeActivePower() {
-
+    public override void DeActivtedMyPowerup() {
+        isPowerupActive = false;
         if (hasPlayerActivatedPowerup) {
 
             GameManager.Instance.CurrentGamePlayerAI.DeActivateSlowMotionPowerup();
@@ -59,6 +74,5 @@ public class PowerUpSlowMotion : Powerup {
 
             GameManager.Instance.CurrentGamePlayer.DeActivateSlowMotionPowerup();
         }
-        this.gameObject.SetActive(false);
     }
 }

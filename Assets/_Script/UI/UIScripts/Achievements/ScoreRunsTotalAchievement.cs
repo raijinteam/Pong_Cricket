@@ -26,6 +26,15 @@ public class ScoreRunsTotalAchievement : AchievementBase
             return;
 		}
 
+        taskShowData taskData = new taskShowData();
+        taskData.taskName = str_AchievementDescription;
+        taskData.prevousValue = currentProgress;
+        taskData.UpdateValue = currentProgress + _runs;
+        taskData.targetValue = currentTarget;
+
+
+        DailyTaskManager.Instance.AddShownList(taskData);
+
         currentProgress += _runs;
         if(currentProgress >= currentTarget)
 		{

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Test_PowerupHandler : MonoBehaviour
 {
-    [SerializeField] private PowerUpType CurrentPowerUp;
+    [SerializeField] private AbilityType CurrentPowerUp;
 
     private void Update() {
 

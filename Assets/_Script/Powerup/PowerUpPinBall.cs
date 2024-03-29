@@ -23,6 +23,9 @@ public class PowerUpPinBall : Powerup {
         if (!GameManager.Instance.IsGameRunning) {
             return;
         }
+        if (!isPowerupActive) {
+            return;
+        }
         PowerUpTimeCalculation();
     }
 
@@ -31,7 +34,7 @@ public class PowerUpPinBall : Powerup {
         flt_CurrentTime += Time.deltaTime;
         if (flt_CurrentTime > flt_ActiveTime) {
 
-            DeActivePower();
+            DeActivtedMyPowerup();
         }
     }
 
@@ -63,42 +66,9 @@ public class PowerUpPinBall : Powerup {
 
 
 
-    // End Of PowerUp Precedure
-    public void DeActivePower() {
-
-        // Romove In list 
-        // Destroyed PinBall Paddle
-        // Active false
-        for (int i = 0; i < list_PinBallPadddle.Count; i++) {
-            Destroy(list_PinBallPadddle[i].gameObject);
-        }
-        list_PinBallPadddle.Clear();
-        this.gameObject.SetActive(false);
-    }
-
-
    
 
-    // This Powerup Work Both
-    public void ActivatePinBallPaddlePowerUp(bool isplayer) {
-        hasPlayerActivatedPowerup = isplayer;
-        //My Side Spawn Fielder
-        if (isplayer) {
-
-            SpawnPinBallPaddle(GameManager.Instance.CurrentGamePlayer.MyState, isplayer);
-
-        }
-        else {
-
-            SpawnPinBallPaddle(GameManager.Instance.CurrentGamePlayerAI.MyState, isplayer);
-
-        }
-
-        flt_CurrentTime = 0;
-        this.gameObject.SetActive(true);
-
-    }
-
+   
 
 
 
@@ -120,4 +90,40 @@ public class PowerUpPinBall : Powerup {
 
     }
 
+    public override void ActivtedMyPowerup(AbilityType type, bool Isplayer) {
+        if (myType != type) {
+            return;
+        }
+
+        int index = AbilityManager.Instance.GetAbilityCurrentLevelWithType(myType);
+        flt_ActiveTime = AbilityManager.Instance.GetAbliltyData(myType).all_PropertyOneValues[index];
+        percentageOfForceToAdd = AbilityManager.Instance.GetAbliltyData(myType).all_PropertyTwoValues[index];
+        isPowerupActive = true;
+        hasPlayerActivatedPowerup = Isplayer;
+        //My Side Spawn Fielder
+        if (Isplayer) {
+
+            SpawnPinBallPaddle(GameManager.Instance.CurrentGamePlayer.MyState, Isplayer);
+
+        }
+        else {
+
+            SpawnPinBallPaddle(GameManager.Instance.CurrentGamePlayerAI.MyState, Isplayer);
+
+        }
+
+        flt_CurrentTime = 0;
+    }
+
+    public override void DeActivtedMyPowerup() {
+        isPowerupActive = false;
+        // Romove In list 
+        // Destroyed PinBall Paddle
+        // Active false
+        for (int i = 0; i < list_PinBallPadddle.Count; i++) {
+            Destroy(list_PinBallPadddle[i].gameObject);
+        }
+        list_PinBallPadddle.Clear();
+        
+    }
 }

@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Blockade
   m_EditorClassIdentifier: 
   str_AbilityName: Blockade
-  sprite_AbilityIcon: {fileID: 21300000, guid: 31e954495fe8546dcb74e2502a8e9107, type: 3}
+  myAbiltyType: 12
+  sprite_AbilityIcon: {fileID: 21300000, guid: 2c9143a3677ff1a479a3407131da1936, type: 3}
+  isAbilityUnlocked: 0
   str_Description: Blocks some scoring areas, limiting the batsman's opportunities
     to accumulate runs
-  isUnlocked: 0
   numberOfProperties: 2
   all_PropertiesNames:
   - Active Time

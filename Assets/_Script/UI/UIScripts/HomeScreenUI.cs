@@ -123,6 +123,14 @@ public class HomeScreenUI : MonoBehaviour
 		UIManager.Instance.ui_LevelSelection.gameObject.SetActive(true);
     }
 
+	public void OnClick_OnSettting() {
+		UIManager.Instance.ui_SettingScrenn.gameObject.SetActive(true);
+	}
+
+	public void OnClick_OnDailyTask() {
+		ui_DailyTask.gameObject.SetActive(true);
+	}
+
 
 
 

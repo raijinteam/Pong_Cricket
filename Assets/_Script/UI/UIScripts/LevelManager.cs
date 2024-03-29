@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -58,4 +59,6 @@ public class LevelManager : MonoBehaviour
 	{
 		return all_LevelData[_index].entryFee;
 	}
+
+  
 }

@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: Blitz
   m_EditorClassIdentifier: 
   str_AbilityName: Blitz
-  sprite_AbilityIcon: {fileID: 21300000, guid: cb873b07dc75243c1942d89018500c32, type: 3}
+  myAbiltyType: 4
+  sprite_AbilityIcon: {fileID: 21300000, guid: f1fa7e402128ee949bc69eaef5578ba4, type: 3}
+  isAbilityUnlocked: 0
   str_Description: Upon striking the ball, make it vanish until your opponent makes
     contact
-  isUnlocked: 0
   numberOfProperties: 2
   all_PropertiesNames:
   - Active Time

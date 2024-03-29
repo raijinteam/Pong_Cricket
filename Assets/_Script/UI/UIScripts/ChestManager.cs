@@ -112,16 +112,22 @@ public class ChestManager : MonoBehaviour
 		FillTheEmptySlotWithAChest();
 	}
 
+	public void GetChestRewardForTest() {
+        if (IsRewardingWithChestPossible()) {
+            Debug.Log("Found 1 empty Slot at index : " + currentEmptySlotIndex);
+            FillTheEmptySlotWithAChest();
+        }
+    }
+
 	private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.C))
 		{
-			if (IsRewardingWithChestPossible())
-			{
-				Debug.Log("Found 1 empty Slot at index : " + currentEmptySlotIndex);
-				FillTheEmptySlotWithAChest();
-			}
-		}
+            if (IsRewardingWithChestPossible()) {
+                Debug.Log("Found 1 empty Slot at index : " + currentEmptySlotIndex);
+                FillTheEmptySlotWithAChest();
+            }
+        }
 
 		if (isChestUnlockInProgress)
 		{
@@ -240,14 +246,37 @@ public class ChestManager : MonoBehaviour
 
 		return gemsRange;
 	}
+    public int[] GetCommanRewardRange(int _slotIndex) {
+        int[] Comman = new int[2];
 
-	public int GetTotalDifferentCardsUserCanGet(int _slotIndex)
+        Comman[0] = all_ChestSlots[_slotIndex].chestInThisSlot.all_NormalCardRewardRange[all_ChestSlots[_slotIndex].chestLevelIndex];
+        Comman[1] = all_ChestSlots[_slotIndex].chestInThisSlot.all_NormalCardRewardRange[all_ChestSlots[_slotIndex].chestLevelIndex];
+
+        return Comman;
+    }
+
+    public int[] GetRareRewardRange(int _slotIndex) {
+        int[] Comman = new int[2];
+
+        Comman[0] = all_ChestSlots[_slotIndex].chestInThisSlot.all_RareCardRewardRange[all_ChestSlots[_slotIndex].chestLevelIndex];
+        Comman[1] = all_ChestSlots[_slotIndex].chestInThisSlot.all_RareCardRewardRange[all_ChestSlots[_slotIndex].chestLevelIndex];
+
+        return Comman;
+    }
+
+
+    public int[] GetEpicRewardRange(int _slotIndex) {
+        int[] Comman = new int[2];
+
+        Comman[0] = all_ChestSlots[_slotIndex].chestInThisSlot.all_EpicCardRewardRange[all_ChestSlots[_slotIndex].chestLevelIndex];
+        Comman[1] = all_ChestSlots[_slotIndex].chestInThisSlot.all_EpicCardRewardRange[all_ChestSlots[_slotIndex].chestLevelIndex];
+
+        return Comman;
+    }
+
+    public int GetTotalDifferentCardsUserCanGet(int _slotIndex)
 	{
-		int cardCount = 0;
-		cardCount += all_ChestSlots[_slotIndex].chestInThisSlot.maxNumberOfCommonCharactersToReward;
-		cardCount += all_ChestSlots[_slotIndex].chestInThisSlot.maxNumberOfRareCharactersToReward;
-		cardCount += all_ChestSlots[_slotIndex].chestInThisSlot.maxNumberOfEpicCharactersToReward;
-
+		int cardCount = all_ChestSlots[_slotIndex].chestInThisSlot.maxNumberOfDifferentCardsToReward;
 		return cardCount;
 	}
 
@@ -273,6 +302,11 @@ public class ChestManager : MonoBehaviour
 
 		return totalTime;
 	}
+
+	public ChestSlot GetSlot(int index) {
+		return all_ChestSlots[index];
+	}
+	
 
 	#region Data Save and Get
 
@@ -300,4 +334,20 @@ public class ChestManager : MonoBehaviour
 	}
 
 	#endregion
+
+	
+
+	public bool IsAnyChestTimecalcuLationStart() {
+
+		bool isNoTimeCaluclation = false;
+
+		for (int i = 0; i < all_ChestSlots.Length; i++) {
+			if (all_ChestSlots[i].slotState == SlotState.ChestUnlockInProgress) {
+				isNoTimeCaluclation = true;
+				break;
+			}
+		}
+
+		return isNoTimeCaluclation;
+	}
 }

@@ -1,11 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Powerup : MonoBehaviour {
+public abstract class Powerup : MonoBehaviour {
 
-    public MyPowerUp PowerupStatus;
-    public PowerUpType myType;
+    [field : SerializeField]public MyPowerUp PowerupStatus { get;  set; }
+    [field: SerializeField] public AbilityType myType { get; set; }
+   
+    protected bool isPowerupActive;
+
+    private void OnEnable() {
+        PowerUpManager.Instance.ActivetedPower += ActivtedMyPowerup;
+        PowerUpManager.Instance.DeactvetedPowerup += DeActivtedMyPowerup;
+    }
+
+
+
+    private void OnDisable() {
+        PowerUpManager.Instance.ActivetedPower -= ActivtedMyPowerup;
+        PowerUpManager.Instance.DeactvetedPowerup -= DeActivtedMyPowerup;
+    }
+
+   public abstract void ActivtedMyPowerup(AbilityType type, bool Isplayer);
+
+    public abstract void DeActivtedMyPowerup(); 
 }
 
 [System.Serializable]

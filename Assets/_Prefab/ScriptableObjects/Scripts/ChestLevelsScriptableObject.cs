@@ -12,11 +12,14 @@ public class ChestLevelsScriptableObject : ScriptableObject
 	public int[] all_MaximumCoinRewardBasedOnLevel;
 	public int[] all_MinimumGemRewardBasedOnLevel;
 	public int[] all_MaximumGemRewardBasedOnLevel;
-	public int maxNumberOfCommonCharactersToReward; // number of different characters to reward
+	//public int maxNumberOfCommonCharactersToReward; // number of different characters to reward
+	public int guaranteedRareCardsToReward;
+	public int guaranteedEpicCardsToReward;
+	public int maxNumberOfDifferentCardsToReward;
 	public int[] all_NormalCardRewardRange;
-	public int maxNumberOfRareCharactersToReward; // number of different characters to reward
+	//public int maxNumberOfRareCharactersToReward; // number of different characters to reward
 	public int[] all_RareCardRewardRange;
-	public int maxNumberOfEpicCharactersToReward; // number of different characters to reward
+	//public int maxNumberOfEpicCharactersToReward; // number of different characters to reward
 	public int[] all_EpicCardRewardRange;
 
 	[Header("Unlock Config")]

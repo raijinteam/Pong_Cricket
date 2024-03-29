@@ -15,9 +15,11 @@ public class ShopChestInfoUI : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI txt_EpicCardsRewardRange;
 	[SerializeField] private GameObject panel_EpicCards;
 	[SerializeField] private TextMeshProUGUI txt_UnlockPrice;
+	private ChestShopScriptableObject myChest;
 
     public void SetChestPanel(ChestShopScriptableObject _chestInfo)
 	{
+		myChest = _chestInfo;
 		gameObject.SetActive(true);
 		txt_ChestName.text = _chestInfo.str_ChestName;
 		img_ChestIcon.sprite = _chestInfo.sprite_ChestIcon;
@@ -55,5 +57,15 @@ public class ShopChestInfoUI : MonoBehaviour
 	public void OnClick_Close()
 	{
 		gameObject.SetActive(false);
+	}
+	public void OnClick_OnBuyChest() {
+		if (DataManager.Instance.Gems < myChest.costToOpenTheChest) {
+			Debug.Log("You have No gems To Buy This Chest");
+		}
+
+		this.gameObject.SetActive(false);
+		UIManager.Instance.ui_ChestOpping.ActavetedShopBaseChest(myChest);
+		
+
 	}
 }

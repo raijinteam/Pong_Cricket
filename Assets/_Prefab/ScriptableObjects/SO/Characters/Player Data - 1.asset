@@ -47,8 +47,9 @@ MonoBehaviour:
   - 6
   str_PlayerName: Player - 1
   playerRarity: 0
-  sprite_PlayerIcon: {fileID: 21300000, guid: 2e85f359159e7438f9689642237f61f3, type: 3}
+  sprite_PlayerIcon: {fileID: 21300000, guid: 91ff04bc581084a45b40fef7f7266a50, type: 3}
   isUnlocked: 1
-  cardsRequiredToUnlock: 25
+  cardsRequiredToUnlock: 5
   all_UpgradePrice: 14000000250000002800000030000000320000003a00000049000000590000006400000078000000
   all_RequiredCardsToUpgrade: 1e0000003200000064000000900100003002000058020000200300005203000084030000e8030000
+  chestIndex: 0

@@ -9,8 +9,14 @@ public class PowerUpPaddleExtenSion : Powerup {
     private float flt_CurrentTime;  //Current Runing Time
     private bool hasPlayerActivatedPowerup;  
 
+
+   
+
     private void Update() {
         if (!GameManager.Instance.IsGameRunning) {
+            return;
+        }
+        if (!isPowerupActive) {
             return;
         }
         PowerUpTimeCalculation();
@@ -21,36 +27,27 @@ public class PowerUpPaddleExtenSion : Powerup {
         flt_CurrentTime += Time.deltaTime;
         if (flt_CurrentTime > flt_ActiveTime) {
 
-            DeActivePower();
+            DeActivtedMyPowerup();
         }
     }
 
 
 
-
-
-    // End Of PowerUp Precedure
-    public void DeActivePower() {
-
-        if (hasPlayerActivatedPowerup) {
-
-            GameManager.Instance.CurrentGamePlayer.ResetScale(flt_SizeIncreasedValue);
-        }
-        else {
-            GameManager.Instance.CurrentGamePlayerAI.ResetScale(flt_SizeIncreasedValue);
-
-        }
-        this.gameObject.SetActive(false);
-    }
 
 
    
 
-    // This Powerup Work Both
-    public void ActivatePaddleExtensionPowerUp(bool isplayer) {
+    public override void ActivtedMyPowerup(AbilityType type, bool Isplayer) {
+        if (myType != type) {
+            return;
+        }
 
+        int index = AbilityManager.Instance.GetAbilityCurrentLevelWithType(myType);
+        flt_ActiveTime = AbilityManager.Instance.GetAbliltyData(myType).all_PropertyOneValues[index];
+        flt_SizeIncreasedValue   = AbilityManager.Instance.GetAbliltyData(myType).all_PropertyTwoValues[index];
+        flt_CurrentTime = 0;
         // Player Scale Increased
-        if (isplayer) {
+        if (Isplayer) {
 
             GameManager.Instance.CurrentGamePlayer.ExtendPadle(flt_SizeIncreasedValue);
 
@@ -62,9 +59,20 @@ public class PowerUpPaddleExtenSion : Powerup {
 
         }
 
-        hasPlayerActivatedPowerup = isplayer;
-        flt_CurrentTime = 0;
-        this.gameObject.SetActive(true);
+        hasPlayerActivatedPowerup = Isplayer;
+        isPowerupActive = true;
+    }
 
+    public override void DeActivtedMyPowerup() {
+        isPowerupActive = false;
+
+        if (hasPlayerActivatedPowerup) {
+
+            GameManager.Instance.CurrentGamePlayer.ResetScale(flt_SizeIncreasedValue);
+        }
+        else {
+            GameManager.Instance.CurrentGamePlayerAI.ResetScale(flt_SizeIncreasedValue);
+
+        }
     }
 }

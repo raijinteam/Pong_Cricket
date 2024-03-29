@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Vanishing Shot
   m_EditorClassIdentifier: 
   str_AbilityName: Vanshing Shot
-  sprite_AbilityIcon: {fileID: 21300000, guid: 563ca0f21bfce408b86459e92e3deaa1, type: 3}
+  myAbiltyType: 3
+  sprite_AbilityIcon: {fileID: 21300000, guid: a6ada39801f7e99469e3448630d33f27, type: 3}
   isAbilityUnlocked: 1
   str_Description: Upon striking the ball, make it vanish until your opponent makes
     contact

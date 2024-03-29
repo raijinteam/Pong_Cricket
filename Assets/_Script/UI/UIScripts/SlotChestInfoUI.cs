@@ -9,11 +9,14 @@ public class SlotChestInfoUI : MonoBehaviour
 	[SerializeField] private GameObject panel_OptionToUnlockThisChest;
 	[SerializeField] private GameObject panel_ChestUnlockingInProgress;
 	[SerializeField] private TextMeshProUGUI txt_TimeLeftForUnlock;
-	[SerializeField] private TextMeshProUGUI txt_ChestLocation;
+	//[SerializeField] private TextMeshProUGUI txt_ChestLocation;
 	[SerializeField] private Image img_ChestIcon;
 	[SerializeField] private TextMeshProUGUI txt_CoinRange;
 	[SerializeField] private TextMeshProUGUI txt_GemRange;
-	[SerializeField] private TextMeshProUGUI txt_NumberOfDifferentCards;
+	
+	[SerializeField] private TextMeshProUGUI txt_CommanCardRange;
+	[SerializeField] private TextMeshProUGUI txt_RareCardRange;
+	[SerializeField] private TextMeshProUGUI txt_EpicCardRange;
 	[SerializeField] private TextMeshProUGUI txt_UnlockTime;
 
 	private int currentOpenedChestIndex;
@@ -53,7 +56,7 @@ public class SlotChestInfoUI : MonoBehaviour
 
 	private void SetChestOpenInfo()
 	{
-		txt_ChestLocation.text = ChestManager.Instance.GetChestLocationName(currentOpenedChestIndex);
+		//txt_ChestLocation.text = ChestManager.Instance.GetChestLocationName(currentOpenedChestIndex);
 		img_ChestIcon.sprite = ChestManager.Instance.GetIconOfChest(currentOpenedChestIndex);
 
 		int[] coinRange = new int[2];
@@ -64,8 +67,24 @@ public class SlotChestInfoUI : MonoBehaviour
 		gemRange = ChestManager.Instance.GetGemsRewardRange(currentOpenedChestIndex);
 		txt_GemRange.text = gemRange[0] + "-" + gemRange[1];
 
-		txt_NumberOfDifferentCards.text = ChestManager.Instance.GetTotalDifferentCardsUserCanGet(currentOpenedChestIndex).ToString();
-		txt_UnlockTime.text = ChestManager.Instance.GetUnlockTimeInString(currentOpenedChestIndex);
+		//txt_TotalCard.text = ChestManager.Instance.GetTotalDifferentCardsUserCanGet(currentOpenedChestIndex).ToString();
+        int[] commanCard = new int[2];
+        commanCard = ChestManager.Instance.GetCommanRewardRange(currentOpenedChestIndex);
+        txt_CommanCardRange.text = commanCard[0] + "-" + commanCard[1];
+
+
+        int[] Rare = new int[2];
+        Rare = ChestManager.Instance.GetRareRewardRange(currentOpenedChestIndex);
+        txt_CommanCardRange.text = Rare[0] + "-" + Rare[1];
+
+
+        int[] epic = new int[2];
+        epic = ChestManager.Instance.GetEpicRewardRange(currentOpenedChestIndex);
+        txt_CommanCardRange.text = epic[0] + "-" + epic[1];
+
+
+
+        txt_UnlockTime.text = ChestManager.Instance.GetUnlockTimeInString(currentOpenedChestIndex);
 	}
 
 
@@ -80,9 +99,22 @@ public class SlotChestInfoUI : MonoBehaviour
 
 		panel_ChestUnlockingInProgress.SetActive(true);
 		panel_OptionToUnlockThisChest.SetActive(false);
-
+		
 		ChestManager.Instance.StartChestUnlockProcess(currentOpenedChestIndex);		
 	}
+
+
+	public void OnClick_OnPayCurrencyAndOpenedChest() {
+
+		// Remove Currency
+
+        UIManager.Instance.ui_ChestOpping.ActivetedLevelChestOpnened(ChestManager.Instance.GetSlot(currentOpenedChestIndex));
+        ChestManager.Instance.UserCollectedTheChestSlot(currentOpenedChestIndex);
+		UIManager.Instance.ui_HomeScreen.SetChestData(currentOpenedChestIndex);
+		this.gameObject.SetActive(false);
+
+    }
+
 
 	public void OnClick_WatchAdToSkipTime()
 	{

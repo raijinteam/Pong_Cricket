@@ -30,7 +30,7 @@ public class DailyRunsRewardHandler : MonoBehaviour
     {
         DailyTaskManager.AddRunsHandler -= AddRunsToThisTask;
     }
-
+  
     public void SetDailyRunsChallengeAvailability()
 	{
         if (PlayerPrefs.HasKey(RewardPlayerPrefKeys.KEY_CURRENTRUNSPROGRESS))
@@ -103,6 +103,10 @@ public class DailyRunsRewardHandler : MonoBehaviour
             return;
 		}
 
+      
+
+         
+        
         currentRunsScored += _runs;
         if(currentRunsScored >= targetRunsRequired)
 		{
@@ -119,6 +123,12 @@ public class DailyRunsRewardHandler : MonoBehaviour
         hasClaimedDailyRunsReward = true;
         UpdateRewardClaimStatus(1);
         SetTimeForNextReward();
+    }
+
+    public void SkipTimeByUser() {
+
+        Debug.Log("New Data SetUp");
+        ActivateDailyRunsChallengeAgain();
     }
 
     public TimeSpan GetCurrentTimeLeft()

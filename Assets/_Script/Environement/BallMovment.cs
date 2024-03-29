@@ -77,12 +77,17 @@ public class BallMovment : MonoBehaviour {
 
 
     private void OnTriggerEnter2D(Collider2D collision) {
+
+        if (!GameManager.Instance.IsGameRunning) {
+            return;
+        }
         if (collision.CompareTag(TagName.tag_Runner)) {
 
             if (isBatTouch && shouldWaitBeforeCollidingWithWallRuns) {
                 GameManager.Instance.IncreasedRun(collision.GetComponent<Collder_Runner>().MyRunValue);
                 shouldWaitBeforeCollidingWithWallRuns = false;
-                StartCoroutine(DelayofTwoRunner());
+                
+               
             }
            
         }

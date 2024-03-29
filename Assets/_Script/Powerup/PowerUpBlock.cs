@@ -14,6 +14,9 @@ public class PowerUpBlock : Powerup {
         if (!GameManager.Instance.IsGameRunning) {
             return;
         }
+        if (!isPowerupActive) {
+            return;
+        }
         PowerUpTimeCalculation();
     }
 
@@ -22,28 +25,27 @@ public class PowerUpBlock : Powerup {
         flt_CurrentTime += Time.deltaTime;
         if (flt_CurrentTime > flt_ActiveTime) {
 
-            DeActivePower();
+            DeActivtedMyPowerup();
         }
     }
 
 
 
 
-    // End Of PowerUp Precedure
-    public void DeActivePower() {
-
-        GameManager.Instance.WallBlockDeActivated();
-        this.gameObject.SetActive(false);
+    public override void ActivtedMyPowerup(AbilityType type, bool Isplayer) {
+        if (myType != type) {
+            return;
+        }
+        int index = AbilityManager.Instance.GetAbilityCurrentLevelWithType(myType);
+        flt_ActiveTime = AbilityManager.Instance.GetAbliltyData(myType).all_PropertyOneValues[index];
+        no_OfBlock = ((int)AbilityManager.Instance.GetAbliltyData(myType).all_PropertyTwoValues[index]);
+        isPowerupActive = true;
+        GameManager.Instance.WallBlockActivated(no_OfBlock);
+        flt_CurrentTime = 0;
     }
 
-    // This Powerup Work BatsMan
-    public void ActivateBlockPowerUp(bool isplayer) {
-
-        // Get No of Wall Block
-        GameManager.Instance.WallBlockActivated(no_OfBlock);
-        
-        flt_CurrentTime = 0;
-        this.gameObject.SetActive(true);
-
+    public override void DeActivtedMyPowerup() {
+        GameManager.Instance.WallBlockDeActivated();
+        isPowerupActive = false;
     }
 }

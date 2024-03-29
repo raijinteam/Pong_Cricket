@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
 
 public class PlayerAI : MonoBehaviour {
 
@@ -63,6 +64,10 @@ public class PlayerAI : MonoBehaviour {
    
 
     private bool isPaddleRotate = false;  // Status Of Paddle Rotating Or not
+
+    // Run Increased
+    private bool IsActivetedRunIncreased;
+    private int RunIncreased;
  
     private void Start() {
       
@@ -353,6 +358,9 @@ public class PlayerAI : MonoBehaviour {
         if (IsBallSplitPowerupActive) {
             spawnBall();
         }
+        if (IsActivetedRunIncreased) {
+            GameManager.Instance.IncreasedRun(RunIncreased);
+        }
 
         Debug.Log("after Ai Force" + flt_BallForce);
         return flt_BallForce;
@@ -370,6 +378,10 @@ public class PlayerAI : MonoBehaviour {
 
         if (point.x < 0) {
             flt_BallForce = -flt_BallForce;
+        }
+
+        if (isSpinDocterActiveted) {
+            flt_BallForce += flt_BallForce * 0.01f * per_Swingforce;
         }
 
         return flt_BallForce;
@@ -472,6 +484,8 @@ public class PlayerAI : MonoBehaviour {
     [SerializeField] private bool IsBallSplitPowerupActive;
     [SerializeField] private SmallBallMotion prefab_SmallBall;
     [SerializeField] private int NoOfBall;
+    private bool isSpinDocterActiveted;
+    private int per_Swingforce;
 
     private void spawnBall() {
       
@@ -508,6 +522,25 @@ public class PlayerAI : MonoBehaviour {
     public void ResetScale(float _ScaleIncrease) {
         transform.localScale -= Vector3.one * _ScaleIncrease;
         SetValueOfClampPosition();
+    }
+
+    public void ActivetedRunIncreased(int runIncreased) {
+        IsActivetedRunIncreased = true;
+        this.RunIncreased = runIncreased;
+    }
+
+    public void DeActivetedRunIncreased() {
+        IsActivetedRunIncreased = false;
+       
+    }
+
+    public void ActivetedSpinDocter(int per_SwingForce) {
+        isSpinDocterActiveted = true;
+        this.per_Swingforce = per_SwingForce;
+    }
+
+    public void DeActivetedSpinDocter() {
+        isSpinDocterActiveted = false;
     }
 
     #endregion

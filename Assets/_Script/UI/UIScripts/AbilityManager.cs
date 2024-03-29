@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -109,4 +110,38 @@ public class AbilityManager : MonoBehaviour
 
 		return false;
 	}
+
+	public AbilitiesDataScriptableObject GetAbliltyData(AbilityType myType) {
+        int index = 0;
+        for (int i = 0; i < all_Abilities.Length; i++) {
+            if (all_Abilities[i].myAbiltyType == myType) {
+
+                index = i;
+                break;
+            }
+        }
+
+        return all_Abilities[index];
+    }
+
+    public int GetAbilityCurrentLevelWithType(AbilityType myType) {
+
+		int index = 0;
+		for (int i = 0; i < all_Abilities.Length; i++) {
+			if (all_Abilities[i].myAbiltyType == myType) {
+
+				index =  all_CurrentLevel[i];
+				break;
+			}
+		}
+
+		return index;
+        
+    }
+
+    public AbilitiesDataScriptableObject GetAbliltyData(int index) {
+        
+
+        return all_Abilities[index];
+    }
 }

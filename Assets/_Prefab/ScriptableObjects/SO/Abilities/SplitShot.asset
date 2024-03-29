@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: SplitShot
   m_EditorClassIdentifier: 
   str_AbilityName: SplitShot
-  sprite_AbilityIcon: {fileID: 21300000, guid: 7c38202bc1125471cb46578c474ed80e, type: 3}
+  myAbiltyType: 8
+  sprite_AbilityIcon: {fileID: 21300000, guid: 70e186341cd181b45aca7bd96ef3f943, type: 3}
+  isAbilityUnlocked: 0
   str_Description: Spawn extra balls on hit to score extra runs or get extra wickets
-  isUnlocked: 0
   numberOfProperties: 2
   all_PropertiesNames:
   - Active Time

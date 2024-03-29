@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Supersize
   m_EditorClassIdentifier: 
   str_AbilityName: Supersize
-  sprite_AbilityIcon: {fileID: 21300000, guid: 8fd521d3fc1eb46fd92b0f29508e5f76, type: 3}
+  myAbiltyType: 7
+  sprite_AbilityIcon: {fileID: 21300000, guid: 99192224820723247ba7efa6c65c6dae, type: 3}
+  isAbilityUnlocked: 0
   str_Description: Reduce your opponents movement and rotation speed
-  isUnlocked: 0
   numberOfProperties: 2
   all_PropertiesNames:
   - Active Time

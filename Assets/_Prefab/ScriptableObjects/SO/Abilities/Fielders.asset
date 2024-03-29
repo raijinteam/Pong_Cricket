@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Fielders
   m_EditorClassIdentifier: 
   str_AbilityName: Fielders
-  sprite_AbilityIcon: {fileID: 21300000, guid: 0358e94906c704657ab9ca0a8ce5a588, type: 3}
+  myAbiltyType: 2
+  sprite_AbilityIcon: {fileID: 21300000, guid: ba274651efd5125439a9075ce383d85f, type: 3}
+  isAbilityUnlocked: 0
   str_Description: Add fielders on your half to help you
-  isUnlocked: 0
   numberOfProperties: 2
   all_PropertiesNames:
   - Active Time

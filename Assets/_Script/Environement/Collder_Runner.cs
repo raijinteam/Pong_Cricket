@@ -18,6 +18,36 @@ public class Collder_Runner : MonoBehaviour
     private float flt_Height;
 
     private bool isBlocked;
+    private bool isActivtedBonus;
+    private int bonus;
+
+
+    private void OnEnable() {
+        PowerUpManager.Instance.boundryBonusActiveted += ActivetedBonus;
+        PowerUpManager.Instance.boundryBonusDeActiveted += DeActivetedBouns;
+    }
+    private void OnDisable() {
+        PowerUpManager.Instance.boundryBonusActiveted -= ActivetedBonus;
+        PowerUpManager.Instance.boundryBonusDeActiveted -= DeActivetedBouns;
+    }
+
+
+    private void ActivetedBonus(int bonus) {
+        if (runValue == 4) {
+            isActivtedBonus = true;
+            this.bonus = bonus;
+        }
+        else if (runValue == 6) {
+            isActivtedBonus = true;
+            this.bonus = bonus;
+        }
+       
+    }
+    private void DeActivetedBouns() {
+        isActivtedBonus = false;
+    }
+
+   
 
     // Property
     public int MyRunValue {
@@ -25,6 +55,9 @@ public class Collder_Runner : MonoBehaviour
         get {
             if (isBlocked) {
                 return 0;
+            }
+            else if (isActivtedBonus) {
+                return (runValue + bonus);
             }
             else {
                 return runValue;

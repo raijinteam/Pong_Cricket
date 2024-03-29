@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
 
 public class PowerupGambler : Powerup {
 
@@ -15,6 +17,9 @@ public class PowerupGambler : Powerup {
         if (!GameManager.Instance.IsGameRunning) {
             return;
         }
+        if (!isPowerupActive) {
+            return;
+        }
         PowerUpTimeCalculation();
     }
 
@@ -23,27 +28,31 @@ public class PowerupGambler : Powerup {
         flt_CurrentTime += Time.deltaTime;
         if (flt_CurrentTime > flt_ActiveTime) {
 
-            DeActivePower();
+            DeActivtedMyPowerup();
         }
     }
 
 
 
 
-    // End Of PowerUp Precedure
-    public void DeActivePower() {
+    
 
-        GameManager.Instance.DeActivateGamblerPowerup();
-        this.gameObject.SetActive(false);
+    public override void ActivtedMyPowerup(AbilityType type, bool Isplayer) {
+        if (myType != type) {
+            return;
+        }
+
+        int index = AbilityManager.Instance.GetAbilityCurrentLevelWithType(myType);
+        flt_ActiveTime = AbilityManager.Instance.GetAbliltyData(myType).all_PropertyOneValues[index];
+        runMultiPlier = ((int)AbilityManager.Instance.GetAbliltyData(myType).all_PropertyTwoValues[index]);
+        isPowerupActive = true;
+        GameManager.Instance.ActivateGamblerPowerup(runMultiPlier);
+        flt_CurrentTime = 0;
     }
 
-    // This Powerup Work Both
-    public void ActivateGamblerRunnerPowerUp() {
-
-        GameManager.Instance.ActivateGamblerPowerup(runMultiPlier);     
-        flt_CurrentTime = 0;
-        this.gameObject.SetActive(true);
-
+    public override void DeActivtedMyPowerup() {
+        isPowerupActive = false;
+        GameManager.Instance.DeActivateGamblerPowerup();
     }
 }
 

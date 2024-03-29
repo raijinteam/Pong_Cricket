@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Chronos
   m_EditorClassIdentifier: 
   str_AbilityName: Chronos
-  sprite_AbilityIcon: {fileID: 21300000, guid: 759ff3efa4b1d4283ac05a2b4c084b38, type: 3}
+  myAbiltyType: 5
+  sprite_AbilityIcon: {fileID: 21300000, guid: 6ad7a7ec15beb2544af7dc881826a3f8, type: 3}
+  isAbilityUnlocked: 0
   str_Description: Reduce your opponents movement and rotation speed
-  isUnlocked: 0
   numberOfProperties: 2
   all_PropertiesNames:
   - Active Time

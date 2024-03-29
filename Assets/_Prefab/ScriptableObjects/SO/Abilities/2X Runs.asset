@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: 2X Runs
   m_EditorClassIdentifier: 
   str_AbilityName: 2X Runs
-  sprite_AbilityIcon: {fileID: 21300000, guid: 8c35201ab90e548489bbcec22209ceaf, type: 3}
+  myAbiltyType: 0
+  sprite_AbilityIcon: {fileID: 21300000, guid: 8b7e3bf5e89c7a44f8b1c37c9cddfd31, type: 3}
   isAbilityUnlocked: 1
   str_Description: Any runs you score gets doubled
   numberOfProperties: 1

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51b3793d5160f6b428c5c845dc4c7d91, type: 3}
+  m_Name: Common Chest 2
+  m_EditorClassIdentifier: 
+  rarity: 1
+  str_ChestName: Common
+  str_ChestIcon: {fileID: 21300000, guid: f3b7e31eb60b84b17870d0b5d926cfad, type: 3}
+  all_MinimumCoinRewardBasedOnLevel: 050000000a0000000f000000140000001e000000
+  all_MaximumCoinRewardBasedOnLevel: 140000001e00000028000000320000003c000000
+  all_MinimumGemRewardBasedOnLevel: 0100000002000000030000000400000005000000
+  all_MaximumGemRewardBasedOnLevel: 030000000500000007000000090000000c000000
+  guaranteedRareCardsToReward: 1
+  guaranteedEpicCardsToReward: 1
+  maxNumberOfDifferentCardsToReward: 3
+  all_NormalCardRewardRange: 050000000a000000
+  all_RareCardRewardRange: 0200000006000000
+  all_EpicCardRewardRange: 0200000005000000
+  rewardHours: 0
+  rewardMinutes: 0
+  rewardSeconds: 15
+  flt_RareCardRewardProbability: 5.3
+  flt_EpicCardRewardProbability: 0.3

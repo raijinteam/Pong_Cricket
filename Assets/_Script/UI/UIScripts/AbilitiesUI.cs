@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,6 +11,15 @@ public class AbilitiesUI : MonoBehaviour
     [SerializeField] private AbilityInfoUI[] all_AbilitiesWhichGotInstantiated;
 	[SerializeField] private GameObject panel_UpgradeButton;
 	[SerializeField] private TextMeshProUGUI txt_UpgradePrice;
+	[SerializeField] private GameObject obj_Scroll;
+	[SerializeField] private SelctedAbiltyAnimation selctedAbiltyAnimation;
+	[SerializeField] private Panel_SelctedSummry panel_SelctedSummry;
+
+
+	
+
+	
+	
 
 	private void OnEnable()
 	{
@@ -89,12 +99,17 @@ public class AbilitiesUI : MonoBehaviour
 		// Got the list now randomize the index
 		int randomUpgradeIndex = Random.Range(0, list_AbilitiesIndexesWhichWeCanUpgrade.Count);
 		Debug.Log("random Upgrade index : " + randomUpgradeIndex);
-		AbilityManager.Instance.UpgradeOrUnlockThisAbility(list_AbilitiesIndexesWhichWeCanUpgrade[randomUpgradeIndex]);
-		SetUpgradeButtonInfo();
-		all_AbilitiesWhichGotInstantiated[list_AbilitiesIndexesWhichWeCanUpgrade[randomUpgradeIndex]].UpdateMyPanel();
-	}
 
-	public void OnClick_Upgrade()
+		AbilityManager.Instance.UpgradeOrUnlockThisAbility(list_AbilitiesIndexesWhichWeCanUpgrade[randomUpgradeIndex]);
+        ActivetIconPanel(randomUpgradeIndex);
+       
+
+
+    }
+
+   
+
+    public void OnClick_Upgrade()
 	{
 		if (DataManager.Instance.coins < AbilityManager.Instance.GetCurrentPriceToUnlockAnAbility())
 		{
@@ -102,7 +117,32 @@ public class AbilitiesUI : MonoBehaviour
 			return;
 		}
 
-		DataManager.Instance.coins -= AbilityManager.Instance.GetCurrentPriceToUnlockAnAbility();
+		DataManager.Instance.DecresedCoin(AbilityManager.Instance.GetCurrentPriceToUnlockAnAbility());
 		UpgradeProcedure();
 	}
+
+    private void ActivetIconPanel(int randomUpgradeIndex) {
+        UIManager.Instance.ui_MenuSelectionScreen.gameObject.SetActive(false);
+        UIManager.Instance.panel_CommanMenu.gameObject.SetActive(false);
+        obj_Scroll.gameObject.SetActive(false);
+        panel_UpgradeButton.gameObject.SetActive(false);
+        selctedAbiltyAnimation.ActivtedAnimation(randomUpgradeIndex);
+
+    }
+
+    public void CompltedSelectedPanel(int selctedSprite) {
+
+		selctedAbiltyAnimation.gameObject.SetActive(false);
+		
+		panel_SelctedSummry.ActivtedSummry(selctedSprite);
+      
+    }
+	public void CompltedSelctedSummry() {
+        SetUpgradeButtonInfo();
+        InstantiateAllTheAbilities();
+        panel_SelctedSummry.gameObject.SetActive(false);
+        UIManager.Instance.ui_MenuSelectionScreen.gameObject.SetActive(true);
+        UIManager.Instance.panel_CommanMenu.gameObject.SetActive(true);
+        obj_Scroll.gameObject.SetActive(true);
+    }
 }

@@ -9,7 +9,7 @@ public class TutorialHandler : MonoBehaviour {
 
     public static TutorialHandler instance;
 
-    [SerializeField] private GameObject obj_bg;
+  
     [SerializeField] private Tutorial_PopUpMessage tutorial_PopUpMessage;
     [SerializeField] private tutorial_Player player;
     [SerializeField] private Tutorial_PlayerAI playerAI;
@@ -65,12 +65,12 @@ public class TutorialHandler : MonoBehaviour {
 
         panel_MainMenu.SetActive(false);
         ui_Tutorial.gameObject.SetActive(true);
-        obj_bg.SetActive(false);
+       
         SetBgAspreScreen();
         player.SetClampPostion();
         wicket.gameObject.SetActive(false);
         DisableAllRunnerCollider();
-        ChangeTutorial(Tutorial_State.LearnScoreingSytem);
+        ChangeTutorial(Tutorial_State.LearnBowling);
 
     }
 
@@ -310,14 +310,15 @@ public class TutorialHandler : MonoBehaviour {
         player.gameObject.SetActive(false);
         playerAI.gameObject.SetActive(false);
         sr.gameObject.SetActive(false);
-        obj_bg.gameObject.SetActive(true);
         panel_MainMenu.SetActive(true);
         ui_Tutorial.gameObject.SetActive(false);
+        UIManager.Instance.panel_MainMenu.SetActive(true);
+        DataManager.Instance.ShownGameTutorial();
 
     }
     public void CompletedTutorial() {
         Destroy(this.gameObject);
-        UIManager.Instance.panel_MainMenu.gameObject.SetActive(true);
+        UIManager.Instance.panel_MainMenu.SetActive(true);
     }
 
 

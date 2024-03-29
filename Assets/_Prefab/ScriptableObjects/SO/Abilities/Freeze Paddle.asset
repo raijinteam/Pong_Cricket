@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Freeze Paddle
   m_EditorClassIdentifier: 
   str_AbilityName: Freeze
-  sprite_AbilityIcon: {fileID: 21300000, guid: aef20f8e21ef14da9ba50e7d8df50510, type: 3}
+  myAbiltyType: 1
+  sprite_AbilityIcon: {fileID: 21300000, guid: bddc2630b6195dc4fb8cf24bc438ab8d, type: 3}
   isAbilityUnlocked: 1
   str_Description: Freeze opponents in place every 0.5 seconds for some duration
   numberOfProperties: 2
