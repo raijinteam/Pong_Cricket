@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ChestShop", menuName = "ScriptableObjects/ChestShopData")]
 public class ChestShopScriptableObject : ScriptableObject
 {
+    public int chestIndex;
     public string str_ChestName;
     public Sprite sprite_ChestIcon;
     public int costToOpenTheChest;

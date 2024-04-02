@@ -49,7 +49,7 @@ public class NotificationCantroller : MonoBehaviour {
 
             TimeSpan Time = RewardsManager.Instance.dailyRewardData.GetCurrentTimeLeft();
             float second = Time.Seconds;
-            Debug.Log("Pendingsecond for Daily Reward" + second);
+           
            
             //SetDailyNotification("Pong2d" , "DailyReward Active" , second);
 

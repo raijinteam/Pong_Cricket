@@ -1,3 +1,4 @@
+using DG.Tweening.Core;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -84,21 +85,31 @@ public class BallMovment : MonoBehaviour {
         if (collision.CompareTag(TagName.tag_Runner)) {
 
             if (isBatTouch && shouldWaitBeforeCollidingWithWallRuns) {
+
+
+                Debug.Log("RunIncreased");
+                collision.GetComponent<Collder_Runner>().BallTouch();
                 GameManager.Instance.IncreasedRun(collision.GetComponent<Collder_Runner>().MyRunValue);
                 shouldWaitBeforeCollidingWithWallRuns = false;
+
+                if (this.gameObject.activeSelf) {
+                    StartCoroutine(DelayofTwoRunner());
+                }
                 
-               
+
+
             }
            
         }
         else if (collision.CompareTag(TagName.tag_Wicket)) {
 
-            Debug.Log("TRIGGER WICKET");
+           
             GameManager.Instance.IncreasedWicket();
        
         }
         else if (collision.CompareTag(TagName.tag_MaxRun)) {
             Debug.Log("MaxRunEnterd");
+            collision.GetComponent<Collder_Runner>().BallTouch();
             GameManager.Instance.IncreasedRun(collision.GetComponent<Collder_Runner>().MyRunValue);
            
         }
@@ -395,10 +406,12 @@ public class BallMovment : MonoBehaviour {
         rb.angularVelocity = 0;
         isSwinging = false;
         transform.position = Vector3.zero;    
-        shouldWaitBeforeCollidingWithWallRuns = true;
-        isBatTouch = false;
+        
         EnableBallIfInvisible();
         StopAllCoroutines();
+        shouldWaitBeforeCollidingWithWallRuns = true;
+
+        isBatTouch = false;
         coro_InvicipbelPowerup = null; 
     }
 

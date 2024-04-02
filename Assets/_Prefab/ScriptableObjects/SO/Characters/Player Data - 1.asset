@@ -13,38 +13,38 @@ MonoBehaviour:
   m_Name: Player Data - 1
   m_EditorClassIdentifier: 
   all_BattingPower:
-  - 1.5
-  - 2
-  - 2.5
-  - 3
-  - 3.5
-  - 4
-  - 4.5
-  - 5
-  - 5.5
-  - 6
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
   all_BowlingPower:
-  - 1
-  - 1.2
-  - 1.5
-  - 2
-  - 2.4
-  - 3
-  - 3.8
-  - 4
-  - 4.6
-  - 5.2
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
   all_SpinForce:
-  - 2
-  - 2.6
-  - 3.1
-  - 4
-  - 4
-  - 5.2
-  - 5.2
-  - 6
-  - 6
-  - 6
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
+  - 10
   str_PlayerName: Player - 1
   playerRarity: 0
   sprite_PlayerIcon: {fileID: 21300000, guid: 91ff04bc581084a45b40fef7f7266a50, type: 3}

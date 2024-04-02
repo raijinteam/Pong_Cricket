@@ -13,6 +13,42 @@ public class ScoreRunsSingleMatchAchievement : AchievementBase
     // Private Player prefs
     private string key_RunsToScore = "RunsToScoreInSingleMatchTask";
 
+
+
+    private void OnEnable() {
+        DailyTaskManager.increasedRunWhenGameOver += RunIncreased;
+    }
+
+    private void RunIncreased(int _Run) {
+        if (hasCompletedTask) {
+            return;
+        }
+
+        taskShowData taskData = new taskShowData();
+        taskData.taskName = str_AchievementDescription;
+        taskData.prevousValue = currentProgress;
+        taskData.UpdateValue = currentProgress + _Run;
+        taskData.targetValue = currentTarget;
+
+        DailyTaskManager.Instance.AddShownList(taskData);
+
+        currentProgress += _Run;
+        if (currentProgress >= currentTarget) {
+            currentProgress = currentTarget;
+            hasCompletedTask = true;
+            // DailyTaskManager.Instance.UpdateCurrentTaskPointsValue(achievementPoints);         
+        }
+
+        DailyTaskManager.Instance.SaveTaskProgress(taskIndex, currentProgress);
+        UIManager.Instance.ui_HomeScreen.SetDailyTaskPanel(); // TEMP COD
+    }
+
+   
+
+    private void OnDisable() {
+        DailyTaskManager.increasedRunWhenGameOver -= RunIncreased;
+    }
+
     public override void SetTaskCompletionTarget()
     {
         currentTarget = 1;

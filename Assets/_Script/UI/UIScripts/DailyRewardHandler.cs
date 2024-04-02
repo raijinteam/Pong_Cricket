@@ -127,6 +127,8 @@ public class DailyRewardHandler : MonoBehaviour
 	{
 		return all_RewardType[_index];
 	}
+
+    
 }
 
 public enum DailyRewardType

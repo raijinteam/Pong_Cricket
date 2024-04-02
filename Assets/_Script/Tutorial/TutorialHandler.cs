@@ -70,7 +70,7 @@ public class TutorialHandler : MonoBehaviour {
         player.SetClampPostion();
         wicket.gameObject.SetActive(false);
         DisableAllRunnerCollider();
-        ChangeTutorial(Tutorial_State.LearnBowling);
+        ChangeTutorial(Tutorial_State.learnHorizonatlMovement);
 
     }
 

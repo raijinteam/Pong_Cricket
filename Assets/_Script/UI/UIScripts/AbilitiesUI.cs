@@ -117,6 +117,7 @@ public class AbilitiesUI : MonoBehaviour
 			return;
 		}
 
+		DailyTaskManager.upgradePowerup?.Invoke();
 		DataManager.Instance.DecresedCoin(AbilityManager.Instance.GetCurrentPriceToUnlockAnAbility());
 		UpgradeProcedure();
 	}

@@ -10,6 +10,7 @@ public class Mini_GameManager : MonoBehaviour {
 
     [Header("Componnent")]
 
+    [SerializeField] private GameObject mini_ui;
     [SerializeField] private bool isTutorilaActvated;
     [SerializeField] private SpriteRenderer sr;
     [SerializeField] private Min_BallMovement ball;
@@ -38,6 +39,7 @@ public class Mini_GameManager : MonoBehaviour {
 
     private void Start() {
 
+        mini_ui.gameObject.SetActive(true);
         GameManager.Instance.obj_GameEnvironement.SetActive(false);
         SetBgAsperScreen();
         player.gameObject.SetActive(false);
@@ -98,6 +100,7 @@ public class Mini_GameManager : MonoBehaviour {
 
     public void StartMiniGame() {
 
+        mini_ui.gameObject.SetActive(false);
         Mini_UiManager.instance.Mini_GameScreen.gameObject.SetActive(true);
         setSpawnPostion();
         player.gameObject.SetActive(true);
@@ -163,6 +166,8 @@ public class Mini_GameManager : MonoBehaviour {
 
     private void GameOver() {
         isGameStart = false;
+        Debug.Log("Mini Game Calling");
+        DailyTaskManager.PlayMiniGame?.Invoke();
         Mini_UiManager.instance.mini_GameOver.gameObject.SetActive(true);
         Destroy(CurrentBall);
     }

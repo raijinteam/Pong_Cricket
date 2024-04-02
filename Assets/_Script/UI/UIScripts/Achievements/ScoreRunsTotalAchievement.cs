@@ -9,15 +9,16 @@ public class ScoreRunsTotalAchievement : AchievementBase
     [SerializeField] private int currentTarget;
     [SerializeField] private int currentProgress;
 
-	private void OnEnable()
-	{
-        DailyTaskManager.AddRunsHandler += AddRunsToThisTask;
+
+    private void OnEnable() {
+        DailyTaskManager.increasedRunWhenGameOver += AddRunsToThisTask;
     }
 
-	private void OnDisable()
-	{
-        DailyTaskManager.AddRunsHandler -= AddRunsToThisTask;
+    private void OnDisable() {
+        DailyTaskManager.increasedRunWhenGameOver -= AddRunsToThisTask;
     }
+
+
 
     private void AddRunsToThisTask(int _runs)
 	{

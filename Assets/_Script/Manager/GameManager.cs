@@ -13,12 +13,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Player prefab_Player;   //Player Prefab to Spawn Player
     [SerializeField] private PlayerAI prefab_PlayerAI;  // PlayerAI Prefab to Spawn Player
     [SerializeField] private Mini_GameManager mini_GameManager;
+    
    
     //[Header("Game Data")]
     //[SerializeField] private bool isGameRunning;   // State  Game Is Runnig Or Not
     [SerializeField] private int CurrentRun;        // GameBats Man Run
     [SerializeField] private int ChasingRun;        // Game Cahhinsg Run
     [SerializeField] private int MaxWicket = 5;   // Total No of Wicket
+    [SerializeField] private int playerLoosingwicket;
+    [SerializeField] private bool isPlayerChaseGame;
 
   
         
@@ -46,7 +49,7 @@ public class GameManager : MonoBehaviour
     [field : SerializeField]public bool IsGameRunning { get; private set; }
     [field: SerializeField] public bool HasPlayerWon { get; private set; }
     [field : SerializeField] public GameObject obj_GameEnvironement { get;  set; }
-
+   
    
 
      //BatsManPostion
@@ -90,9 +93,13 @@ public class GameManager : MonoBehaviour
     }
 
     public void StartGame() {
+
+        UIManager.Instance.ui_GameScreen.gameObject.SetActive(true);
+        UIManager.Instance.panel_MainMenu.gameObject.SetActive(false);
         // Collected All Data
         obj_GameEnvironement.gameObject.SetActive(true);
         isCompltedFirstInning = false;
+        playerLoosingwicket = 0;
         //Spawn Ball , Player , Player AI
         SpawnGameElements();
         //Set Boundry As Per Screen
@@ -114,10 +121,10 @@ public class GameManager : MonoBehaviour
         CurrentGameBallTransform = ballMovement.transform;
         // Spawn Player
        CurrentGamePlayer = Instantiate(prefab_Player, prefab_Player.transform.position, prefab_Player.transform.rotation);
-        CurrentGamePlayer.transform.name = "Player";
+        CurrentGamePlayer.transform.name = DataManager.Instance.playerName;
         //Spawn PlayerAI
         CurrentGamePlayerAI = Instantiate(prefab_PlayerAI, prefab_PlayerAI.transform.position, prefab_PlayerAI.transform.rotation);
-        CurrentGamePlayerAI.transform.name = "PlayerAI";
+        CurrentGamePlayerAI.transform.name = DataManager.Instance.playerNameAI;
     }
 
     
@@ -130,20 +137,23 @@ public class GameManager : MonoBehaviour
 
         // 50% Cahnce To Player Bat First
         int Index = Random.Range(0, 2);
+        Index = 0;
         if (Index ==0) {
 
+            isPlayerChaseGame = false;
             CurrentGamePlayer.SetPlayerState(PlayerState.BatsMan);
             CurrentGamePlayer.transform.position = batsmanPostion;
             CurrentGamePlayerAI.SetPlayerState(PlayerState.Bowler);
             CurrentGamePlayerAI.transform.position = bowlerPostion;
-            UIManager.Instance.ui_GameScreen.SetPlayerName("Player");
+           
         }
         else {
+            isPlayerChaseGame = true;
             CurrentGamePlayer.SetPlayerState(PlayerState.Bowler);
             CurrentGamePlayer.transform.position = bowlerPostion;
             CurrentGamePlayerAI.SetPlayerState(PlayerState.BatsMan);
             CurrentGamePlayerAI.transform.position = batsmanPostion;
-            UIManager.Instance.ui_GameScreen.SetPlayerName("PlayerAI");
+           
         }
 
     }
@@ -216,6 +226,7 @@ public class GameManager : MonoBehaviour
             
             isCompltedFirstInning = true;
             StartCoroutine(First_InningComplted());
+            
         }
         else {
 
@@ -223,6 +234,14 @@ public class GameManager : MonoBehaviour
                 StopGame();
              CheckingGameResult();
 
+        }
+
+        if (CurrentGamePlayer.MyState == PlayerState.BatsMan) {
+            DailyTaskManager.increasedRunWhenGameOver?.Invoke(CurrentRun);
+            playerLoosingwicket = CurrentWicket;
+        }
+        else {
+            DailyTaskManager.increaseedWicket?.Invoke(CurrentWicket);
         }
 
     }
@@ -266,11 +285,11 @@ public class GameManager : MonoBehaviour
         if (CurrentRun > ChasingRun) {
             // We chase Target Batman is Player So Win
             if (CurrentGamePlayer.MyState == PlayerState.BatsMan) {
-                UIManager.Instance.ui_GameOver.SetResult("You Win Inning");
+              
                 HasPlayerWon = true;
             }
             else {
-                UIManager.Instance.ui_GameOver.SetResult("You Lose Inning");
+               
                 HasPlayerWon = false;
             }
 
@@ -278,18 +297,21 @@ public class GameManager : MonoBehaviour
         else {
             // if Target Not Chase And Player Bowller So Player Win
             if (CurrentGamePlayer.MyState == PlayerState.Bowler) {
-                UIManager.Instance.ui_GameOver.SetResult("You Win Inning");
+               
                 HasPlayerWon = true;
 
             }
             else {
-                UIManager.Instance.ui_GameOver.SetResult("You Lose Inning");
+              
                 HasPlayerWon = false;
             }
         }
 
-
-       
+        // assing taske
+        DailyTaskManager.isGamewin?.Invoke(HasPlayerWon);
+        if (playerLoosingwicket == 0 && HasPlayerWon) DailyTaskManager.winGameLoosingWicket?.Invoke();
+        DailyTaskManager.startMatch?.Invoke();
+        if (HasPlayerWon && isPlayerChaseGame) DailyTaskManager.chasematch?.Invoke();
     }
 
    
@@ -311,7 +333,7 @@ public class GameManager : MonoBehaviour
             CurrentGamePlayer.SetPlayerState(PlayerState.BatsMan);
             CurrentGamePlayer.transform.position = batsmanPostion;
             CurrentGamePlayer.transform.rotation = Quaternion.identity;
-            UIManager.Instance.ui_GameScreen.SetPlayerName("Player");
+          
         }
 
         if (CurrentGamePlayerAI.MyState == PlayerState.BatsMan) {
@@ -326,7 +348,7 @@ public class GameManager : MonoBehaviour
             CurrentGamePlayerAI.SetPlayerState(PlayerState.BatsMan);
             CurrentGamePlayerAI.transform.position = batsmanPostion;
             CurrentGamePlayerAI.transform.rotation = Quaternion.identity;
-            UIManager.Instance.ui_GameScreen.SetPlayerName("PlayerAI");
+           
         }
 
         // Get RunTarget

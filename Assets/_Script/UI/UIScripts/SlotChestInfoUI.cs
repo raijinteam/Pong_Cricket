@@ -19,7 +19,7 @@ public class SlotChestInfoUI : MonoBehaviour
 	[SerializeField] private TextMeshProUGUI txt_EpicCardRange;
 	[SerializeField] private TextMeshProUGUI txt_UnlockTime;
 
-	private int currentOpenedChestIndex;
+	[SerializeField]private int currentOpenedChestIndex;
 
 	private void Update()
 	{

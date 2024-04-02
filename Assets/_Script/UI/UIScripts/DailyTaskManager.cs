@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -29,17 +30,42 @@ public class DailyTaskManager : MonoBehaviour
 
     // TEMPERORY CODE
 
-    public delegate void AddRuns(int value);
-    public static event AddRuns AddRunsHandler;
 
+  
     [SerializeField] private List<taskShowData> list_TaskShowndata;
 
-	private void Update()
+
+    // Task 
+    public static Action<int> increasedRunWhenGameOver { get; set; }  // when first innnig complted called
+    public static Action<int> increaseedWicket { get; set; }  // when first innnig complted called
+    public static Action<int> increasedNoofKit { get; set; }   // when Chest Oppne screen Actveted Calling
+    public static Action<bool> isGamewin { get; set; }   // gameManager After complted game result Checking
+    public static Action boundryBlaster { get; set; }   // ColliderRunner Calling
+    public static Action sixBlaster { get; set; }  // ColliderRunner Calling
+    public static Action winGameLoosingWicket { get; set; }  // After Game complete calling
+    public static Action homeRunGet { get; set; }   // Colliderrunner calling
+    public static Action ActvetedPowerup { get; set; }   // Powerup Activeted
+    public static Action startMatch { get; set; }      //  Game Over Calling
+    public static Action upgradePaddle { get; set; }   // playerSelection 
+    public static Action upgradePowerup { get; set; }   // abilitty upgrade calling
+    public static Action singleScoreGet { get; set; }  // collider - Runner
+    public static Action DoubleScoreget { get; set; }   // collider - Runner
+    public static Action PlayMiniGame { get; set; }   // MiniGamemanager GameOver
+    public static Action chasematch { get; set; }     // GameManager
+    public static Action<bool> BackToBackHatTrickBoundry { get; set; }  
+
+
+    private void Update()
 	{
 		if (Input.GetKeyDown(KeyCode.S))
 		{
-            Debug.Log("Score RUns Event");
-            AddRunsHandler?.Invoke(Random.Range(200,250));
+
+            increasedRunWhenGameOver?.Invoke(Random.Range(20, 100));
+           
+        }
+        if (Input.GetKeyDown(KeyCode.W)) {
+
+            increaseedWicket?.Invoke(Random.Range(2, 4));
             UIManager.Instance.ui_taskProgress.ActivetedTaskProgersPanel(list_TaskShowndata);
         }
         
@@ -103,7 +129,9 @@ public class DailyTaskManager : MonoBehaviour
         for (int i = 0; i < all_current_ActivatedTasks.Length; i++)
         {
             int taskIndex = PlayerPrefs.GetInt(DailyTaskPlayerPrefKeys.key_ActiveTaskIndex + "" + i);
-            all_current_ActivatedTasks[i] = all_Tasks[taskIndex];
+
+            AchievementBase current = Instantiate(all_Tasks[taskIndex], transform);
+            all_current_ActivatedTasks[i] = current;
         }
 
         // Get Chosen task target and progress values
@@ -126,17 +154,18 @@ public class DailyTaskManager : MonoBehaviour
 
     private void SelectRandomAchievements()
 	{
-        List<AchievementBase> list_TakenAchievements = new List<AchievementBase>();
+        List<AchievementBase> list_TakenAchievements = all_Tasks.ToList();
 
-        for(int i = 0; i < all_Tasks.Length; i++)
-		{
-            list_TakenAchievements.Add(all_Tasks[i]);
-        }
 
-        for(int i = 0; i < totalTaskToActivate; i++)
+        foreach (Transform child in transform) Destroy(child.gameObject);
+
+      
+        for (int i = 0; i < totalTaskToActivate; i++)
 		{
-            int randomIndex = Random.Range(0, list_TakenAchievements.Count);
-            all_current_ActivatedTasks[i] = list_TakenAchievements[randomIndex];
+          int randomIndex = Random.Range(0, list_TakenAchievements.Count);
+
+            AchievementBase current = Instantiate(list_TakenAchievements[randomIndex], transform);
+            all_current_ActivatedTasks[i] = current;
             list_TakenAchievements.RemoveAt(randomIndex);
 		}
 
@@ -283,6 +312,10 @@ public class DailyTaskManager : MonoBehaviour
     public void UpdateTaskRewardClaimStatus(int _index)
 	{
         PlayerPrefs.SetInt(DailyTaskPlayerPrefKeys.key_TaskRewardClaimedStatus + "" + _index, 1);
+    }
+
+    public void ShowTaskBar() {
+        UIManager.Instance.ui_taskProgress.ActivetedTaskProgersPanel(list_TaskShowndata);
     }
 
     public void AddShownList(taskShowData task) {

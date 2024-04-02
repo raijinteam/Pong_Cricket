@@ -23,6 +23,7 @@ public class HomeScreenUI : MonoBehaviour
 		SetTheChestSlotsAccordingToCurrentStates();
 		panel_Menu.SetActive(true);
 		panel_LevelSelection.SetActive(false);
+		DailyTaskManager.Instance.ShowTaskBar();
 	}
 
 	private void Start()

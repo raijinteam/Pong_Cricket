@@ -36,18 +36,8 @@ public class UIManager : MonoBehaviour
 
 	
 
-	// TEMPORARY //
-	private void Start()
-	{
-		Invoke("ActivateHomeScreenAfter1Second", 0.5f);
-	}
+	
+	
 
-	private void ActivateHomeScreenAfter1Second()
-	{
-		ui_HomeScreen.gameObject.SetActive(true);
-		panel_CommanMenu.gameObject.SetActive(true);
-		panel_MainMenu.gameObject.SetActive(true);
-        //ui_PlayerSelection.gameObject.SetActive(true);
-        //ui_Abilities.gameObject.SetActive(true);
-    }
+	
 }

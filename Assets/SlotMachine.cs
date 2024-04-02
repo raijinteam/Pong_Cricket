@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using Random = UnityEngine.Random;
+using UnityEngine.UI;
 
 public class SlotMachine : MonoBehaviour {
 
@@ -32,6 +33,10 @@ public class SlotMachine : MonoBehaviour {
             StartSpinng();
         }
         
+    }
+
+    public Sprite GetShownsprite() {
+        return all_Rect[ShownIndex].GetComponent<Image>().sprite;
     }
 
     public void StartSpinng() {
@@ -83,6 +88,7 @@ public class SlotMachine : MonoBehaviour {
 
         yield return new WaitForSeconds(0.75f);
         yield return new WaitForEndOfFrame();
+        UIManager.Instance.ui_PanelSerachingPlayer.StopSlote();
         
 
 

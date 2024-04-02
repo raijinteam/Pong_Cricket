@@ -198,7 +198,7 @@ public class PlayerSelectionUI : MonoBehaviour
 
 		DataManager.Instance.DecresedCoin(CharacterManager.Instance.GetUpgradePriceForSelectedCharacter(currentSelectedPlayer));
 		CharacterManager.Instance.CharacterUpgradeComplete(currentSelectedPlayer);
-
+		DailyTaskManager.upgradePaddle?.Invoke();
 		UpdateUpgradedPlayerData();
 	}
 }

@@ -1,5 +1,8 @@
 
+using System;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 
 public class DataManager : MonoBehaviour
@@ -8,6 +11,7 @@ public class DataManager : MonoBehaviour
 
 	private void Awake()
 	{
+      
 		Instance = this;
 	}
 
@@ -22,8 +26,22 @@ public class DataManager : MonoBehaviour
     [SerializeField] private TutorialHandler tutorialHandler;
     [SerializeField] private Mini_GameManager mini_GameManager;
 
+
+    [field :Header("PlayerData")]
     [field: SerializeField] public string playerName { get; private set; }
     [field: SerializeField] public int GameLevel { get; private set; }
+
+    [field :SerializeField] public Sprite img_PlayerSprite { get; private set; }
+
+    [field :Header("player ai Data")]
+
+    [field: SerializeField] public string playerNameAI { get;  set; }
+    [field: SerializeField] public int GameLevelAI { get;  set; }
+
+    [field: SerializeField] public Sprite img_PlayerSpriteAi { get;  set; }
+
+
+    [field : Header("Currency Data")]
     [field: SerializeField] public int coins { get; private set; }
 	[field : SerializeField] public int Gems { get; private set; }
 	[field: SerializeField] public int skipIts { get;private  set; }
@@ -33,8 +51,7 @@ public class DataManager : MonoBehaviour
     [field : SerializeField] public Sprite sprite_skipIts { get; private set; }
     [field: SerializeField] public Sprite sprite_Ads { get; private set; }
 
-
-
+    [field: SerializeField] public bool isNoadsPurcahsed;
     public delegate void SetSptite(Sprite sprite);
 
     public SetSptite Changesprite;
@@ -42,7 +59,11 @@ public class DataManager : MonoBehaviour
 
 
     private void Start() {
-		SetData();
+
+        Application.targetFrameRate = 60;
+        SetData();
+
+
 
         if (!isShownGameTutorial) {
 
@@ -54,10 +75,23 @@ public class DataManager : MonoBehaviour
             GameManager.Instance.obj_GameEnvironement.gameObject.SetActive(false);
             Instantiate(mini_GameManager, transform.position, transform.rotation);
         }
+        else {
+            UIManager.Instance.ui_HomeScreen.gameObject.SetActive(true);
+            UIManager.Instance.panel_MainMenu.gameObject.SetActive(true);
+            UIManager.Instance.panel_CommanMenu.gameObject.SetActive(true);
+        }
 		nextLevelUnlocked = startGameLevelUpgrade;
         for (int i = 0; i < GameLevel; i++) {
 
             nextLevelUnlocked += (nextLevelUnlocked * 0.01f * presentageValueInCreasedUpgradeValue);
+        }
+
+        if (isNoadsPurcahsed) {
+            AdsManager.instance.LoadInterstitalAds();
+            AdsManager.instance.LoadRewardAds(); 
+            {
+                
+            }
         }
 
     }
@@ -92,6 +126,7 @@ public class DataManager : MonoBehaviour
 
         PlayerPrefs.SetInt(DataKeys.key_ShownGameTutorial, isShownGameTutorial ? 1 : 0);
         PlayerPrefs.SetInt(DataKeys.key_ShownMinGameTutorial, isShownMiniGameTutorial?1:0);
+        PlayerPrefs.SetInt(DataKeys.key_NoAdsPurchased, isNoadsPurcahsed ? 1 : 0);
        
 
     }
@@ -106,6 +141,7 @@ public class DataManager : MonoBehaviour
 		currentValue = PlayerPrefs.GetInt(DataKeys.key_GamelevelUpgradeValue);
         isShownGameTutorial = (PlayerPrefs.GetInt(DataKeys.key_ShownGameTutorial) == 1);
         isShownMiniGameTutorial = (PlayerPrefs.GetInt(DataKeys.key_ShownMinGameTutorial) == 1);
+        isNoadsPurcahsed = (PlayerPrefs.GetInt(DataKeys.key_NoAdsPurchased) == 1);
        
 
     }
@@ -224,4 +260,10 @@ public class DataManager : MonoBehaviour
             isShownMiniGameTutorial = true;
         }
     }
+
+    public void SetAiLevel() {
+        GameLevelAI = Random.Range(GameLevel, GameLevel + 5);
+    }
 }
+
+

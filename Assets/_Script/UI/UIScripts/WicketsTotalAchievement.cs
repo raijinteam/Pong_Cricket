@@ -9,6 +9,43 @@ public class WicketsTotalAchievement : AchievementBase
     [SerializeField] private int currentTarget;
     [SerializeField] private int currentProgress;
 
+
+    private void OnEnable() {
+        DailyTaskManager.increaseedWicket += Increasedwicket;
+    }
+
+   
+
+    private void OnDisable() {
+        DailyTaskManager.increaseedWicket -= Increasedwicket;
+    }
+
+    private void Increasedwicket(int _wicket) {
+
+        if (hasCompletedTask) {
+            return;
+        }
+
+        taskShowData taskData = new taskShowData();
+        taskData.taskName = str_AchievementDescription;
+        taskData.prevousValue = currentProgress;
+        taskData.UpdateValue = currentProgress + _wicket;
+        taskData.targetValue = currentTarget;
+
+
+        DailyTaskManager.Instance.AddShownList(taskData);
+
+        currentProgress += _wicket;
+        if (currentProgress >= currentTarget) {
+            currentProgress = currentTarget;
+            hasCompletedTask = true;
+            // DailyTaskManager.Instance.UpdateCurrentTaskPointsValue(achievementPoints);         
+        }
+
+        DailyTaskManager.Instance.SaveTaskProgress(taskIndex, currentProgress);
+        UIManager.Instance.ui_HomeScreen.SetDailyTaskPanel(); // TEMP CODE
+    }
+
     public override void SetTaskCompletionTarget()
     {
         currentTarget = Random.Range(minimumWickets, maximumWickets);

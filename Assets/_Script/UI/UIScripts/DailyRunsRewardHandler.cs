@@ -21,15 +21,7 @@ public class DailyRunsRewardHandler : MonoBehaviour
     public delegate void DailyChallengeRunsUpdated();
     public static event DailyChallengeRunsUpdated dailyChallengeRunsUpdated;
 
-    private void OnEnable()
-    {
-        DailyTaskManager.AddRunsHandler += AddRunsToThisTask;
-    }
-
-    private void OnDisable()
-    {
-        DailyTaskManager.AddRunsHandler -= AddRunsToThisTask;
-    }
+   
   
     public void SetDailyRunsChallengeAvailability()
 	{

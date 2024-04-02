@@ -53,6 +53,28 @@ public class Collder_Runner : MonoBehaviour
     public int MyRunValue {
 
         get {
+
+            // testing Purpose
+            //if (isMaxRun) {
+            //    if (isBlocked) {
+            //        return 0;
+            //    }
+            //    else if (isActivtedBonus) {
+            //        return (runValue + bonus);
+            //    }
+            //    else {
+            //        return runValue;
+            //    }
+            //}
+            //else {
+            //    if (GameManager.Instance.CurrentGamePlayer.MyState == PlayerState.BatsMan) {
+            //        return 6;
+            //    }
+            //    else {
+            //        return 0;
+            //    }
+            //}
+
             if (isBlocked) {
                 return 0;
             }
@@ -61,7 +83,9 @@ public class Collder_Runner : MonoBehaviour
             }
             else {
                 return runValue;
-            }  
+            }
+
+
         } 
     }
 
@@ -75,5 +99,35 @@ public class Collder_Runner : MonoBehaviour
     public void DeActivetedBlock() {
         body.gameObject.SetActive(false);
         isBlocked = false;
+    }
+
+    public void BallTouch() {
+
+        if (GameManager.Instance.CurrentGamePlayer.MyState == PlayerState.Bowler) {
+            return;
+        }
+
+        if (runValue == 4) {
+            DailyTaskManager.boundryBlaster?.Invoke();
+            DailyTaskManager.BackToBackHatTrickBoundry?.Invoke(true);
+        }
+        else if (runValue == 6) {
+            DailyTaskManager.sixBlaster?.Invoke();
+            DailyTaskManager.BackToBackHatTrickBoundry?.Invoke(true);
+        }
+        else if (runValue == 2) {
+            DailyTaskManager.DoubleScoreget?.Invoke();
+            DailyTaskManager.BackToBackHatTrickBoundry?.Invoke(false);
+        }
+        else if (runValue == 1) {
+            DailyTaskManager.singleScoreGet?.Invoke();
+            DailyTaskManager.BackToBackHatTrickBoundry?.Invoke(false);
+        }
+        else if (runValue == 10) {
+
+            Debug.Log("hOME cLICK");
+            DailyTaskManager.homeRunGet?.Invoke();
+            DailyTaskManager.BackToBackHatTrickBoundry?.Invoke(false);
+        }
     }
 }

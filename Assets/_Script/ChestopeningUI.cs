@@ -68,6 +68,7 @@ public class ChestopeningUI : MonoBehaviour {
 
     private void OnEnable() {
          flt_DefaultScale = bag.localScale.x;
+        DailyTaskManager.increasedNoofKit?.Invoke(1);
     }
 
 

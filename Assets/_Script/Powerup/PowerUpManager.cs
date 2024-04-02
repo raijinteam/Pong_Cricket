@@ -130,7 +130,8 @@ public class PowerUpManager : MonoBehaviour {
 
     public void ActivetedPowerUp(AbilityType powerup,bool isplayer) {
 
-        //ActivetedPower?.Invoke(powerup, isplayer);
+        if (isplayer) DailyTaskManager.ActvetedPowerup?.Invoke();
+        ActivetedPower?.Invoke(powerup, isplayer);
     }
 
     public void InningsChanged() {
