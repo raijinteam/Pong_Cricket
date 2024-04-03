@@ -88,7 +88,7 @@ public class DataManager : MonoBehaviour
 
         if (isNoadsPurcahsed) {
             //AdsManager.instance.LoadInterstitalAds();
-            //AdsManager.instance.LoadRewardAds(); 
+            //AdsManager.instance.LoadRewardAds();-
             {
                 
             }
