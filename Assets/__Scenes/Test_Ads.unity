@@ -408,7 +408,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 599619595}
+      - m_Target: {fileID: 599619597}
         m_TargetAssemblyTypeName: AdsManager, Assembly-CSharp
         m_MethodName: ShowInterstialAds
         m_Mode: 1
@@ -738,7 +738,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 599619595}
+      - m_Target: {fileID: 599619597}
         m_TargetAssemblyTypeName: AdsManager, Assembly-CSharp
         m_MethodName: ShowRewardAds
         m_Mode: 1
@@ -797,7 +797,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 599619596}
-  - component: {fileID: 599619595}
+  - component: {fileID: 599619597}
   m_Layer: 0
   m_Name: AdsManager
   m_TagString: Untagged
@@ -805,18 +805,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &599619595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 599619594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f1267c31819cd64b8a69930a98fd23b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &599619596
 Transform:
   m_ObjectHideFlags: 0
@@ -832,6 +820,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &599619597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 599619594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: feb5de2a287a32f4ea6bb848bf7f6b8f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &789468100
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,7 +1049,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 599619595}
+      - m_Target: {fileID: 599619597}
         m_TargetAssemblyTypeName: AdsManager, Assembly-CSharp
         m_MethodName: LoadInterstitalAds
         m_Mode: 1
@@ -1544,7 +1544,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 599619595}
+      - m_Target: {fileID: 599619597}
         m_TargetAssemblyTypeName: AdsManager, Assembly-CSharp
         m_MethodName: LoadRewardAds
         m_Mode: 1
