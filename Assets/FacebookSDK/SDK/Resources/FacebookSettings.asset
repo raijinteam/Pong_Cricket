@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedAppIndex: 0
   clientTokens:
-  - 
+  - 51a7d32c1f250d6c72bda0a4afc1ddad
   appIds:
-  - 0
+  - 307244972385918
   appLabels:
-  - App Name
+  - pong_2d
   cookie: 1
   logging: 1
   status: 1
