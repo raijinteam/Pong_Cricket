@@ -89,8 +89,11 @@ public class DataManager : MonoBehaviour
 
             //AdsManager.instance.LoadInterstitalAds();
             //AdsManager.instance.LoadRewardAds();
-           
+
         }
+
+        AdsManager.instance.LoadInterstitalAds();
+        AdsManager.instance.LoadRewardAds();
 
     }
 

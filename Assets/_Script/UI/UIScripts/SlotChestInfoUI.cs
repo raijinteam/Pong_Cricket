@@ -9,6 +9,7 @@ public class SlotChestInfoUI : MonoBehaviour
 	[SerializeField] private GameObject panel_OptionToUnlockThisChest;
 	[SerializeField] private GameObject panel_ChestUnlockingInProgress;
 	[SerializeField] private TextMeshProUGUI txt_TimeLeftForUnlock;
+	[SerializeField] private GameObject btn_Skip;
 	//[SerializeField] private TextMeshProUGUI txt_ChestLocation;
 	[SerializeField] private Image img_ChestIcon;
 	[SerializeField] private TextMeshProUGUI txt_CoinRange;
@@ -41,6 +42,7 @@ public class SlotChestInfoUI : MonoBehaviour
 		if (isChestSlotUnlocking)
 		{
 			panel_ChestUnlockingInProgress.SetActive(true);
+			btn_Skip.SetActive(AdsManager.instance.IsRewardAdLoad); 
 			panel_OptionToUnlockThisChest.SetActive(false);
 		}
 		else
@@ -118,7 +120,8 @@ public class SlotChestInfoUI : MonoBehaviour
 
 	public void OnClick_WatchAdToSkipTime()
 	{
-		ChestManager.Instance.UserCompletedWatchAdToSkipTime();
+		AdsManager.instance.ShowRewardAds(RewardType.SkipTime);
+		
 	}
 
 	public void OnClick_Back()

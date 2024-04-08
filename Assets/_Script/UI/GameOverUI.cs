@@ -52,6 +52,10 @@ public class GameOverUI : MonoBehaviour
         txt_PlayerAILevel.text = (DataManager.Instance.GameLevelAI + 1).ToString();
 
         DailyTaskManager.Instance.ShowTaskBar();
+
+
+       
+        AdsManager.instance.ShowInterstialAds();
         
 
     }

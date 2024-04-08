@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AdsManager : MonoBehaviour {
 
     public static AdsManager instance;
+
+    [SerializeField] private RewardType currentReward;
 
     private void Awake() {
         instance = this;
@@ -15,6 +17,7 @@ public class AdsManager : MonoBehaviour {
 
 # if UNITY_ANDROID
     string appKey = "1e02589cd";
+    
 #elif UNITY_IOS
     string appKey = "";
 #endif
@@ -25,6 +28,8 @@ public class AdsManager : MonoBehaviour {
         IronSource.Agent.validateIntegration();
         IronSource.Agent.init(appKey);
     }
+
+
 
     private void OnEnable() {
         IronSourceEvents.onSdkInitializationCompletedEvent += SdkIntialised;
@@ -90,7 +95,7 @@ public class AdsManager : MonoBehaviour {
     }
 
     private void InterstitialOnAdClosedEvent(IronSourceAdInfo info) {
-       
+
     }
 
     private void InterstitialOnAdShowFailedEvent(IronSourceError error, IronSourceAdInfo info) {
@@ -107,38 +112,54 @@ public class AdsManager : MonoBehaviour {
     }
 
     private void InterstitialOnAdClickedEvent(IronSourceAdInfo info) {
-       
+
     }
 
     private void InterstitialOnAdOpenedEvent(IronSourceAdInfo info) {
-        
+
     }
 
     private void InterstitialOnAdLoadFailed(IronSourceError error) {
         if (!IronSource.Agent.isInterstitialReady()) {
             IronSource.Agent.loadInterstitial();
         }
-        
+
     }
 
     private void InterstitialOnAdReadyEvent(IronSourceAdInfo info) {
-        
+
     }
 
     #endregion
 
     #region Reward Ads
 
+
+    public bool IsRewardAdLoad { get { return IronSource.Agent.isRewardedVideoAvailable(); } }
+
     public void LoadRewardAds() {
         IronSource.Agent.loadRewardedVideo();
     }
 
-    public void ShowRewardAds() {
+    public void ShowRewardAds(RewardType _Reward) {
         if (IronSource.Agent.isRewardedVideoAvailable()) {
+            currentReward = _Reward;
             IronSource.Agent.showRewardedVideo();
         }
         else {
             Debug.Log(" not Ready  Reward Ads");
+        }
+    }
+
+    private void GetRewardOfCustmer() {
+        switch (currentReward) {
+            case RewardType.SkipTime:
+                ChestManager.Instance.UserCompletedWatchAdToSkipTime();
+                break;
+            case RewardType.Coin:
+                break;
+            default:
+                break;
         }
     }
 
@@ -148,7 +169,7 @@ public class AdsManager : MonoBehaviour {
     // The adInfo object includes information about the ad that was loaded successfully
     // This replaces the RewardedVideoAvailabilityChangedEvent(true) event
     void RewardedVideoOnAdAvailable(IronSourceAdInfo adInfo) {
-       
+
     }
     // Indicates that no ads are available to be displayed
     // This replaces the RewardedVideoAvailabilityChangedEvent(false) event
@@ -169,8 +190,12 @@ public class AdsManager : MonoBehaviour {
     // The placement parameter will include the reward data.
     // When using server-to-server callbacks, you may ignore this event and wait for the ironSource server callback.
     void RewardedVideoOnAdRewardedEvent(IronSourcePlacement placement, IronSourceAdInfo adInfo) {
-       
+
+        GetRewardOfCustmer();
     }
+
+    
+
     // The rewarded video ad was failed to show.
     void RewardedVideoOnAdShowFailedEvent(IronSourceError error, IronSourceAdInfo adInfo) {
         LoadRewardAds();
@@ -184,4 +209,28 @@ public class AdsManager : MonoBehaviour {
 
 
     #endregion
+
+
+
+
+
+    // Test
+    //public void ShowInterstialAds() {
+       
+    //}
+
+    //internal void LoadInterstitalAds() {
+      
+    //}
+
+    //internal void LoadRewardAds() {
+       
+    //}
+    //internal bool IsRewardAdLoad;
+}
+
+
+public enum RewardType {
+
+    SkipTime,Coin
 }
