@@ -52,4 +52,11 @@ public class GameScreenUI : MonoBehaviour {
         txt_SummeryText.text = BatsManTeamn + " Makes " + GameRun + " Run  Now " + BowlwerTeam + " want " + GameRun + " run ";
 
     }
+
+
+    public void SetRoationData(bool isRotate) {
+      
+
+        GameManager.Instance.CurrentGamePlayer.BtnClick(isRotate);
+    }
 }

@@ -73,6 +73,7 @@ public class ChestopeningUI : MonoBehaviour {
 
 
     public void OnClick_OnClosdBtnClcik() {
+        DataManager.Instance.IncreasedAchiieveMent();
         this.gameObject.SetActive(false);
     }
 

@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
 
     // InputData
     private float flt_HorizontalInput;   //Input Value
+    private bool isRotate;
 
     // Clamp data
     private float flt_MinCalmpValue = -3;  //Left Clamp Value
@@ -109,6 +110,8 @@ public class Player : MonoBehaviour
 
     private void UserInput() {
 
+
+
         flt_HorizontalInput = Input.GetAxis("Horizontal");
 
 
@@ -119,6 +122,8 @@ public class Player : MonoBehaviour
                 RotateClockWisePaddle();
             }
         }
+
+
 
         //if (Input.GetMouseButton(0)) {
 
@@ -135,13 +140,18 @@ public class Player : MonoBehaviour
         //else {
         //    flt_HorizontalInput = 0;
         //}
-        
+
+
+
 
     }
+    public void BtnClick(bool value) {
+        isRotate = value;
+    }
 
-   
     private void RotateClockWisePaddle() {
 
+       
         transform.Rotate(Vector3.forward * flt_CurrentPaddleRoationSpeed * Time.deltaTime);
     }
 
@@ -277,7 +287,6 @@ public class Player : MonoBehaviour
     [SerializeField] private SmallBallMotion prefab_SmallBall;
     [SerializeField] private int NoOfBall;
    
-
 
     private void spawnBall() {
         

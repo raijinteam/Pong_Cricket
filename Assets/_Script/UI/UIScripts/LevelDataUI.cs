@@ -28,38 +28,28 @@ public class LevelDataUI : MonoBehaviour
 		txt_WinAmount.text = LevelManager.Instance.GetLevelWinAmount(myLevelIndex).ToString();
 		txt_EntryFee.text = LevelManager.Instance.GetLevelEntryFee(myLevelIndex).ToString();
 
-		if(DataManager.Instance.trophy >= LevelManager.Instance.GetTrophyRequiredToPlayLevel(myLevelIndex))
-		{
-			// user can play Level
-			panel_Locked.SetActive(false);
-			panel_Unlocked.SetActive(true);
+		bool User_LevelPlayOrNot =
+			DataManager.Instance.trophy >= LevelManager.Instance.GetTrophyRequiredToPlayLevel(myLevelIndex);
 
-			btn_StartLevel.interactable = true;
-		}
-		else
-		{
-			// does not have enough trophy
+        panel_Locked.SetActive(!User_LevelPlayOrNot);
+        panel_Unlocked.SetActive(User_LevelPlayOrNot);
 
-			panel_Locked.SetActive(true);
-			panel_Unlocked.SetActive(false);
+        btn_StartLevel.interactable = User_LevelPlayOrNot;
 
-			btn_StartLevel.interactable = false;
-		}
+
+       
 	}
 
 	public void OnClick_StartLevel() {
 
-		if (DataManager.Instance.coins >= LevelManager.Instance.GetLevelEntryFee(myLevelIndex)) {
-
-			LevelManager.Instance.currentLevelIndex = myLevelIndex;
-			DataManager.Instance.DecresedCoin(LevelManager.Instance.GetLevelEntryFee(myLevelIndex));
-			UIManager.Instance.ui_PanelSerachingPlayer.gameObject.SetActive(true);
-			
-			
-
+		if (DataManager.Instance.coins < LevelManager.Instance.GetLevelEntryFee(myLevelIndex)) {
+			UIManager.Instance.spawnPopup("You Have no Entry Fee");
+			return;
 		}
 
+        LevelManager.Instance.currentLevelIndex = myLevelIndex;
+        DataManager.Instance.DecresedCoin(LevelManager.Instance.GetLevelEntryFee(myLevelIndex));
+        UIManager.Instance.ui_PanelSerachingPlayer.gameObject.SetActive(true);
 
-
-	}
+    }
 }

@@ -1,5 +1,6 @@
 
 using System;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -40,7 +41,9 @@ public class DataManager : MonoBehaviour
     [field: SerializeField] public Sprite img_PlayerSpriteAi { get;  set; }
 
 
-    [field : Header("Currency Data")]
+    [field: Header("Currency Data")]
+
+    [field: SerializeField] public int no_OfClaimAchieveMent; 
     [field: SerializeField] public int coins { get; private set; }
 	[field : SerializeField] public int Gems { get; private set; }
 	[field: SerializeField] public int skipIts { get;private  set; }
@@ -66,6 +69,7 @@ public class DataManager : MonoBehaviour
 
         if (!isShownGameTutorial) {
 
+            GameAnalyticsManager.instance.AddNewDiesign("GameStart FirstTime");
             UIManager.Instance.panel_MainMenu.SetActive(false);
             Instantiate(tutorialHandler, transform.position, Quaternion.identity);
         }
@@ -127,6 +131,7 @@ public class DataManager : MonoBehaviour
         PlayerPrefs.SetInt(DataKeys.key_ShownGameTutorial, isShownGameTutorial ? 1 : 0);
         PlayerPrefs.SetInt(DataKeys.key_ShownMinGameTutorial, isShownMiniGameTutorial?1:0);
         PlayerPrefs.SetInt(DataKeys.key_NoAdsPurchased, isNoadsPurcahsed ? 1 : 0);
+        PlayerPrefs.SetInt(DataKeys.key_noOfAchieveMent, no_OfClaimAchieveMent);
        
 
     }
@@ -142,7 +147,7 @@ public class DataManager : MonoBehaviour
         isShownGameTutorial = (PlayerPrefs.GetInt(DataKeys.key_ShownGameTutorial) == 1);
         isShownMiniGameTutorial = (PlayerPrefs.GetInt(DataKeys.key_ShownMinGameTutorial) == 1);
         isNoadsPurcahsed = (PlayerPrefs.GetInt(DataKeys.key_NoAdsPurchased) == 1);
-       
+        no_OfClaimAchieveMent = PlayerPrefs.GetInt(DataKeys.key_noOfAchieveMent);
 
     }
 
@@ -209,6 +214,7 @@ public class DataManager : MonoBehaviour
         currentValue += GameWinTimeGetUpgrade;
         if (currentValue >= nextLevelUnlocked) {
             GameLevel++;
+            UIManager.Instance.spawnPopup("Level Increased");
             if (GameLevel == 1) {
                 UIManager.Instance.panel_MainMenu.gameObject.SetActive(false);
                 GameManager.Instance.obj_GameEnvironement.gameObject.SetActive(false);
@@ -250,6 +256,7 @@ public class DataManager : MonoBehaviour
 
     public void ShownGameTutorial() {
         isShownGameTutorial = true;
+        GameAnalyticsManager.instance.AddNewDiesign("Tutorial Shown In Game");
         PlayerPrefs.SetInt(DataKeys.key_ShownGameTutorial, 1);
 
     }
@@ -257,6 +264,7 @@ public class DataManager : MonoBehaviour
     public void ShownMinGameTutotal() {
         if (!isShownMiniGameTutorial) {
             PlayerPrefs.SetInt(DataKeys.key_ShownMinGameTutorial, 1);
+            GameAnalyticsManager.instance.AddNewDiesign("Show Mini Game Tutorial");
             isShownMiniGameTutorial = true;
         }
     }
@@ -264,6 +272,14 @@ public class DataManager : MonoBehaviour
     public void SetAiLevel() {
         GameLevelAI = Random.Range(GameLevel, GameLevel + 5);
     }
+
+    public void IncreasedAchiieveMent() {
+        no_OfClaimAchieveMent++;
+        PlayerPrefs.SetInt(DataKeys.key_noOfAchieveMent, no_OfClaimAchieveMent);
+        GameAnalyticsManager.instance.AddNewEventWithData("IncresedAchevement" , no_OfClaimAchieveMent);
+
+    }
+
 }
 
 

@@ -51,14 +51,14 @@ public class PowerUpManager : MonoBehaviour {
 
     private void Update() {
 
-        //if (!GameManager.Instance.IsGameRunning) {
-        //    return;
-        //}
-        //flt_CurrentTime += Time.deltaTime;
-        //if (flt_CurrentTime >= flt_TimeForTwoPowerupSpawn) {
-        //    SpawnPowerup();
-        //    flt_CurrentTime = 0;
-        //}
+        if (!GameManager.Instance.IsGameRunning) {
+            return;
+        }
+        flt_CurrentTime += Time.deltaTime;
+        if (flt_CurrentTime >= flt_TimeForTwoPowerupSpawn) {
+            SpawnPowerup();
+            flt_CurrentTime = 0;
+        }
     }
 
     private void SpawnPowerup() {

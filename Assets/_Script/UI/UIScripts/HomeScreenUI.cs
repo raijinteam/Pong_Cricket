@@ -6,11 +6,12 @@ using UnityEngine;
 public class HomeScreenUI : MonoBehaviour
 {
 	[Header("Scripts")]
-	public SlotChestInfoUI ui_SlotChestInfo;
-	[SerializeField] private DailyRewardUI ui_DailyReward;
-	[SerializeField] private WheelRouletteUI ui_WheelRoullete;
-    [SerializeField] private ChestSlotsUI[] all_ChestSlots;
-	[SerializeField] private DailyTaskUI ui_DailyTask;
+
+	public SlotChestInfoUI ui_SlotChestInfo;    // Ui SlotChest panel 
+	[SerializeField] private DailyRewardUI ui_DailyReward;  // Daily Reward Panel; 
+	[SerializeField] private WheelRouletteUI ui_WheelRoullete; // Wheel Rulet Panel 
+    [SerializeField] private ChestSlotsUI[] all_ChestSlots;   // all Slot Panel 
+	[SerializeField] private DailyTaskUI ui_DailyTask;   // Daily Task panel 
 
 	[Header("Panels")]
 	[SerializeField] private GameObject panel_DailyRewardNotification;
@@ -28,15 +29,17 @@ public class HomeScreenUI : MonoBehaviour
 
 	private void Start()
 	{
-		if (RewardsManager.Instance.dailyRewardData.GetIsDailyRewardActive())
-		{
-			panel_DailyRewardNotification.SetActive(true);
-		}
 
-		if (RewardsManager.Instance.wheelRouletteRewardData.IsWheelRouletteActive())
-		{
-			panel_WheelRouletteNotification.SetActive(true);
-		}
+		// Daily reaward Actvte So Notification On
+        panel_DailyRewardNotification.SetActive(RewardsManager.Instance.dailyRewardData.GetIsDailyRewardActive());
+
+
+		// Wheel Rullet Actvete So Notification On
+		panel_WheelRouletteNotification.
+							SetActive(RewardsManager.Instance.wheelRouletteRewardData.IsWheelRouletteActive());
+
+
+       
 	}
 
 	private void Update()
@@ -129,6 +132,7 @@ public class HomeScreenUI : MonoBehaviour
 	}
 
 	public void OnClick_OnDailyTask() {
+
 		ui_DailyTask.gameObject.SetActive(true);
 	}
 

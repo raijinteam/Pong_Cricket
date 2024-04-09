@@ -23,23 +23,26 @@ public class ChestSlotsUI : MonoBehaviour
 		panel_ChestSlotFilled.SetActive(false);
 		panel_ChestSlotRunning.SetActive(false);
 		panel_ChestSlotCompleted.SetActive(false);
-	
-		if (ChestManager.Instance.GetCurrentSlotState(slotIndex) == SlotState.Empty)
-		{
-			panel_ChestSlotEmpty.SetActive(true);
+
+
+		switch (ChestManager.Instance.GetCurrentSlotState(slotIndex)) {
+			case SlotState.Empty:
+                panel_ChestSlotEmpty.SetActive(true);
+                break;
+			case SlotState.Filled:
+                panel_ChestSlotFilled.SetActive(true);
+                break;
+			case SlotState.ChestUnlockInProgress:
+                panel_ChestSlotRunning.SetActive(true);
+                break;
+			case SlotState.ChestUnlockCompleted:
+                panel_ChestSlotCompleted.SetActive(true);
+                break;
+			default:
+				break;
 		}
-		else if (ChestManager.Instance.GetCurrentSlotState(slotIndex) == SlotState.Filled)
-		{
-			panel_ChestSlotFilled.SetActive(true);
-		}
-		else if (ChestManager.Instance.GetCurrentSlotState(slotIndex) == SlotState.ChestUnlockInProgress)
-		{
-			panel_ChestSlotRunning.SetActive(true);
-		}
-		else
-		{
-			panel_ChestSlotCompleted.SetActive(true);
-		}
+
+		
 	}
 
 	

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,8 +13,12 @@ public class UIManager : MonoBehaviour
 	}
 
 
+
+
 	// GAMEOBJECTS
-	[field: SerializeField] public GameObject panel_MainMenu { get; private set; }
+	[SerializeField] private panel_PopUP pf_panelPopup;
+	[SerializeField] private Transform spawn_PopUp;
+    [field: SerializeField] public GameObject panel_MainMenu { get; private set; }
 	[field: SerializeField] public CommanPanel panel_CommanMenu { get; private set; }
 
 	
@@ -34,10 +39,14 @@ public class UIManager : MonoBehaviour
 
 	[field:SerializeField] public UISettingScreen ui_SettingScrenn { get; private set; }
 
-	
 
-	
-	
+    public void spawnPopup(string Message) {
 
-	
+		panel_PopUP current = Instantiate(pf_panelPopup, spawn_PopUp);
+		current.ActvetedPanel(2, Message);
+    }
+
+
+
+
 }

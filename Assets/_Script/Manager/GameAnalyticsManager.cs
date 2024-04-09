@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GameAnalyticsManager : MonoBehaviour , IGameAnalyticsATTListener {
 
-    public GameAnalyticsManager instance;
+    public static GameAnalyticsManager instance;
 
 
     private void Awake() {

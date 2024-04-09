@@ -40808,7 +40808,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7824409931766676385}
   - component: {fileID: 5649437453204323973}
-  - component: {fileID: 4632659641654319229}
   - component: {fileID: 5381087928558705395}
   m_Layer: 0
   m_Name: PLayer
@@ -40878,32 +40877,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 0.25}
   m_EdgeRadius: 0
---- !u!114 &4632659641654319229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4697833884100445865}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02ac53673dd1b094d8835dd6eb5182fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MyState: 0
-  spriteRenderer: {fileID: 732778588562576849}
-  flt_MaxSwingForce: 40
-  flt_MinSwingForce: 0
-  flt_BallMaxForce: 10
-  flt_BallMinForce: 15
-  flt_PaddleRoationSpeed: 150
-  flt_PaddleMovementSpeed: 10
-  isFreezPowerUpActive: 0
-  isFreezPostion: 0
-  isSlowMotionPowerUpActive: 0
-  IsBallSplitPowerupActive: 0
-  prefab_SmallBall: {fileID: 774807782052098261, guid: 15a52db412248154aac9f943f66954cb, type: 3}
-  NoOfBall: 0
 --- !u!114 &5381087928558705395
 MonoBehaviour:
   m_ObjectHideFlags: 0

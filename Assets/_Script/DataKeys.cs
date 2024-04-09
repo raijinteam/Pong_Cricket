@@ -13,4 +13,5 @@ public class DataKeys : MonoBehaviour {
     public static string key_ShownGameTutorial = "ShownGame Tutorial";
     public static string key_ShownMinGameTutorial = "ShownMinGameTutorial";
     public static string key_NoAdsPurchased = "no Ads Purchased";
+    public static string key_noOfAchieveMent = "No Of AchieveMent";
 }
