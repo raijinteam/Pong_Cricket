@@ -56,7 +56,9 @@ public class DataManager : MonoBehaviour
     [field: SerializeField] public bool isNoadsPurcahsed;
     public delegate void SetSptite(Sprite sprite);
 
-    public SetSptite Changesprite;
+    public SetSptite Changesprite { get; set; }
+
+    public Action UpDateCurrency;
 
 
 
@@ -155,21 +157,25 @@ public class DataManager : MonoBehaviour
 
     public void DecresedCoin(int _coin) {
 		coins -= _coin;
+        UpDateCurrency?.Invoke();
 		PlayerPrefs.SetInt(DataKeys.key_Coin, coins);
 
     }
 
 	public void IncresedCoin(int _Coin) {
 		coins += _Coin;
+        UpDateCurrency?.Invoke();
         PlayerPrefs.SetInt(DataKeys.key_Coin, coins);
     }
     public void Incresedgems(int _Gems) {
         Gems += _Gems;
+        UpDateCurrency?.Invoke();
         PlayerPrefs.SetInt(DataKeys.key_Gems, Gems);
     }
 
 	public void DecresedGems(int _Gems) {
 		Gems -= _Gems;
+        UpDateCurrency?.Invoke();
         PlayerPrefs.SetInt(DataKeys.key_Gems, Gems);
     }
 
@@ -180,6 +186,7 @@ public class DataManager : MonoBehaviour
     public void UpdateSkipItsValue(int _amount) {
 
         skipIts += _amount;
+        UpDateCurrency?.Invoke();
         PlayerPrefs.SetInt(DataKeys.key_SkipIts, skipIts);
         if (skipIts > 0) {
             RewardsManager.Instance.wheelRouletteRewardData.ActivateWheelRoulette();
@@ -236,6 +243,8 @@ public class DataManager : MonoBehaviour
     public void RemoveSkipIts() {
 
         skipIts--;
+        UpDateCurrency?.Invoke();
+      
         if (skipIts <= 0) {
             skipIts = 0;
             Changesprite?.Invoke(sprite_Ads);
@@ -243,7 +252,7 @@ public class DataManager : MonoBehaviour
         else {
             Changesprite?.Invoke(sprite_skipIts);
         }
-
+        PlayerPrefs.SetInt(DataKeys.key_SkipIts, skipIts);
     }
     public Sprite GetSprite() {
         if (skipIts <= 0) {
@@ -280,6 +289,11 @@ public class DataManager : MonoBehaviour
 
     }
 
+    internal void IncresedSkipIt(int v) {
+        skipIts += v;
+        UpDateCurrency?.Invoke();
+        PlayerPrefs.SetInt(DataKeys.key_SkipIts , skipIts);
+    }
 }
 
 

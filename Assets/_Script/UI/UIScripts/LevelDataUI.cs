@@ -27,6 +27,7 @@ public class LevelDataUI : MonoBehaviour
 		txt_TrophyRequiredToUnlock.text = LevelManager.Instance.GetTrophyRequiredToPlayLevel(myLevelIndex).ToString();
 		txt_WinAmount.text = LevelManager.Instance.GetLevelWinAmount(myLevelIndex).ToString();
 		txt_EntryFee.text = LevelManager.Instance.GetLevelEntryFee(myLevelIndex).ToString();
+		img_LevelIcon.sprite = LevelManager.Instance.GetLevelIcon(_levelIndex);
 
 		bool User_LevelPlayOrNot =
 			DataManager.Instance.trophy >= LevelManager.Instance.GetTrophyRequiredToPlayLevel(myLevelIndex);

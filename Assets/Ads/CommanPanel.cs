@@ -18,10 +18,21 @@ public class CommanPanel : MonoBehaviour {
 
 
     private void OnEnable() {
+        DataManager.Instance.UpDateCurrency  += SetCommanrPanel;
+    }
+
+    private void OnDisable() {
+        DataManager.Instance.UpDateCurrency -= SetCommanrPanel;
+    }
+
+    private void SetCommanrPanel() {
         txt_PlayerName.text = DataManager.Instance.playerName;
         slider_PlayerLevel.maxValue = DataManager.Instance.nextLevelUnlocked;
         slider_PlayerLevel.value = DataManager.Instance.currentValue;
         txt_PanelLevel.text = DataManager.Instance.GameLevel.ToString();
+        txt_Gems.text = DataManager.Instance.Gems.ToString();
+        txt_Gold.text = DataManager.Instance.coins.ToString();
+        txt_SkipIts.text = DataManager.Instance.skipIts.ToString();
     }
 
 

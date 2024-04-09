@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class ShopChestInfoUI : MonoBehaviour
 {
-	[SerializeField] private TextMeshProUGUI txt_ChestName;
+	//[SerializeField] private TextMeshProUGUI txt_ChestName;
 	[SerializeField] private Image img_ChestIcon;
 	[SerializeField] private TextMeshProUGUI txt_GoldRewardRange;
 	[SerializeField] private TextMeshProUGUI txt_GemRewardRange;
@@ -21,7 +21,7 @@ public class ShopChestInfoUI : MonoBehaviour
 	{
 		myChest = _chestInfo;
 		gameObject.SetActive(true);
-		txt_ChestName.text = _chestInfo.str_ChestName;
+		//txt_ChestName.text = _chestInfo.str_ChestName;
 		img_ChestIcon.sprite = _chestInfo.sprite_ChestIcon;
 
 		txt_GoldRewardRange.text = _chestInfo.coinRewardRange[0] + " - " + _chestInfo.coinRewardRange[1];

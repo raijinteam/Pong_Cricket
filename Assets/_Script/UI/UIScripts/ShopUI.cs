@@ -75,7 +75,7 @@ public class ShopUI : MonoBehaviour
 		{
 			string formatedHeaderValue = UtilityManager.Instance.FormatIntegerValueToStringWithComma(all_GemPackRewards[i]);
 			all_txt_GemPackRewards[i].text = formatedHeaderValue;
-			all_txt_GemPackPrices[i].text = "$" + all_GemPackPrices[i].ToString();
+			all_txt_GemPackPrices[i].text = IAPManager.Instance.getLocalPriceData(i);
 
 			all_panel_BestValueGem[i].SetActive(false);
 		}
@@ -89,7 +89,7 @@ public class ShopUI : MonoBehaviour
 		{
 			string formatedHeaderValue = UtilityManager.Instance.FormatIntegerValueToStringWithComma(all_SkipItRewards[i]);
 			all_txt_SkipItRewards[i].text = formatedHeaderValue;
-			all_txt_SkipItPrices[i].text = "$" + all_SkipItPrices[i].ToString();
+			all_txt_SkipItPrices[i].text = IAPManager.Instance.getLocalPriceData(i + 4);
 
 			all_panel_BestValueSkipIt[i].SetActive(false);
 		}
@@ -111,13 +111,42 @@ public class ShopUI : MonoBehaviour
 		all_panel_BestValueCoins[bestValueIndexCoins].SetActive(true);
 	}
 
-	public void OnClick_ChestInfo(int _index)
-	{
-		ui_ShopChestInfo.SetChestPanel(all_Chests[_index]);	
-	}
+	
 
     public void SetPostion(float postion) {
 
 		rect_Scroll.anchoredPosition = new Vector2(rect_Scroll.anchoredPosition.x, postion);
     }
+
+    public void OnClick_ChestInfo(int _index) {
+
+		
+        ui_ShopChestInfo.SetChestPanel(all_Chests[_index]);
+    }
+
+	public void Onclick_OnPurchasePack(int _Index) {
+		IAPManager.Instance.BuyConsumable(_Index);
+	}
+
+	public void GetReward(int _Index) {
+
+		if (_Index < 4) {
+			//Gemes
+			DataManager.Instance.Incresedgems(all_GemPackRewards[_Index]);
+		}
+		else {
+            // Skip It get
+            DataManager.Instance.IncresedSkipIt(all_SkipItRewards[_Index - 4]);
+        }
+	}
+
+	public void OnClick_OnGold(int index) {
+		if (DataManager.Instance.Gems < all_CoinsPrices[index]) {
+			UIManager.Instance.spawnPopup("Not Enough Gems");
+			return;
+		}
+
+		DataManager.Instance.DecresedGems(all_CoinsPrices[index]);
+		DataManager.Instance.IncresedCoin(all_CoinsRewards[index]);
+	}
 }

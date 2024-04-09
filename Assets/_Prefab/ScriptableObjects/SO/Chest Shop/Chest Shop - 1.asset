@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fed8d1da3e61a349b240d7a47166df6, type: 3}
   m_Name: Chest Shop - 1
   m_EditorClassIdentifier: 
+  chestIndex: 0
   str_ChestName: Wooden Chest
-  sprite_ChestIcon: {fileID: 21300000, guid: d74df393288c94e0e8791c98c247f31e, type: 3}
+  sprite_ChestIcon: {fileID: 21300000, guid: 3d23eb796b2230e409000cf0af424521, type: 3}
   costToOpenTheChest: 10
   coinRewardRange: 3200000064000000
   gemRewardRange: 0100000004000000

@@ -90,7 +90,7 @@ public class ChestopeningUI : MonoBehaviour {
         isPanelSlottakeOrNot = false;
         panelSlote.gameObject.SetActive(false);
         animationRunIndex = 0;
-        flt_AnimationComapltedTime = 9 * flt_BagAnimationTime + 1.5f * flt_ChestAnimation;
+        flt_AnimationComapltedTime = 4 + 1.5f * flt_ChestAnimation + flt_BagAnimationTime * 2;
         isLevelChestOpening = true;
         GetLeveBasedChestRewardInPlayerPrefs();
         obj_Card.gameObject.SetActive(false);
@@ -293,7 +293,7 @@ public class ChestopeningUI : MonoBehaviour {
         isPanelSlottakeOrNot = false;
        
         animationRunIndex = 0;
-        flt_AnimationComapltedTime = 9 * flt_BagAnimationTime + 1.5f * flt_ChestAnimation;
+        flt_AnimationComapltedTime = 4 + 1.5f * flt_ChestAnimation + flt_BagAnimationTime*2;
         isLevelChestOpening = false;
         SetShopBaseChestInPlayerPrefs();
         obj_Card.gameObject.SetActive(false);
@@ -521,13 +521,22 @@ public class ChestopeningUI : MonoBehaviour {
 
         Sequence seq = DOTween.Sequence();
         taptoConintue.SetActive(false);
-        seq.Append(bag.DOScale(Vector3.one * (flt_DefaultScale + flt_bagScale), flt_BagAnimationTime)).
-            Append(bag.DOScale(Vector3.one * (flt_DefaultScale - flt_bagScale), flt_BagAnimationTime).SetLoops(4, LoopType.Yoyo))
-            .
-            Append(bag.DOScale(Vector3.one * (flt_DefaultScale), flt_BagAnimationTime)).Append(bag.DOShakePosition(flt_BagAnimationTime, 25, 40))
+        //seq.Append(bag.DOScale(Vector3.one * (flt_DefaultScale + flt_bagScale), flt_BagAnimationTime)).
+        //    Append(bag.DOScale(Vector3.one * (flt_DefaultScale - flt_bagScale), flt_BagAnimationTime).SetLoops(4, LoopType.Yoyo))
+        //    .
+        //    Append(bag.DOScale(Vector3.one * (flt_DefaultScale), flt_BagAnimationTime)).Append(bag.DOShakePosition(flt_BagAnimationTime, 25, 40))
+        //    .AppendCallback(() => obj_Currency.SetActive(true)).AppendCallback(() => taptoConintue.SetActive(true)).
+        //    Append(obj_Currency.transform.DOScale(1, flt_ChestAnimation).SetEase(Ease.OutBack)).AppendInterval(flt_BagAnimationTime * 2)
+        //    .Append(obj_Currency.transform.DOScale(0, flt_ChestAnimation / 2)).AppendCallback(ActvetedSummryPanel);
+
+        Animator current = bag.GetComponent<Animator>();
+        current.SetBool("isBagAnimation", true);
+        seq.AppendInterval(4).AppendCallback(()=> current.SetBool("isBagAnimation", false))
             .AppendCallback(() => obj_Currency.SetActive(true)).AppendCallback(() => taptoConintue.SetActive(true)).
             Append(obj_Currency.transform.DOScale(1, flt_ChestAnimation).SetEase(Ease.OutBack)).AppendInterval(flt_BagAnimationTime * 2)
             .Append(obj_Currency.transform.DOScale(0, flt_ChestAnimation / 2)).AppendCallback(ActvetedSummryPanel);
+
+
     }
 
     private void ActvetedSummryPanel() {
@@ -546,12 +555,19 @@ public class ChestopeningUI : MonoBehaviour {
 
         Sequence seq = DOTween.Sequence();
         taptoConintue.SetActive(false);
-        seq.Append(bag.DOScale(Vector3.one * (flt_DefaultScale + flt_bagScale), flt_BagAnimationTime)).
-            Append(bag.DOScale(Vector3.one * (flt_DefaultScale - flt_bagScale), flt_BagAnimationTime).SetLoops(4, LoopType.Yoyo))
-            .
-            Append(bag.DOScale(Vector3.one * (flt_DefaultScale), flt_BagAnimationTime)).Append(bag.DOShakePosition(flt_BagAnimationTime, 25, 40))
-            .AppendCallback(() => obj_Card.SetActive(true)).AppendCallback(() => taptoConintue.SetActive(true)).
-            Append(obj_Card.transform.DOScale(1, flt_ChestAnimation).SetEase(Ease.OutBack)).AppendCallback(()=>SliderAnimation(playerIndex)).AppendInterval(flt_BagAnimationTime * 2)
+        //seq.Append(bag.DOScale(Vector3.one * (flt_DefaultScale + flt_bagScale), flt_BagAnimationTime)).
+        //    Append(bag.DOScale(Vector3.one * (flt_DefaultScale - flt_bagScale), flt_BagAnimationTime).SetLoops(4, LoopType.Yoyo))
+        //    .
+        //    Append(bag.DOScale(Vector3.one * (flt_DefaultScale), flt_BagAnimationTime)).Append(bag.DOShakePosition(flt_BagAnimationTime, 25, 40))
+        //    .AppendCallback(() => obj_Card.SetActive(true)).AppendCallback(() => taptoConintue.SetActive(true)).
+        //    Append(obj_Card.transform.DOScale(1, flt_ChestAnimation).SetEase(Ease.OutBack)).AppendCallback(()=>SliderAnimation(playerIndex)).AppendInterval(flt_BagAnimationTime * 2)
+        //    .Append(obj_Card.transform.DOScale(0, flt_ChestAnimation / 2)).AppendCallback(ActvetedSummryPanel);
+
+        Animator current = bag.GetComponent<Animator>();
+        current.SetBool("isBagAnimation", true);
+        seq.AppendInterval(4).AppendCallback(() => current.SetBool("isBagAnimation", false))
+             .AppendCallback(() => obj_Card.SetActive(true)).AppendCallback(() => taptoConintue.SetActive(true)).
+            Append(obj_Card.transform.DOScale(1, flt_ChestAnimation).SetEase(Ease.OutBack)).AppendCallback(() => SliderAnimation(playerIndex)).AppendInterval(flt_BagAnimationTime * 2)
             .Append(obj_Card.transform.DOScale(0, flt_ChestAnimation / 2)).AppendCallback(ActvetedSummryPanel);
     }
 
