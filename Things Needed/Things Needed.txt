@@ -1,0 +1,31 @@
+- Bottom panel Active/ Inactive Icons
+
+1) Home Screen:
+
+- Daily Challenge panel ( Claim, wait )
+
+2) Player Selection:
+
+- Panel Selected
+- Bat width.
+- Level Up Indicator
+
+
+3) Finding Player
+
+- Main Pot Value at center
+
+4) Game screen
+
+- Avatar frame
+- Add name panel below frame
+
+5) Game Over
+
+- Winner Indicator avatar frame ( Green ) 
+- Looser Indicator avatar frame ( Red )
+- Panel - Showing Bag
+
+6) Icons for card ( Common, Rare, Epic ) 
+
+47 1 1 51
