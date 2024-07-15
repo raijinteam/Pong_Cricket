@@ -20,7 +20,7 @@ public class ScrollViewSizing : MonoBehaviour
 
 		if (aspectRatio >= 0.7f)
 		{
-			rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, 1100);
+			rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, 1600);
 		}
 		else if (aspectRatio >= 0.6f)
 		{
@@ -48,9 +48,4 @@ public class ScrollViewSizing : MonoBehaviour
 	//    // Set the height of the ScrollView
 	//    rectTransform.sizeDelta = new Vector2(rectTransform.sizeDelta.x, scrollViewHeight);
 	//}
-
-	private void Update()
-	{
-		
-	}
 }
